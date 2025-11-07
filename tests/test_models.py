@@ -2,7 +2,7 @@
 
 import pytest
 
-from coder_flow.models import FarmConfig, ParamDefinition, ServerConfig, Task
+from cyberian.models import FarmConfig, ParamDefinition, ServerConfig, Task
 
 
 def test_param_definition_with_examples():

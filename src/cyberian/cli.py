@@ -1,4 +1,4 @@
-"""CLI interface for coder-flow."""
+"""CLI interface for cyberian."""
 
 import csv
 import io
@@ -17,7 +17,7 @@ from typing_extensions import Annotated
 
 logger = logging.getLogger(__name__)
 
-app = typer.Typer(help="coder-flow: Wrapper for agentapi for pipelines")
+app = typer.Typer(help="cyberian: Wrapper for agentapi for pipelines")
 
 # Server sub-app for grouping server-related commands
 server_app = typer.Typer(help="Manage agentapi servers")
@@ -44,10 +44,10 @@ def message(
     messages to a running agent.
 
     Example:
-        >>> # coder-flow message "Hello, agent!"
-        >>> # coder-flow message "System init" --type system --host example.com --port 8080
-        >>> # coder-flow message "What is 2+2?" --sync
-        >>> # coder-flow message "Long task" --sync --timeout 120
+        >>> # cyberian message "Hello, agent!"
+        >>> # cyberian message "System init" --type system --host example.com --port 8080
+        >>> # cyberian message "What is 2+2?" --sync
+        >>> # cyberian message "Long task" --sync --timeout 120
     """
     url = f"http://{host}:{port}/message"
     payload = {"content": content, "type": msg_type}
@@ -125,11 +125,11 @@ def messages(
     the conversation history.
 
     Example:
-        >>> # coder-flow messages
-        >>> # coder-flow messages --format yaml
-        >>> # coder-flow messages --last 5
-        >>> # coder-flow messages --format csv --last 10
-        >>> # coder-flow messages --host example.com --port 8080
+        >>> # cyberian messages
+        >>> # cyberian messages --format yaml
+        >>> # cyberian messages --last 5
+        >>> # cyberian messages --format csv --last 10
+        >>> # cyberian messages --host example.com --port 8080
     """
     url = f"http://{host}:{port}/messages"
 
@@ -177,8 +177,8 @@ def status(
     the server is running and get its status information.
 
     Example:
-        >>> # coder-flow status
-        >>> # coder-flow status --host example.com --port 8080
+        >>> # cyberian status
+        >>> # cyberian status --host example.com --port 8080
     """
     url = f"http://{host}:{port}/status"
 
@@ -220,12 +220,12 @@ def start_server(
     starting the server.
 
     Example:
-        >>> # coder-flow server start
-        >>> # coder-flow server start claude --port 8080
-        >>> # coder-flow server start aider -p 9000
-        >>> # coder-flow server start --dir /path/to/project
-        >>> # coder-flow server start claude --dir /my/project --port 8080
-        >>> # coder-flow server start claude --skip-permissions
+        >>> # cyberian server start
+        >>> # cyberian server start claude --port 8080
+        >>> # cyberian server start aider -p 9000
+        >>> # cyberian server start --dir /path/to/project
+        >>> # cyberian server start claude --dir /my/project --port 8080
+        >>> # cyberian server start claude --skip-permissions
     """
     # Change to specified directory if provided
     if dir:
@@ -235,7 +235,7 @@ def start_server(
     # Build base command with agent
     cmd = ["agentapi", "server", agent]
 
-    # Add coder-flow's own options (these go before --)
+    # Add cyberian's own options (these go before --)
     cmd.extend(["--port", str(port)])
 
     if allowed_hosts:
@@ -271,7 +271,7 @@ def list_servers():
     and displays their process IDs and command lines.
 
     Example:
-        >>> # coder-flow server list
+        >>> # cyberian server list
     """
     # Use ps to find agentapi processes
     # -e: all processes
@@ -330,10 +330,10 @@ def stop_server(
     If no arguments are provided, defaults to stopping the server on port 3284.
 
     Example:
-        >>> # coder-flow server stop              # stops server on default port 3284
-        >>> # coder-flow server stop 12345        # stops server with PID 12345
-        >>> # coder-flow server stop --port 8080  # stops server on port 8080
-        >>> # coder-flow server stop --all        # stops all agentapi servers
+        >>> # cyberian server stop              # stops server on default port 3284
+        >>> # cyberian server stop 12345        # stops server with PID 12345
+        >>> # cyberian server stop --port 8080  # stops server on port 8080
+        >>> # cyberian server stop --all        # stops all agentapi servers
     """
     pids_to_kill: list[str] = []
 
@@ -438,9 +438,9 @@ def start_farm(
             port: 3290
 
     Example:
-        >>> # coder-flow farm start my-farm.yaml
+        >>> # cyberian farm start my-farm.yaml
     """
-    from coder_flow.models import FarmConfig
+    from cyberian.models import FarmConfig
 
     # Load farm configuration
     try:
@@ -603,16 +603,16 @@ def run(
     The --resume-from option skips tasks until reaching the specified task name.
 
     Example:
-        >>> # coder-flow run workflow.yaml --param query="climate change"
-        >>> # coder-flow run workflow.yaml --dir /my/project --agent-type claude
-        >>> # coder-flow run workflow.yaml --skip-permissions
-        >>> # coder-flow run workflow.yaml -v  # verbose output
-        >>> # coder-flow run workflow.yaml -vv  # debug output
-        >>> # coder-flow run workflow.yaml --resume-from iterate  # skip to 'iterate' task
-        >>> # coder-flow run tests/examples/deep-research.yaml -p query="AI" -d ./workspace
+        >>> # cyberian run workflow.yaml --param query="climate change"
+        >>> # cyberian run workflow.yaml --dir /my/project --agent-type claude
+        >>> # cyberian run workflow.yaml --skip-permissions
+        >>> # cyberian run workflow.yaml -v  # verbose output
+        >>> # cyberian run workflow.yaml -vv  # debug output
+        >>> # cyberian run workflow.yaml --resume-from iterate  # skip to 'iterate' task
+        >>> # cyberian run tests/examples/deep-research.yaml -p query="AI" -d ./workspace
     """
-    from coder_flow.runner import TaskRunner
-    from coder_flow.models import Task
+    from cyberian.runner import TaskRunner
+    from cyberian.models import Task
 
     # Configure logging based on verbosity
     if verbose == 0:

@@ -41,7 +41,7 @@ test-full: test pytest-integration
 pytest:
   uv run pytest
 
-# Run integration tests (requires fresh agentapi server: uv run coder-flow server claude --skip-permissions)
+# Run integration tests (requires fresh agentapi server: uv run cyberian server claude --skip-permissions)
 pytest-integration:
 	uv run pytest -v -m integration
 
@@ -93,7 +93,7 @@ copilot-instructions:
 _ai-instructions: goosehints copilot-instructions
 
 gh-add-topics:
-  gh repo edit --add-topic "coder-flow,monarchinitiative,linkml"
+  gh repo edit --add-topic "cyberian,monarchinitiative,linkml"
 
 gh-add-secrets:
   gh secret set PAT_FOR_PR --body "$PAT_FOR_PR"
@@ -103,7 +103,7 @@ gh-add-secrets:
   gh secret set CLAUDE_CODE_OATH_TOKEN --body "$CLAUDE_CODE_OATH_TOKEN"
 
 gh-invite-the-dragon:
-  gh api repos/monarch-initiative/coder-flow/collaborators/dragon-ai-agent -X PUT -f permission=push
+  gh api repos/monarch-initiative/cyberian/collaborators/dragon-ai-agent -X PUT -f permission=push
 
 # ============== Include project-specific recipes ==============
 

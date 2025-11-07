@@ -1,5 +1,5 @@
 ---
-site_name: "coder-flow"
+site_name: "cyberian"
 theme:
   name: material
   # palette:
@@ -16,15 +16,15 @@ plugins:
       execute: false
   - mermaid2:
       version: 11.4.1
-  
+
 #watch:
-#  - src/coder_flow/schema
+#  - src/cyberian/schema
 
 nav:
   - Home: index.md
-  
+
 exclude_docs: |
   /templates-linkml/
 
-site_url: https://monarch-initiative.github.io/coder-flow
-repo_url: https://github.com/monarch-initiative/coder-flow
+site_url: https://monarch-initiative.github.io/cyberian
+repo_url: https://github.com/monarch-initiative/cyberian

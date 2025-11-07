@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 import pytest
 from typer.testing import CliRunner
 
-from coder_flow.cli import app
+from cyberian.cli import app
 
 runner = CliRunner()
 
@@ -21,8 +21,8 @@ name: test-workflow
 instructions: Do something
 """)
 
-    with patch("coder_flow.cli.os.chdir") as mock_chdir, \
-         patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.cli.os.chdir") as mock_chdir, \
+         patch("cyberian.runner.TaskRunner") as mock_runner_class:
 
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
@@ -45,8 +45,8 @@ name: test-workflow
 instructions: Do something
 """)
 
-    with patch("coder_flow.cli.os.chdir") as mock_chdir, \
-         patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.cli.os.chdir") as mock_chdir, \
+         patch("cyberian.runner.TaskRunner") as mock_runner_class:
 
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
@@ -66,7 +66,7 @@ name: test-workflow
 instructions: Do something with {{agent_type}}
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -90,7 +90,7 @@ name: test-workflow
 instructions: Use {{agent_type}} to analyze
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -113,8 +113,8 @@ name: test-workflow
 instructions: Run {{agent_type}} analysis
 """)
 
-    with patch("coder_flow.cli.os.chdir") as mock_chdir, \
-         patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.cli.os.chdir") as mock_chdir, \
+         patch("cyberian.runner.TaskRunner") as mock_runner_class:
 
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
@@ -146,7 +146,7 @@ params:
 instructions: Use {{agent_type}} to research {{query}}
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -175,7 +175,7 @@ instructions: Use {{agent_type}}
         workflow_file = f.name
 
     try:
-        with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+        with patch("cyberian.runner.TaskRunner") as mock_runner_class:
             mock_runner = Mock()
             mock_runner_class.return_value = mock_runner
 
@@ -212,8 +212,8 @@ name: test
 instructions: Test
 """)
 
-    with patch("coder_flow.cli.os.chdir") as mock_chdir, \
-         patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.cli.os.chdir") as mock_chdir, \
+         patch("cyberian.runner.TaskRunner") as mock_runner_class:
 
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
@@ -237,7 +237,7 @@ name: test-workflow
 instructions: Do something
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -261,7 +261,7 @@ name: test-workflow
 instructions: Run with skip={{skip_permissions}}
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -284,7 +284,7 @@ name: test-workflow
 instructions: Run {{agent_type}} analysis
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -311,7 +311,7 @@ name: test-workflow
 instructions: Test workflow
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -334,7 +334,7 @@ name: test-workflow
 instructions: Test
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = Mock()
         mock_runner_class.return_value = mock_runner
 
@@ -364,7 +364,7 @@ subtasks:
     instructions: "Do something {{count}} times"
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = mock_runner_class.return_value
 
         result = runner.invoke(
@@ -399,7 +399,7 @@ subtasks:
     instructions: "Check if enabled: {{enabled}}"
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = mock_runner_class.return_value
 
         result = runner.invoke(
@@ -432,7 +432,7 @@ subtasks:
     instructions: "Say: {{message}}"
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = mock_runner_class.return_value
 
         result = runner.invoke(
@@ -465,7 +465,7 @@ subtasks:
     instructions: "Fetch: {{url}}"
 """)
 
-    with patch("coder_flow.runner.TaskRunner") as mock_runner_class:
+    with patch("cyberian.runner.TaskRunner") as mock_runner_class:
         mock_runner = mock_runner_class.return_value
 
         result = runner.invoke(

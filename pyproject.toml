@@ -3,7 +3,7 @@ requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [project]
-name = "coder_flow"
+name = "cyberian"
 description = "Wrapper for agentapi for pipelines"
 authors = [
   {name = "My Name", email = "my-name@my-org.org"},
@@ -36,7 +36,7 @@ dev = [
 ]
 
 [project.scripts]
-coder-flow = "coder_flow.cli:main"
+cyberian = "cyberian.cli:main"
 
 
 # See https://hatch.pypa.io/latest/config/build/#file-selection for how to
@@ -62,8 +62,8 @@ skip = [
   "pyproject.toml",
   "uv.lock",
   "project/*",
-  "src/coder_flow/datamodel/coder_flow_pydantic.py",
-  "src/coder_flow/datamodel/coder_flow.py",
+  "src/cyberian/datamodel/cyberian_pydantic.py",
+  "src/cyberian/datamodel/cyberian.py",
 ]
 
 # Reminder: words have to be lowercased for the ignore-words-list
@@ -79,6 +79,6 @@ extend-exclude = [
   "uv.lock",
   "pyproject.toml",
   "project/*",
-  "src/coder_flow/datamodel/coder_flow_pydantic.py",
-  "src/coder_flow/datamodel/coder_flow.py",
+  "src/cyberian/datamodel/cyberian_pydantic.py",
+  "src/cyberian/datamodel/cyberian.py",
 ]

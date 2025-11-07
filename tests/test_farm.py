@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import yaml
 
-from coder_flow.cli import start_farm
+from cyberian.cli import start_farm
 
 
 def test_template_directory_copies_files(tmp_path):

@@ -9,6 +9,6 @@ github_handle: monarch-initiative
 github_org: monarch-initiative
 license: BSD-3-Clause
 project_description: Wrapper for agentapi for pipelines
-project_name: coder-flow
-project_slug: coder_flow
+project_name: cyberian
+project_slug: cyberian
 

@@ -1,10 +1,10 @@
-# coder-flow
+# cyberian
 
 A Python CLI wrapper for [agentapi](https://github.com/coder/agentapi) that enables automated agent pipelines and workflows.
 
 ## Overview
 
-`coder-flow` provides a comprehensive command-line interface for:
+`cyberian` provides a comprehensive command-line interface for:
 
 - **Sending messages** to AI agents via agentapi
 - **Managing agentapi servers** (start, stop, list)
@@ -15,27 +15,27 @@ A Python CLI wrapper for [agentapi](https://github.com/coder/agentapi) that enab
 ## Installation
 
 ```bash
-# Install with uv (recommended)
-uv pip install coder-flow
-
-# Or with pip
-pip install coder-flow
+pip install cyberian
 ```
+
+Or you can bypass installation using `uvx`:
+
+`uvx cyberian`
 
 ## Quick Start
 
 ```bash
 # Start an agentapi server
-coder-flow server claude --port 3284 --dir /tmp/workdir
+cyberian server start claude --skip-permissions --port 3284 --dir /tmp/workdir
 
 # Send a message
-coder-flow message "Write a hello world function in Python"
+cyberian message "Write a hello world function in Python"
 
 # check status
-coder-flow status
+cyberian status
 
 # get messages
-coder-flow messages
+cyberian messages
 
 # view in chat interface
 open http://localhost:3284/chat
@@ -45,13 +45,13 @@ open http://localhost:3284/chat
 # Start a farm of multiple servers
 
 ```
-coder-flow farm start my-farm.yaml
+cyberian farm start my-farm.yaml
 ```
 
 # Run a workflow
 
 ```
-coder-flow run deep-research.yaml --param query="Function of human CFAP300 gene"
+cyberian run deep-research.yaml --param query="Function of human CFAP300 gene"
 ```
 
 ## Commands
@@ -78,10 +78,10 @@ Send messages to a running agentapi server. Supports both fire-and-forget and sy
 
 ```bash
 # Basic message
-coder-flow message "Your prompt here"
+cyberian message "Your prompt here"
 
 # Synchronous mode - wait for response
-coder-flow message "What is 2+2?" -s
+cyberian message "What is 2+2?" -s
 ```
 
 **Options:**
@@ -99,16 +99,16 @@ Get messages from the agent conversation history with multiple output formats.
 
 ```bash
 # Get all messages as JSON (default)
-coder-flow messages
+cyberian messages
 
 # Get last 5 messages in YAML format
-coder-flow messages -f yaml -l 5
+cyberian messages -f yaml -l 5
 
 # Export to CSV
-coder-flow messages -f csv > conversation.csv
+cyberian messages -f csv > conversation.csv
 
 # Custom server
-coder-flow messages -H example.com -P 8080
+cyberian messages -H example.com -P 8080
 ```
 
 **Options:**
@@ -123,10 +123,10 @@ Check if the agentapi server is running and get its status.
 
 ```bash
 # Check default server
-coder-flow status
+cyberian status
 
 # Check custom server
-coder-flow status -H example.com -P 8080
+cyberian status -H example.com -P 8080
 ```
 
 **Options:**
@@ -139,19 +139,19 @@ Start an agentapi server with the specified agent type.
 
 ```bash
 # Start default custom agent
-coder-flow server
+cyberian server
 
 # Start Claude agent on port 8080 (using shorthand)
-coder-flow server claude -p 8080
+cyberian server claude -p 8080
 
 # Start in specific directory
-coder-flow server aider -d /path/to/project
+cyberian server aider -d /path/to/project
 
 # Skip permissions and set directory
-coder-flow server claude -d /my/project -s
+cyberian server claude -d /my/project -s
 
 # With CORS settings
-coder-flow server claude --allowed-origins "https://example.com" --allowed-hosts "example.com"
+cyberian server claude --allowed-origins "https://example.com" --allowed-hosts "example.com"
 ```
 
 **Options:**
@@ -170,7 +170,7 @@ Start and manage a farm of multiple agentapi servers from a single YAML configur
 
 ```bash
 # Start a farm from config file
-coder-flow farm start my-farm.yaml
+cyberian farm start my-farm.yaml
 
 # Example farm configuration
 cat > farm.yaml << 'EOF'
@@ -189,7 +189,7 @@ servers:
     skip_permissions: true
 EOF
 
-coder-flow farm start farm.yaml
+cyberian farm start farm.yaml
 ```
 
 **Farm Configuration Options:**
@@ -253,7 +253,7 @@ servers:
 EOF
 
 # Start the farm (both servers get the .claude config)
-coder-flow farm start farm.yaml
+cyberian farm start farm.yaml
 ```
 
 ### list-servers - Find running servers
@@ -261,7 +261,7 @@ coder-flow farm start farm.yaml
 List all running agentapi server processes.
 
 ```bash
-coder-flow list-servers
+cyberian list-servers
 ```
 
 ### stop - Stop a server
@@ -270,10 +270,10 @@ Stop a running agentapi server by PID or port.
 
 ```bash
 # Stop by process ID
-coder-flow stop 12345
+cyberian stop 12345
 
 # Stop by port number (using shorthand)
-coder-flow stop -p 3284
+cyberian stop -p 3284
 ```
 
 **Options:**
@@ -286,19 +286,19 @@ Run complex multi-step workflows defined in YAML files.
 
 ```bash
 # Basic workflow execution
-coder-flow run workflow.yaml
+cyberian run workflow.yaml
 
 # With parameters (using shorthands)
-coder-flow run workflow.yaml -p query="climate change" -p depth="comprehensive"
+cyberian run workflow.yaml -p query="climate change" -p depth="comprehensive"
 
 # Change directory and specify agent type
-coder-flow run workflow.yaml -d /my/project -a claude
+cyberian run workflow.yaml -d /my/project -a claude
 
 # Skip permission checks (passes to template context)
-coder-flow run workflow.yaml -s
+cyberian run workflow.yaml -s
 
 # All options combined with shorthands
-coder-flow run workflow.yaml -H example.com -P 8080 -T 600 -d ./workspace -a aider -s
+cyberian run workflow.yaml -H example.com -P 8080 -T 600 -d ./workspace -a aider -s
 ```
 
 **Options:**
@@ -416,7 +416,7 @@ subtasks:
 **Command-line override:**
 ```bash
 # Override workflow's agent_lifecycle setting
-coder-flow run workflow.yaml --agent-lifecycle refresh
+cyberian run workflow.yaml --agent-lifecycle refresh
 ```
 
 ### Template Variables
@@ -436,7 +436,7 @@ instructions: |
 ```
 
 ```bash
-coder-flow run workflow.yaml \
+cyberian run workflow.yaml \
   --agent-type claude \
   --skip-permissions \
   --param query="AI safety"
@@ -490,7 +490,7 @@ subtasks:
 Run it:
 
 ```bash
-coder-flow run tests/examples/deep-research.yaml \
+cyberian run tests/examples/deep-research.yaml \
   -p query="quantum computing" \
   -d ./research-output \
   -a claude
@@ -498,13 +498,13 @@ coder-flow run tests/examples/deep-research.yaml \
 
 ## Documentation Website
 
-[https://monarch-initiative.github.io/coder-flow](https://monarch-initiative.github.io/coder-flow)
+[https://monarch-initiative.github.io/cyberian](https://monarch-initiative.github.io/cyberian)
 
 ## Repository Structure
 
 * [docs/](docs/) - mkdocs-managed documentation
 * [project/](project/) - project files (auto-generated, do not edit)
-* [src/coder_flow/](src/coder_flow/) - source code
+* [src/cyberian/](src/cyberian/) - source code
   * `cli.py` - Typer-based CLI interface
   * `runner.py` - TaskRunner for executing workflows
   * `models.py` - Pydantic models for workflow definitions
@@ -549,13 +549,13 @@ just --list
 uv sync
 
 # Run CLI
-uv run coder-flow --help
+uv run cyberian --help
 
 # Run tests
 uv run pytest tests/
 
 # Type checking
-uv run mypy src/coder_flow/
+uv run mypy src/cyberian/
 ```
 
 ### Project Stack

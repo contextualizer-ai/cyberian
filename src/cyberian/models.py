@@ -1,4 +1,4 @@
-"""Pydantic models for coder-flow task/workflow definitions."""
+"""Pydantic models for cyberian task/workflow definitions."""
 
 from __future__ import annotations
 

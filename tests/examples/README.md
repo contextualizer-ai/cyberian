@@ -15,7 +15,7 @@ Final result = input + 6
 **Usage:**
 ```bash
 # With server running on localhost:3284
-uv run coder-flow run tests/examples/simple-math.yaml \
+uv run cyberian run tests/examples/simple-math.yaml \
   -p input_number=10
 ```
 
@@ -32,7 +32,7 @@ A complex iterative research workflow with:
 
 **Usage:**
 ```bash
-uv run coder-flow run tests/examples/deep-research.yaml \
+uv run cyberian run tests/examples/deep-research.yaml \
   -p query="research KCNQ1OT1 gene" \
   -p workdir="tmp" \
   -v
@@ -55,7 +55,7 @@ Each step includes `success_criteria` with Python code to validate output file l
 **Usage:**
 ```bash
 # With server running on localhost:3284
-uv run coder-flow run tests/examples/pdf-summarize.yaml \
+uv run cyberian run tests/examples/pdf-summarize.yaml \
   -p pdf_url="https://www.nature.com/articles/s41597-024-03069-7.pdf" \
   -p max_chars_step1=2000 \
   -p workdir="tmp" \
@@ -81,7 +81,7 @@ The test suite includes:
 **Run integration tests:**
 ```bash
 # Start server
-uv run coder-flow server claude --skip-permissions
+uv run cyberian server claude --skip-permissions
 
 # In another terminal, run tests
 uv run pytest tests/test_integration.py -v -m integration

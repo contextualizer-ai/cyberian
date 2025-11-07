@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import pytest
 from typer.testing import CliRunner
 
-from coder_flow.cli import app
+from cyberian.cli import app
 
 runner = CliRunner()
 
@@ -13,7 +13,7 @@ runner = CliRunner()
 # Tests for messages command (GET /messages)
 def test_messages_default_parameters():
     """Test messages command with default parameters."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"messages": [{"content": "Hello", "type": "user"}]}
@@ -29,7 +29,7 @@ def test_messages_default_parameters():
 
 def test_messages_custom_host_and_port():
     """Test messages command with custom host and port."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"messages": []}
@@ -47,7 +47,7 @@ def test_messages_custom_host_and_port():
 
 def test_messages_displays_response():
     """Test that messages response is displayed."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"messages": [{"content": "Hello", "type": "user"}]}
@@ -61,7 +61,7 @@ def test_messages_displays_response():
 
 def test_messages_json_format():
     """Test messages command with JSON format (default)."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"messages": [{"content": "Hello", "type": "user"}]}
@@ -75,7 +75,7 @@ def test_messages_json_format():
 
 def test_messages_yaml_format():
     """Test messages command with YAML format."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"messages": [{"content": "Hello", "type": "user"}]}
@@ -89,7 +89,7 @@ def test_messages_yaml_format():
 
 def test_messages_csv_format():
     """Test messages command with CSV format."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
@@ -108,7 +108,7 @@ def test_messages_csv_format():
 
 def test_messages_limit():
     """Test messages command with limit option."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
@@ -133,7 +133,7 @@ def test_messages_limit():
 
 def test_messages_limit_with_yaml():
     """Test messages command with limit and YAML format."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
@@ -162,7 +162,7 @@ def test_messages_limit_with_yaml():
 )
 def test_messages_formats_parametrized(output_format, expected_content):
     """Parametrized test for different output formats."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"messages": [{"content": "Test", "type": "user"}]}
@@ -176,7 +176,7 @@ def test_messages_formats_parametrized(output_format, expected_content):
 # Tests for status command (GET /status)
 def test_status_default_parameters():
     """Test status command with default parameters."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "running", "uptime": 3600}
@@ -192,7 +192,7 @@ def test_status_default_parameters():
 
 def test_status_custom_host_and_port():
     """Test status command with custom host and port."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "running"}
@@ -210,7 +210,7 @@ def test_status_custom_host_and_port():
 
 def test_status_displays_response():
     """Test that status response is displayed."""
-    with patch("coder_flow.cli.httpx.get") as mock_get:
+    with patch("cyberian.cli.httpx.get") as mock_get:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "running", "uptime": 3600}
@@ -225,7 +225,7 @@ def test_status_displays_response():
 # Tests for server command (start agent server)
 def test_server_default_parameters():
     """Test server command with default parameters."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -240,7 +240,7 @@ def test_server_default_parameters():
 
 def test_server_custom_port():
     """Test server command with custom port."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -255,7 +255,7 @@ def test_server_custom_port():
 
 def test_server_custom_agent():
     """Test server command with custom agent type."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -270,7 +270,7 @@ def test_server_custom_agent():
 
 def test_server_with_allowed_hosts():
     """Test server command with allowed hosts."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -293,7 +293,7 @@ def test_server_with_allowed_hosts():
 )
 def test_server_parametrized(agent, port):
     """Parametrized test for server command with different agent/port combinations."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -310,7 +310,7 @@ def test_server_parametrized(agent, port):
 # Tests for list-servers command (ps for agentapi)
 def test_list_servers_no_servers_running():
     """Test list-servers when no agentapi servers are running."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         mock_run.return_value = Mock(
             returncode=0,
             stdout="",
@@ -326,7 +326,7 @@ def test_list_servers_no_servers_running():
 
 def test_list_servers_with_running_servers():
     """Test list-servers when agentapi servers are running."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         mock_run.return_value = Mock(
             returncode=0,
             stdout="12345 agentapi --host localhost --port 3284\n67890 agentapi --host 0.0.0.0 --port 8080\n",
@@ -343,7 +343,7 @@ def test_list_servers_with_running_servers():
 
 def test_list_servers_displays_processes():
     """Test that list-servers displays process information."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         mock_run.return_value = Mock(
             returncode=0,
             stdout="12345 agentapi --host localhost --port 3284\n",
@@ -358,7 +358,7 @@ def test_list_servers_displays_processes():
 
 def test_list_servers_uses_ps_command():
     """Test that list-servers uses ps command to find processes."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         mock_run.return_value = Mock(
             returncode=0,
             stdout="12345 agentapi\n",
@@ -376,8 +376,8 @@ def test_list_servers_uses_ps_command():
 
 def test_server_with_directory_option():
     """Test server command changes directory when --dir option is provided."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen, \
-         patch("coder_flow.cli.os.chdir") as mock_chdir:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen, \
+         patch("cyberian.cli.os.chdir") as mock_chdir:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -391,8 +391,8 @@ def test_server_with_directory_option():
 
 def test_server_without_directory_option():
     """Test server command does not change directory when --dir option is not provided."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen, \
-         patch("coder_flow.cli.os.chdir") as mock_chdir:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen, \
+         patch("cyberian.cli.os.chdir") as mock_chdir:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -406,8 +406,8 @@ def test_server_without_directory_option():
 
 def test_server_with_directory_and_other_options():
     """Test server command with directory option combined with other options."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen, \
-         patch("coder_flow.cli.os.chdir") as mock_chdir:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen, \
+         patch("cyberian.cli.os.chdir") as mock_chdir:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -423,7 +423,7 @@ def test_server_with_directory_and_other_options():
 
 def test_server_with_skip_permissions_claude():
     """Test server command with --skip-permissions flag for Claude agent."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -438,7 +438,7 @@ def test_server_with_skip_permissions_claude():
 
 def test_server_with_skip_permissions_other_agent():
     """Test server command with --skip-permissions flag for non-Claude agent."""
-    with patch("coder_flow.cli.subprocess.Popen") as mock_popen:
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
         mock_process = Mock()
         mock_process.pid = 12345
         mock_popen.return_value = mock_process
@@ -454,7 +454,7 @@ def test_server_with_skip_permissions_other_agent():
 # Tests for stop command (kill agentapi server)
 def test_stop_server_by_pid():
     """Test stop command with PID."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         mock_run.return_value = Mock(returncode=0, stdout="", stderr="")
 
         result = runner.invoke(app, ["server", "stop", "12345"])
@@ -468,7 +468,7 @@ def test_stop_server_by_pid():
 
 def test_stop_server_by_port():
     """Test stop command with port - finds and kills process on that port."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # First call to lsof to find PID using the port
         # Second call to kill the process
         mock_run.side_effect = [
@@ -492,7 +492,7 @@ def test_stop_server_by_port():
 
 def test_stop_server_port_not_found():
     """Test stop command when no process is found on specified port."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # lsof returns nothing
         mock_run.return_value = Mock(returncode=1, stdout="", stderr="")
 
@@ -504,7 +504,7 @@ def test_stop_server_port_not_found():
 
 def test_stop_server_invalid_pid():
     """Test stop command with invalid PID."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # kill returns error
         mock_run.return_value = Mock(returncode=1, stdout="", stderr="No such process")
 
@@ -515,7 +515,7 @@ def test_stop_server_invalid_pid():
 
 def test_stop_server_defaults_to_port_3284():
     """Test stop command defaults to port 3284 when no PID or port specified."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # lsof finds PID on default port 3284
         # Then kill is called
         mock_run.side_effect = [
@@ -539,7 +539,7 @@ def test_stop_server_defaults_to_port_3284():
 
 def test_stop_server_all():
     """Test stop command with --all flag stops all agentapi servers."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # First call: ps to find all agentapi processes
         # Then kill calls for each PID
         mock_run.side_effect = [
@@ -566,7 +566,7 @@ def test_stop_server_all():
 
 def test_stop_server_all_no_servers():
     """Test stop command with --all flag when no servers running."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # ps returns no agentapi processes
         mock_run.return_value = Mock(returncode=0, stdout="  PID COMMAND\n", stderr="")
 
@@ -579,7 +579,7 @@ def test_stop_server_all_no_servers():
 
 def test_stop_server_multiple_pids_by_port():
     """Test stop command when multiple processes found on port."""
-    with patch("coder_flow.cli.subprocess.run") as mock_run:
+    with patch("cyberian.cli.subprocess.run") as mock_run:
         # lsof finds multiple PIDs
         mock_run.side_effect = [
             Mock(returncode=0, stdout="12345\n12346\n", stderr=""),

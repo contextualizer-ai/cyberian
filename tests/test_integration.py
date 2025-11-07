@@ -1,7 +1,7 @@
 """Integration tests that run against a real agentapi server.
 
 These tests are skipped by default. To run them:
-1. Start an agentapi server: uv run coder-flow server claude --skip-permissions
+1. Start an agentapi server: uv run cyberian server claude --skip-permissions
 2. Run: uv run pytest tests/test_integration.py -v
    or: uv run pytest -v -m integration
 
@@ -12,8 +12,8 @@ To skip these tests (default): uv run pytest -v -m "not integration"
 import httpx
 import pytest
 
-from coder_flow.models import Task
-from coder_flow.runner import TaskRunner
+from cyberian.models import Task
+from cyberian.runner import TaskRunner
 
 
 def is_server_running(host="localhost", port=3284):
@@ -28,7 +28,7 @@ def is_server_running(host="localhost", port=3284):
 @pytest.mark.integration
 @pytest.mark.skipif(
     not is_server_running(),
-    reason="No agentapi server running on localhost:3284. Start with: coder-flow server claude --skip-permissions"
+    reason="No agentapi server running on localhost:3284. Start with: cyberian server claude --skip-permissions"
 )
 class TestIntegration:
     """Integration tests that require a running agentapi server."""

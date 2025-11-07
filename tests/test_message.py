@@ -6,14 +6,14 @@ from unittest.mock import Mock, patch
 import pytest
 from typer.testing import CliRunner
 
-from coder_flow.cli import app
+from cyberian.cli import app
 
 runner = CliRunner()
 
 
 def test_message_default_parameters():
     """Test message command with default parameters."""
-    with patch("coder_flow.cli.httpx.post") as mock_post:
+    with patch("cyberian.cli.httpx.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "ok"}
@@ -33,7 +33,7 @@ def test_message_default_parameters():
 
 def test_message_custom_type():
     """Test message command with custom type."""
-    with patch("coder_flow.cli.httpx.post") as mock_post:
+    with patch("cyberian.cli.httpx.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "ok"}
@@ -52,7 +52,7 @@ def test_message_custom_type():
 
 def test_message_custom_host_and_port():
     """Test message command with custom host and port."""
-    with patch("coder_flow.cli.httpx.post") as mock_post:
+    with patch("cyberian.cli.httpx.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "ok"}
@@ -77,7 +77,7 @@ def test_message_custom_host_and_port():
 
 def test_message_displays_response():
     """Test that the response is displayed to the user."""
-    with patch("coder_flow.cli.httpx.post") as mock_post:
+    with patch("cyberian.cli.httpx.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"response": "Agent reply"}
@@ -99,7 +99,7 @@ def test_message_displays_response():
 )
 def test_message_parametrized(content, msg_type):
     """Parametrized test for different message contents and types."""
-    with patch("coder_flow.cli.httpx.post") as mock_post:
+    with patch("cyberian.cli.httpx.post") as mock_post:
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"status": "ok"}
@@ -118,9 +118,9 @@ def test_message_parametrized(content, msg_type):
 
 def test_message_sync_waits_for_stable_status():
     """Test that sync mode waits for stable status."""
-    with patch("coder_flow.cli.httpx.post") as mock_post, \
-         patch("coder_flow.cli.httpx.get") as mock_get, \
-         patch("coder_flow.cli.time.sleep"):
+    with patch("cyberian.cli.httpx.post") as mock_post, \
+         patch("cyberian.cli.httpx.get") as mock_get, \
+         patch("cyberian.cli.time.sleep"):
 
         # Post response
         mock_post_response = Mock()
@@ -159,9 +159,9 @@ def test_message_sync_waits_for_stable_status():
 
 def test_message_sync_returns_last_agent_message():
     """Test that sync mode returns the last agent message."""
-    with patch("coder_flow.cli.httpx.post") as mock_post, \
-         patch("coder_flow.cli.httpx.get") as mock_get, \
-         patch("coder_flow.cli.time.sleep"):
+    with patch("cyberian.cli.httpx.post") as mock_post, \
+         patch("cyberian.cli.httpx.get") as mock_get, \
+         patch("cyberian.cli.time.sleep"):
 
         mock_post_response = Mock()
         mock_post_response.status_code = 200
@@ -197,9 +197,9 @@ def test_message_sync_returns_last_agent_message():
 
 def test_message_sync_with_custom_timeout():
     """Test sync mode with custom timeout."""
-    with patch("coder_flow.cli.httpx.post") as mock_post, \
-         patch("coder_flow.cli.httpx.get") as mock_get, \
-         patch("coder_flow.cli.time.sleep"):
+    with patch("cyberian.cli.httpx.post") as mock_post, \
+         patch("cyberian.cli.httpx.get") as mock_get, \
+         patch("cyberian.cli.time.sleep"):
 
         mock_post_response = Mock()
         mock_post_response.status_code = 200
@@ -229,10 +229,10 @@ def test_message_sync_with_custom_timeout():
 
 def test_message_sync_timeout_exceeded():
     """Test that sync mode fails gracefully on timeout."""
-    with patch("coder_flow.cli.httpx.post") as mock_post, \
-         patch("coder_flow.cli.httpx.get") as mock_get, \
-         patch("coder_flow.cli.time.sleep"), \
-         patch("coder_flow.cli.time.time") as mock_time:
+    with patch("cyberian.cli.httpx.post") as mock_post, \
+         patch("cyberian.cli.httpx.get") as mock_get, \
+         patch("cyberian.cli.time.sleep"), \
+         patch("cyberian.cli.time.time") as mock_time:
 
         mock_post_response = Mock()
         mock_post_response.status_code = 200

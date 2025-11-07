@@ -1,4 +1,4 @@
-# CLAUDE.md for coder-flow
+# CLAUDE.md for cyberian
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -36,7 +36,7 @@ NEVER required, if you think you need them, it's likely a bad smell that your lo
 - `uv run pytest tests/test_simple.py::test_simple` - Run a specific test
 
 ### Running the CLI
-- `uv run coder-flow --help` - Run the CLI tool with options
+- `uv run cyberian --help` - Run the CLI tool with options
 
 ### Documentation
 - `just _serve` - Run local documentation server with mkdocs
@@ -44,7 +44,7 @@ NEVER required, if you think you need them, it's likely a bad smell that your lo
 ## Project Architecture
 
 ### Core Structure
-- **src/coder_flow/** - Main package containing the CLI and application logic
+- **src/cyberian/** - Main package containing the CLI and application logic
   - `cli.py` - Typer-based CLI interface, entry point for the application (~250 lines)
   - `models.py` - Pydantic models for workflow/task definitions
 - **tests/** - Test suite using pytest with parametrized tests (38 tests)
@@ -75,7 +75,7 @@ NEVER required, if you think you need them, it's likely a bad smell that your lo
 1. Dependencies are managed via `uv` - use `uv add` for new dependencies
 2. All commands are run through `just` or `uv run`
 3. The project uses dynamic versioning from git tags
-4. Documentation is auto-deployed to GitHub Pages at https://monarch-initiative.github.io/coder-flow
+4. Documentation is auto-deployed to GitHub Pages at https://monarch-initiative.github.io/cyberian
 
 ## Current State
 

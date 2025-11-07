@@ -10,7 +10,7 @@ from typing import Any
 import httpx
 from jinja2 import Template
 
-from coder_flow.models import LoopCondition, SuccessCriteria, Task
+from cyberian.models import LoopCondition, SuccessCriteria, Task
 
 logger = logging.getLogger(__name__)
 

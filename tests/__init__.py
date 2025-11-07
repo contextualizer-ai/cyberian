@@ -1,1 +1,1 @@
-"""Tests for coder-flow."""
+"""Tests for cyberian."""

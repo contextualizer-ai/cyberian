@@ -6,8 +6,8 @@ from unittest.mock import MagicMock, Mock, patch
 import httpx
 import pytest
 
-from coder_flow.models import LoopCondition, ParamDefinition, Task
-from coder_flow.runner import TaskRunner
+from cyberian.models import LoopCondition, ParamDefinition, Task
+from cyberian.runner import TaskRunner
 
 
 def test_render_instructions_with_context():
@@ -111,9 +111,9 @@ def test_send_and_wait_success():
     """Test sending message and waiting for stable status."""
     runner = TaskRunner(timeout=10)
 
-    with patch("coder_flow.runner.httpx.post") as mock_post, \
-         patch("coder_flow.runner.httpx.get") as mock_get, \
-         patch("coder_flow.runner.time.sleep"):
+    with patch("cyberian.runner.httpx.post") as mock_post, \
+         patch("cyberian.runner.httpx.get") as mock_get, \
+         patch("cyberian.runner.time.sleep"):
 
         # Mock message post
         mock_post_response = Mock()
@@ -148,10 +148,10 @@ def test_send_and_wait_timeout():
     """Test that timeout is raised when agent doesn't respond."""
     runner = TaskRunner(timeout=5)
 
-    with patch("coder_flow.runner.httpx.post") as mock_post, \
-         patch("coder_flow.runner.httpx.get") as mock_get, \
-         patch("coder_flow.runner.time.sleep"), \
-         patch("coder_flow.runner.time.time") as mock_time:
+    with patch("cyberian.runner.httpx.post") as mock_post, \
+         patch("cyberian.runner.httpx.get") as mock_get, \
+         patch("cyberian.runner.time.sleep"), \
+         patch("cyberian.runner.time.time") as mock_time:
 
         mock_post_response = Mock()
         mock_post_response.status_code = 200
@@ -498,7 +498,7 @@ def test_no_resume_executes_all_tasks():
 
 def test_check_success_criteria_passes():
     """Test that success criteria passes when result = True."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
 
     runner = TaskRunner()
 
@@ -511,7 +511,7 @@ def test_check_success_criteria_passes():
 
 def test_check_success_criteria_fails():
     """Test that success criteria fails when result = False."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
 
     runner = TaskRunner()
 
@@ -524,7 +524,7 @@ def test_check_success_criteria_fails():
 
 def test_check_success_criteria_no_result_variable():
     """Test that error is returned when no result variable is set."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
 
     runner = TaskRunner()
 
@@ -537,7 +537,7 @@ def test_check_success_criteria_no_result_variable():
 
 def test_check_success_criteria_result_not_bool():
     """Test that error is returned when result is not a boolean."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
 
     runner = TaskRunner()
 
@@ -550,7 +550,7 @@ def test_check_success_criteria_result_not_bool():
 
 def test_check_success_criteria_execution_error():
     """Test that execution errors are caught and reported."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
 
     runner = TaskRunner()
 
@@ -563,7 +563,7 @@ def test_check_success_criteria_execution_error():
 
 def test_check_success_criteria_with_file_check(tmp_path):
     """Test success criteria that checks file length."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
     import os
 
     runner = TaskRunner()
@@ -608,7 +608,7 @@ result = len(content) <= 5
 
 def test_check_success_criteria_with_template_variables(tmp_path):
     """Test success criteria with Jinja2 template variables."""
-    from coder_flow.models import SuccessCriteria
+    from cyberian.models import SuccessCriteria
     import os
 
     runner = TaskRunner()
@@ -649,7 +649,7 @@ result = len(content) <= {{max_length}}
 
 def test_success_criteria_retry_passes_on_second_attempt(tmp_path):
     """Test that success criteria retries work and pass on second attempt."""
-    from coder_flow.models import SuccessCriteria, Task
+    from cyberian.models import SuccessCriteria, Task
 
     runner = TaskRunner()
 
@@ -700,7 +700,7 @@ result = count >= 2  # Fail on first attempt, pass on second
 
 def test_success_criteria_retry_fails_after_max_retries(tmp_path):
     """Test that task fails after exhausting max_retries."""
-    from coder_flow.models import SuccessCriteria, Task
+    from cyberian.models import SuccessCriteria, Task
 
     runner = TaskRunner()
 
@@ -737,7 +737,7 @@ def test_success_criteria_retry_fails_after_max_retries(tmp_path):
 
 def test_success_criteria_retry_message_includes_error():
     """Test that retry_message includes error details."""
-    from coder_flow.models import SuccessCriteria, Task
+    from cyberian.models import SuccessCriteria, Task
 
     runner = TaskRunner()
 
@@ -769,7 +769,7 @@ def test_success_criteria_retry_message_includes_error():
 
 def test_success_criteria_no_retry_fails_immediately(tmp_path):
     """Test that without max_retries, task fails immediately (backward compatible)."""
-    from coder_flow.models import SuccessCriteria, Task
+    from cyberian.models import SuccessCriteria, Task
 
     runner = TaskRunner()
 
@@ -805,7 +805,7 @@ def test_success_criteria_no_retry_fails_immediately(tmp_path):
 
 def test_success_criteria_retry_with_looping_task(tmp_path):
     """Test that success_criteria retries work with looping tasks."""
-    from coder_flow.models import LoopCondition, SuccessCriteria, Task
+    from cyberian.models import LoopCondition, SuccessCriteria, Task
 
     runner = TaskRunner()
 
