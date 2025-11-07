@@ -1,0 +1,112 @@
+name: pdf-summarize
+description: Multi-stage PDF summarization workflow with validation
+requires_workdir: true
+params:
+  pdf_url:
+    range: string
+    required: true
+    examples:
+      - "https://www.nature.com/articles/s41597-024-03069-7.pdf"
+      - "https://arxiv.org/pdf/2301.00001.pdf"
+  max_chars_step1:
+    range: integer
+    required: true
+    examples:
+      - 2000
+      - 3000
+      - 5000
+  workdir:
+    range: string
+    required: false
+    examples:
+      - "tmp"
+      - "output"
+
+system_instructions: |
+  IMPORTANT: All file operations must be performed in the working directory: {{workdir}}
+
+  - Download files to {{workdir}}
+  - Read files from {{workdir}}
+  - Write all output files to {{workdir}}
+  - Use absolute or relative paths that resolve to {{workdir}}
+
+  Before any file operation, ensure you are working in {{workdir}}.
+
+subtasks:
+  step1:
+    instructions: |
+      Download and read the PDF from this URL: {{pdf_url}}
+
+      Create a comprehensive summary of the PDF content.
+      The summary must be no more than {{max_chars_step1}} characters.
+
+      Save your summary to a file called {{workdir}}/SUMMARY_1.md in the current directory.
+
+      Make sure the summary captures the key points, findings, and conclusions.
+      Then print COMPLETION_STATUS: COMPLETE
+    success_criteria:
+      python: |
+        with open('{{workdir}}/SUMMARY_1.md', 'r') as f:
+            content = f.read()
+        result = len(content) <= {{max_chars_step1}}
+      max_retries: 3
+      retry_message: |
+        VALIDATION FAILED: {{error}}
+
+        The summary in {{workdir}}/SUMMARY_1.md exceeds the {{max_chars_step1}} character limit.
+
+        Please revise {{workdir}}/SUMMARY_1.md to be more concise while keeping the key information.
+        Focus on the most important findings and conclusions.
+        Remove any redundant information or verbose descriptions.
+
+  step2:
+    instructions: |
+      Read the file {{workdir}}/SUMMARY_1.md that was created in the previous step.
+
+      Create a more concise summary that is no more than {{max_chars_step1 // 2}} characters.
+
+      Save this shorter summary to a file called {{workdir}}/SUMMARY_2.md in the current directory.
+
+      Focus on only the most critical information.
+      Then print COMPLETION_STATUS: COMPLETE
+    success_criteria:
+      python: |
+        with open('{{workdir}}/SUMMARY_2.md', 'r') as f:
+            content = f.read()
+        result = len(content) <= {{max_chars_step1 // 2}}
+      max_retries: 3
+      retry_message: |
+        VALIDATION FAILED: {{error}}
+
+        The summary in {{workdir}}/SUMMARY_2.md exceeds the {{max_chars_step1 // 2}} character limit.
+
+        Please edit {{workdir}}/SUMMARY_2.md to be even more concise.
+        Keep only the absolutely essential findings and main conclusions.
+        This is step 2 of distillation - be aggressive in cutting content.
+
+  step3:
+    instructions: |
+      Read the file {{workdir}}/SUMMARY_2.md that was created in the previous step.
+
+      Create a one-line summary (a single sentence) that captures the essence of the paper.
+      The line should be no more than 200 characters.
+
+      Save this one-line summary to a file called {{workdir}}/SUMMARY_3.md in the current directory.
+
+      This should be extremely concise - just the core message.
+      Then print COMPLETION_STATUS: COMPLETE
+    success_criteria:
+      python: |
+        with open('{{workdir}}/SUMMARY_3.md', 'r') as f:
+            content = f.read().strip()
+        result = len(content) <= 200 and content.count('\n') == 0
+      max_retries: 3
+      retry_message: |
+        VALIDATION FAILED: {{error}}
+
+        The one-line summary in {{workdir}}/SUMMARY_3.md must be:
+        - A single line (no newlines)
+        - No more than 200 characters
+
+        Please rewrite {{workdir}}/SUMMARY_3.md as ONE sentence that captures the core finding.
+        Be extremely concise - every word must count!

@@ -1,0 +1,19 @@
+base_port: 4000
+servers:
+  - name: worker1
+    agent_type: claude
+    directory: /tmp
+    skip_permissions: true
+    template_directory: farm-template  # Copies .claude/ and other configs to /tmp
+
+  - name: worker2
+    agent_type: claude
+    directory: /tmp
+    skip_permissions: true
+
+  - name: worker3
+    agent_type: claude
+    directory: /tmp
+    port: 4010
+    skip_permissions: true
+    template_directory: farm-template  # Can also use template for explicit port servers

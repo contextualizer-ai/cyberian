@@ -1,0 +1,66 @@
+name: system-instructions-demo
+description: Demonstrates system_instructions inheritance and override patterns
+
+params:
+  agent_mode:
+    range: string
+    required: true
+    examples:
+      - "thorough"
+      - "quick"
+      - "creative"
+
+# Top-level system instructions apply to all subtasks unless overridden
+system_instructions: |
+  IMPORTANT: You are operating in {{agent_mode}} mode.
+
+  Guidelines:
+  - Be clear and concise
+  - Follow best practices
+  - Document your work
+
+subtasks:
+  # This task inherits parent's system instructions
+  research:
+    instructions: |
+      Research the topic "Python type hints" and summarize key concepts.
+      Print exactly: "Research complete"
+      Then print COMPLETION_STATUS: COMPLETE
+
+  # This task OVERRIDES parent's system instructions
+  analyze:
+    system_instructions: |
+      OVERRIDE: Perform deep analysis regardless of mode.
+      Focus on:
+      - Code patterns
+      - Performance implications
+      - Best practices
+    instructions: |
+      Analyze the research findings and identify patterns.
+      Print exactly: "Analysis complete"
+      Then print COMPLETION_STATUS: COMPLETE
+
+  # This task inherits parent's system instructions again
+  summarize:
+    instructions: |
+      Create a final summary of research and analysis.
+      Print exactly: "Summary complete"
+      Then print COMPLETION_STATUS: COMPLETE
+
+    # Nested subtasks also inherit from their immediate parent
+    subtasks:
+      format:
+        instructions: |
+          Format the summary in markdown.
+          Print exactly: "Formatting complete"
+          Then print COMPLETION_STATUS: COMPLETE
+
+      # This deeply nested task overrides all parent instructions
+      validate:
+        system_instructions: |
+          VALIDATION MODE: Check all outputs for accuracy.
+          Apply strict validation rules.
+        instructions: |
+          Validate the formatted summary.
+          Print exactly: "Validation complete"
+          Then print COMPLETION_STATUS: COMPLETE

@@ -1,0 +1,30 @@
+name: simple-math
+description: Simple 3-step arithmetic workflow for testing
+params:
+  input_number:
+    range: integer
+    required: true
+    examples:
+      - 10
+      - 100
+      - 0
+subtasks:
+  step1:
+    instructions: |
+      Take the number {{input_number}} and add 1 to it.
+      Store the result as a variable called result1.
+      Print exactly: "Step 1 result: X" where X is the result.
+      Then print COMPLETION_STATUS: COMPLETE
+  step2:
+    instructions: |
+      Take the previous result ({{input_number}} + 1) and add 2 to it.
+      Store the result as a variable called result2.
+      Print exactly: "Step 2 result: Y" where Y is the result.
+      Then print COMPLETION_STATUS: COMPLETE
+  step3:
+    instructions: |
+      Take the previous result ({{input_number}} + 1 + 2) and add 3 to it.
+      Store the result as a variable called result3.
+      Print exactly: "Step 3 result: Z" where Z is the result.
+      The final result should be {{input_number}} + 1 + 2 + 3 = {{input_number}} + 6.
+      Then print COMPLETION_STATUS: COMPLETE

@@ -1,0 +1,56 @@
+name: deep-research
+description: iteratively does deep research
+requires_workdir: true
+params:
+  query:
+    range: string
+    required: true
+  sources:
+    range: string
+  workdir:
+    required: true
+    range: string
+subtasks:
+  initial_search:
+    instructions: perform deep research on {{query}}.
+      Keep all files in {{workdir}}.
+      Always start by writing a research plan in `PLAN.md`.
+      
+      Keep a report in a file `REPORT.md`. Update this as you go along.
+      You can also create additional notes files as needed.
+
+      maintain a file CITATION_GRAPH.md that has entries of the form
+      `* [citX] cites [citY] claiming CLAIM`.
+      
+      Create a folder
+      `citations/` with shorthands for papers like `smith-2002-autophagy`.
+      Always cite in the report e.g. SOME-STATEMENT[smith-2002-autphagy-abstract].
+      
+      download pdf when you can, convert to markdown when you can, otherwise
+      default to abstract. Use suffixes that denote type. Create summary.md
+      yourself but all others MUST be taken directly from the external resource.
+
+      E.g
+
+        citations/
+          smith-2002-autophagy-paper.pdf
+          smith-2002-autophagy-fulltext.txt <-- MUST be actual text
+          smith-2002-autophagy-summary.md <-- YOUR summary
+          jones-2003-regulation-abstract.md  <-- MUST be actual abstract
+          jones-2003-regulation-summary.md <-- YOUR summary
+          jones-2003-regulation-supplementary/table1.csv
+
+      The above assumes that fulltest is not available for the jones paper.
+      Always try and get full text if availale, but never create it yourself.
+          
+      Always cite in the report e.g. STATEMENT[smith-2002-critical-minerals].
+      The report should end with a section `Open Questions`, including
+      what might be useful to follow up on.
+  iterate:
+    instructions: Keep on researching {{query}}, following the
+      plan in `PLAN.md`. 
+    loop_until:
+      status: NO_MORE_RESEARCH
+      message: If you think all research avenues are exhausted, then
+        yield status NO_MORE_RESEARCH
+  
