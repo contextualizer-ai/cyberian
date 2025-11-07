@@ -16,6 +16,12 @@ A Python CLI wrapper for [agentapi](https://github.com/coder/agentapi) that enab
 
 ## Installation
 
+### Prerequisites
+
+cyberian requires [`agentapi`](https://github.com/coder/agentapi) to be installed and available on your PATH. See the [agentapi installation guide](https://github.com/coder/agentapi#installation) for instructions.
+
+### Install cyberian
+
 ```bash
 pip install cyberian
 ```
