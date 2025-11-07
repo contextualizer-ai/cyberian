@@ -1,5 +1,7 @@
 # cyberian
 
+[![PyPI](https://img.shields.io/pypi/v/cyberian.svg)](https://pypi.org/project/cyberian/) [![Python](https://img.shields.io/pypi/pyversions/cyberian.svg)](https://pypi.org/project/cyberian/) [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Docs](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://monarch-initiative.github.io/cyberian) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+
 A Python CLI wrapper for [agentapi](https://github.com/coder/agentapi) that enables automated agent pipelines and workflows.
 
 ## Overview
