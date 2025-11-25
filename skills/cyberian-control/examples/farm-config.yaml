@@ -1,0 +1,34 @@
+# Example farm configuration for multi-agent coordination
+# Use with: cyberian farm start farm-config.yaml
+
+base_port: 5000
+
+servers:
+  # Researcher agent - focused on information gathering
+  - name: researcher
+    agent_type: claude
+    directory: /tmp/agent-researcher
+    skip_permissions: true
+    template_directory: ./templates/researcher
+
+  # Coder agent - focused on implementation
+  - name: coder
+    agent_type: claude
+    directory: /tmp/agent-coder
+    skip_permissions: true
+    template_directory: ./templates/coder
+
+  # Reviewer agent - focused on code review
+  - name: reviewer
+    agent_type: claude
+    directory: /tmp/agent-reviewer
+    skip_permissions: true
+    template_directory: ./templates/reviewer
+
+  # Writer agent - focused on documentation
+  - name: writer
+    agent_type: claude
+    directory: /tmp/agent-writer
+    port: 6000  # Explicit port override
+    skip_permissions: true
+    template_directory: ./templates/writer

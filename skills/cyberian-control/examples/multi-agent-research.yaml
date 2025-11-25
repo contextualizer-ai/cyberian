@@ -1,0 +1,78 @@
+# Example workflow: Multi-agent coordinated research
+# This demonstrates how to use cyberian to coordinate multiple agents
+
+name: multi-agent-research
+description: Coordinate multiple agents to research a topic from different angles
+
+params:
+  query:
+    range: string
+    required: true
+    description: The research topic
+
+  base_port:
+    range: integer
+    required: false
+    default: 5000
+    description: Base port for agent farm
+
+requires_workdir: true
+
+subtasks:
+  # First, gather historical context
+  historical:
+    instructions: |
+      Research the history and evolution of {{query}}.
+
+      Write a comprehensive historical overview covering:
+      - Origins and early development
+      - Key milestones and breakthroughs
+      - Evolution over time
+
+      Save your findings to HISTORICAL.md
+
+      COMPLETION_STATUS: COMPLETE
+
+  # Then analyze current state
+  current:
+    instructions: |
+      Research the current state of the art in {{query}}.
+
+      Write an analysis covering:
+      - Current best practices
+      - Leading researchers and organizations
+      - Recent developments (last 2-3 years)
+
+      Save your findings to CURRENT.md
+
+      COMPLETION_STATUS: COMPLETE
+
+  # Look at future trends
+  future:
+    instructions: |
+      Research future directions and predictions for {{query}}.
+
+      Write an analysis covering:
+      - Emerging trends
+      - Predicted developments
+      - Potential challenges and opportunities
+
+      Save your findings to FUTURE.md
+
+      COMPLETION_STATUS: COMPLETE
+
+  # Finally, synthesize everything
+  synthesis:
+    instructions: |
+      Read the three research files:
+      - HISTORICAL.md
+      - CURRENT.md
+      - FUTURE.md
+
+      Create a comprehensive synthesis report in FINAL_REPORT.md that:
+      - Integrates insights from all three perspectives
+      - Identifies patterns and connections
+      - Provides a cohesive narrative
+      - Includes a conclusion with key takeaways
+
+      COMPLETION_STATUS: COMPLETE

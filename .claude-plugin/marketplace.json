@@ -1,0 +1,22 @@
+{
+  "name": "cyberian-skills",
+  "owner": {
+    "name": "Chris Mungall",
+    "email": "cjmungall@lbl.gov"
+  },
+  "metadata": {
+    "description": "Skills for controlling and coordinating AI coding agents via cyberian",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "cyberian-control",
+      "description": "Control and coordinate multiple Claude Code sessions via cyberian's agentapi wrapper",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/cyberian-control"
+      ]
+    }
+  ]
+}
