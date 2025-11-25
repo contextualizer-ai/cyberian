@@ -336,7 +336,6 @@ async def start_server(request: ServerStartRequest):
         Information about the started server
     """
     import os
-    import asyncio
     from pathlib import Path
 
     # Validate directory exists
