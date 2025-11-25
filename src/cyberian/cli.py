@@ -5,10 +5,12 @@ import io
 import json
 import logging
 import os
+import re
+import shlex
 import shutil
 import subprocess
 import time
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 
 import httpx
 import typer
@@ -28,12 +30,69 @@ farm_app = typer.Typer(help="Manage farms of agentapi servers")
 app.add_typer(farm_app, name="farm")
 
 
+def resolve_server_name_to_port(name: str) -> int:
+    """Resolve a server name to its port by parsing ps output.
+
+    Args:
+        name: The server name to look up
+
+    Returns:
+        The port number the server is running on
+
+    Raises:
+        typer.Exit: If the server name is not found or no port is found in the command
+    """
+    result = subprocess.run(
+        ["ps", "auxwww"],
+        capture_output=True,
+        text=True
+    )
+
+    if result.returncode != 0:
+        typer.echo(f"Error running ps command: {result.stderr}", err=True)
+        raise typer.Exit(1)
+
+    # Parse ps output to find the named server
+    lines = result.stdout.strip().split("\n")
+    for line in lines:
+        # Skip header line
+        if line.strip().startswith("USER"):
+            continue
+
+        # Look for agentapi servers (either "agentapi" or named servers with "server" in command)
+        if "agentapi" not in line.lower() and "server" not in line.lower():
+            continue
+
+        # Check if this line contains the server name
+        # The format is: USER PID ... COMMAND
+        # After splitting, the command portion starts after column 10
+        parts = line.split()
+        if len(parts) < 11:
+            continue
+
+        # The command is everything from index 10 onwards
+        # Look for the name in the command
+        command = " ".join(parts[10:])
+
+        # Check if the name appears as the first word after USER PID columns
+        # In ps auxwww output with exec -a, the name appears right after the PID columns
+        if parts[10] == name or (name in command and "server" in command):
+            # Extract port from --port flag in command
+            port_match = re.search(r'--port\s+(\d+)', command)
+            if port_match:
+                return int(port_match.group(1))
+
+    typer.echo(f"Error: No server found with name '{name}'", err=True)
+    raise typer.Exit(1)
+
+
 @app.command()
 def message(
     content: Annotated[str, typer.Argument(help="Message content to send to the agent")],
     msg_type: Annotated[str, typer.Option("--type", "-t", help="Message type")] = "user",
     host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
-    port: Annotated[int, typer.Option("--port", "-P", help="Agent API port")] = 3284,
+    port: Annotated[Optional[int], typer.Option("--port", "-P", help="Agent API port")] = None,
+    name: Annotated[Optional[str], typer.Option("--name", "-n", help="Server name to lookup (alternative to --port)")] = None,
     sync: Annotated[bool, typer.Option("--sync", "-s", help="Wait for agent response and return last agent message")] = False,
     timeout: Annotated[int, typer.Option("--timeout", "-T", help="Timeout in seconds when using --sync")] = 60,
     poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds when using --sync")] = 2.0,
@@ -48,7 +107,18 @@ def message(
         >>> # cyberian message "System init" --type system --host example.com --port 8080
         >>> # cyberian message "What is 2+2?" --sync
         >>> # cyberian message "Long task" --sync --timeout 120
+        >>> # cyberian message "Hello" --name my-research-agent
+        >>> # cyberian message "Test" -n worker1
     """
+    # Resolve port from name if provided
+    if name:
+        if port is not None:
+            typer.echo("Error: Cannot specify both --port and --name", err=True)
+            raise typer.Exit(1)
+        port = resolve_server_name_to_port(name)
+    elif port is None:
+        port = 3284  # Default port
+
     url = f"http://{host}:{port}/message"
     payload = {"content": content, "type": msg_type}
 
@@ -109,13 +179,14 @@ def message(
 @app.command()
 def messages(
     host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
-    port: Annotated[int, typer.Option("--port", "-P", help="Agent API port")] = 3284,
+    port: Annotated[Optional[int], typer.Option("--port", "-P", help="Agent API port")] = None,
+    name: Annotated[Optional[str], typer.Option("--name", "-n", help="Server name to lookup (alternative to --port)")] = None,
     output_format: Annotated[
         Literal["json", "yaml", "csv"],
         typer.Option("--format", "-f", help="Output format")
     ] = "json",
     last: Annotated[
-        int | None,
+        Optional[int],
         typer.Option("--last", "-l", help="Get only the last N messages")
     ] = None,
 ):
@@ -130,7 +201,18 @@ def messages(
         >>> # cyberian messages --last 5
         >>> # cyberian messages --format csv --last 10
         >>> # cyberian messages --host example.com --port 8080
+        >>> # cyberian messages --name my-research-agent
+        >>> # cyberian messages -n worker1 --last 10
     """
+    # Resolve port from name if provided
+    if name:
+        if port is not None:
+            typer.echo("Error: Cannot specify both --port and --name", err=True)
+            raise typer.Exit(1)
+        port = resolve_server_name_to_port(name)
+    elif port is None:
+        port = 3284  # Default port
+
     url = f"http://{host}:{port}/messages"
 
     response = httpx.get(url)
@@ -169,7 +251,8 @@ def messages(
 @app.command()
 def status(
     host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
-    port: Annotated[int, typer.Option("--port", "-P", help="Agent API port")] = 3284,
+    port: Annotated[Optional[int], typer.Option("--port", "-P", help="Agent API port")] = None,
+    name: Annotated[Optional[str], typer.Option("--name", "-n", help="Server name to lookup (alternative to --port)")] = None,
 ):
     """Check the status of the agent API.
 
@@ -179,7 +262,18 @@ def status(
     Example:
         >>> # cyberian status
         >>> # cyberian status --host example.com --port 8080
+        >>> # cyberian status --name my-research-agent
+        >>> # cyberian status -n worker1
     """
+    # Resolve port from name if provided
+    if name:
+        if port is not None:
+            typer.echo("Error: Cannot specify both --port and --name", err=True)
+            raise typer.Exit(1)
+        port = resolve_server_name_to_port(name)
+    elif port is None:
+        port = 3284  # Default port
+
     url = f"http://{host}:{port}/status"
 
     response = httpx.get(url)
@@ -196,20 +290,24 @@ def start_server(
         typer.Argument(help="Agent type (e.g., aider, claude, cursor, goose)")
     ] = "custom",
     port: Annotated[int, typer.Option("--port", "-p", help="Port to run the server on")] = 3284,
+    name: Annotated[
+        Optional[str],
+        typer.Option("--name", "-n", help="Name for the server (appears in ps output)")
+    ] = None,
     skip_permissions: Annotated[
         bool,
         typer.Option("--skip-permissions", "-s", help="Skip permission checks (translates to agent-specific flags)")
     ] = False,
     allowed_hosts: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--allowed-hosts", help="HTTP allowed hosts (comma-separated)")
     ] = None,
     allowed_origins: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--allowed-origins", help="HTTP allowed origins (comma-separated)")
     ] = None,
     dir: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--dir", "-d", help="Directory to change to before starting the server")
     ] = None,
 ):
@@ -233,16 +331,16 @@ def start_server(
         typer.echo(f"Changed directory to: {dir}")
 
     # Build base command with agent
-    cmd = ["agentapi", "server", agent]
+    base_cmd = ["agentapi", "server", agent]
 
     # Add cyberian's own options (these go before --)
-    cmd.extend(["--port", str(port)])
+    base_cmd.extend(["--port", str(port)])
 
     if allowed_hosts:
-        cmd.extend(["--allowed-hosts", allowed_hosts])
+        base_cmd.extend(["--allowed-hosts", allowed_hosts])
 
     if allowed_origins:
-        cmd.extend(["--allowed-origins", allowed_origins])
+        base_cmd.extend(["--allowed-origins", allowed_origins])
 
     # Add agent-specific flags (these go after --)
     agent_flags = []
@@ -254,10 +352,19 @@ def start_server(
         #     agent_flags.append("--yes")
 
     if agent_flags:
-        cmd.append("--")
-        cmd.extend(agent_flags)
+        base_cmd.append("--")
+        base_cmd.extend(agent_flags)
 
-    typer.echo(f"Starting agentapi server ({agent}) on port {port}...")
+    # If name is provided, use exec -a to set process name
+    if name:
+        # Build shell command: exec -a <name> agentapi ...
+        shell_cmd = f"exec -a {shlex.quote(name)} " + " ".join(shlex.quote(arg) for arg in base_cmd)
+        cmd = ["sh", "-c", shell_cmd]
+        typer.echo(f"Starting agentapi server ({agent}) on port {port} with name '{name}'...")
+    else:
+        cmd = base_cmd
+        typer.echo(f"Starting agentapi server ({agent}) on port {port}...")
+
     process = subprocess.Popen(cmd)
 
     typer.echo(f"Server started with PID: {process.pid}")
@@ -268,16 +375,14 @@ def list_servers():
     """List all running agentapi servers.
 
     This command uses `ps` to find all running agentapi processes
-    and displays their process IDs and command lines.
+    and displays their process IDs, names (if set), ports, and command lines.
 
     Example:
         >>> # cyberian server list
     """
-    # Use ps to find agentapi processes
-    # -e: all processes
-    # -o pid,command: show PID and full command line
+    # Use ps auxwww to get full command lines
     result = subprocess.run(
-        ["ps", "-e", "-o", "pid,command"],
+        ["ps", "auxwww"],
         capture_output=True,
         text=True
     )
@@ -286,37 +391,82 @@ def list_servers():
         typer.echo(f"Error running ps command: {result.stderr}", err=True)
         raise typer.Exit(1)
 
-    # Filter lines containing 'agentapi'
+    # Parse and display agentapi servers
     lines = result.stdout.strip().split("\n")
-    agentapi_processes = []
+    servers = []
 
     for line in lines:
-        if "agentapi" in line.lower() and "grep" not in line.lower():
-            agentapi_processes.append(line.strip())
+        # Skip header line
+        if line.strip().startswith("USER"):
+            continue
 
-    if not agentapi_processes:
+        # Look for agentapi servers (either "agentapi" or named servers with "server" in command)
+        # This catches both normal "agentapi server..." and named "test-worker server..." processes
+        if "agentapi" not in line.lower() and "server" not in line.lower():
+            continue
+
+        # Parse the line
+        parts = line.split()
+        if len(parts) < 11:
+            continue
+
+        pid = parts[1]
+        # Command is everything from index 10 onwards
+        command = " ".join(parts[10:])
+
+        # Only include if this looks like an agentapi server
+        # (has "server" keyword and either "agentapi" or "--port" in command)
+        if "server" not in command or ("agentapi" not in command and "--port" not in command):
+            continue
+
+        # Extract port
+        port_match = re.search(r'--port\s+(\d+)', command)
+        port = port_match.group(1) if port_match else "?"
+
+        # Extract name (if exec -a was used, it's the first part of command)
+        # Otherwise it's "agentapi"
+        name = parts[10] if parts[10] != "agentapi" else "-"
+
+        servers.append({
+            "pid": pid,
+            "name": name,
+            "port": port,
+            "command": command
+        })
+
+    if not servers:
         typer.echo("No agentapi servers found running")
         return
 
     # Display header
     typer.echo("Running agentapi servers:")
-    typer.echo("-" * 80)
+    typer.echo("-" * 100)
+    typer.echo(f"{'PID':<8} {'NAME':<25} {'PORT':<8} COMMAND")
+    typer.echo("-" * 100)
 
-    # Display processes (skip the first one if it's the ps header)
-    for proc in agentapi_processes:
-        if proc and not proc.startswith("PID"):
-            typer.echo(proc)
+    # Display servers
+    for server in servers:
+        # Truncate command if too long
+        cmd_display = server["command"]
+        if len(cmd_display) > 50:
+            cmd_display = cmd_display[:47] + "..."
+
+        typer.echo(f"{server['pid']:<8} {server['name']:<25} {server['port']:<8} {cmd_display}")
 
 
 @server_app.command(name="stop")
 def stop_server(
     pid: Annotated[
-        str | None,
+        Optional[str],
         typer.Argument(help="Process ID of the agentapi server to stop")
     ] = None,
     port: Annotated[
-        int | None,
+        Optional[int],
         typer.Option("--port", "-p", help="Port number to find and stop the agentapi server")
+    ] = None,
+    name: Annotated[
+        Optional[str],
+        typer.Option("--name", "-n", help="Server name to lookup and stop (alternative to --port)")
     ] = None,
     all_servers: Annotated[
         bool,
@@ -326,16 +476,25 @@ def stop_server(
     """Stop a running agentapi server.
 
     Stop an agentapi server by either specifying its PID directly, by
-    finding the process using a specific port, or by stopping all servers.
+    finding the process using a specific port, by name, or by stopping all servers.
     If no arguments are provided, defaults to stopping the server on port 3284.
 
     Example:
         >>> # cyberian server stop              # stops server on default port 3284
         >>> # cyberian server stop 12345        # stops server with PID 12345
         >>> # cyberian server stop --port 8080  # stops server on port 8080
+        >>> # cyberian server stop --name my-worker  # stops server by name
+        >>> # cyberian server stop -n worker1   # stops server by name (short option)
         >>> # cyberian server stop --all        # stops all agentapi servers
     """
     pids_to_kill: list[str] = []
+
+    # Resolve name to port if provided
+    if name:
+        if port is not None or pid is not None:
+            typer.echo("Error: Cannot specify --name with --port or PID", err=True)
+            raise typer.Exit(1)
+        port = resolve_server_name_to_port(name)
 
     if all_servers:
         # Find all agentapi processes using ps (similar to list-servers)
@@ -515,15 +674,15 @@ def start_farm(
                 except Exception as e:
                     typer.echo(f"  Warning: Error copying template: {e}", err=True)
 
-        # Build command
-        cmd = ["agentapi", "server", server_config.agent_type, "--port", str(port)]
+        # Build base command
+        base_cmd = ["agentapi", "server", server_config.agent_type, "--port", str(port)]
 
         # Add optional flags
         if server_config.allowed_hosts:
-            cmd.extend(["--allowed-hosts", server_config.allowed_hosts])
+            base_cmd.extend(["--allowed-hosts", server_config.allowed_hosts])
 
         if server_config.allowed_origins:
-            cmd.extend(["--allowed-origins", server_config.allowed_origins])
+            base_cmd.extend(["--allowed-origins", server_config.allowed_origins])
 
         # Add agent-specific flags
         agent_flags = []
@@ -532,8 +691,12 @@ def start_farm(
                 agent_flags.append("--dangerously-skip-permissions")
 
         if agent_flags:
-            cmd.append("--")
-            cmd.extend(agent_flags)
+            base_cmd.append("--")
+            base_cmd.extend(agent_flags)
+
+        # Use exec -a to set process name for easy identification
+        shell_cmd = f"exec -a {shlex.quote(server_config.name)} " + " ".join(shlex.quote(arg) for arg in base_cmd)
+        cmd = ["sh", "-c", shell_cmd]
 
         # Start the server process
         try:
@@ -559,6 +722,98 @@ def start_farm(
         typer.echo(f"  - {server['name']}: PID {server['pid']}, port {server['port']}, agent {server['agent_type']}")
 
 
+@farm_app.command(name="stop")
+def stop_farm(
+    farm_file: Annotated[str, typer.Argument(help="Path to farm configuration YAML file")],
+):
+    """Stop all servers in a farm by reading the farm configuration file.
+
+    This command reads the farm configuration file and stops all servers
+    listed in it by looking up their names in the running processes.
+
+    Example:
+        >>> # cyberian farm stop my-farm.yaml
+    """
+    from cyberian.models import FarmConfig
+
+    # Load farm configuration
+    try:
+        with open(farm_file, "r") as f:
+            farm_data = yaml.safe_load(f)
+    except FileNotFoundError:
+        typer.echo(f"Error: Farm configuration file '{farm_file}' not found", err=True)
+        raise typer.Exit(1)
+    except yaml.YAMLError as e:
+        typer.echo(f"Error parsing YAML: {e}", err=True)
+        raise typer.Exit(1)
+
+    # Validate configuration
+    try:
+        farm_config = FarmConfig(**farm_data)
+    except Exception as e:
+        typer.echo(f"Error validating farm configuration: {e}", err=True)
+        raise typer.Exit(1)
+
+    typer.echo(f"Stopping farm with {len(farm_config.servers)} server(s)...")
+
+    stopped_count = 0
+    failed_servers = []
+
+    # Stop each server by name
+    for server_config in farm_config.servers:
+        server_name = server_config.name
+        typer.echo(f"\nStopping server '{server_name}'...")
+
+        try:
+            # Resolve server name to port
+            port = resolve_server_name_to_port(server_name)
+
+            # Find PIDs using the port
+            result = subprocess.run(
+                ["lsof", "-ti", f"tcp:{port}"],
+                capture_output=True,
+                text=True
+            )
+
+            if result.returncode != 0 or not result.stdout.strip():
+                typer.echo(f"  Warning: No process found for server '{server_name}' on port {port}", err=True)
+                failed_servers.append(server_name)
+                continue
+
+            # Parse PIDs from lsof output
+            pids = result.stdout.strip().split("\n")
+
+            # Kill each process
+            for pid in pids:
+                pid = pid.strip()
+                if not pid:
+                    continue
+
+                kill_result = subprocess.run(
+                    ["kill", pid],
+                    capture_output=True,
+                    text=True
+                )
+
+                if kill_result.returncode != 0:
+                    typer.echo(f"  Failed to stop PID {pid}: {kill_result.stderr}", err=True)
+                    failed_servers.append(server_name)
+                else:
+                    typer.echo(f"  ✓ Stopped server '{server_name}' (PID: {pid}, port: {port})")
+                    stopped_count += 1
+
+        except typer.Exit:
+            # Server not found
+            typer.echo(f"  Warning: Server '{server_name}' not found in running processes")
+            failed_servers.append(server_name)
+            continue
+
+    # Summary
+    typer.echo(f"\nStopped {stopped_count} server(s)")
+    if failed_servers:
+        typer.echo(f"Failed to stop {len(failed_servers)} server(s): {', '.join(failed_servers)}", err=True)
+
+
 @app.command()
 def run(
     workflow_file: Annotated[str, typer.Argument(help="Path to workflow YAML file")],
@@ -567,11 +822,11 @@ def run(
     timeout: Annotated[int, typer.Option("--timeout", "-T", help="Timeout in seconds per task")] = 1800,
     poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds")] = 2.0,
     directory: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--dir", "-d", help="Change to this directory before running workflow")
     ] = None,
     agent_type: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--agent-type", "-a", help="Agent type to use (added to template context)")
     ] = None,
     skip_permissions: Annotated[
@@ -579,11 +834,11 @@ def run(
         typer.Option("--skip-permissions", "-s", help="Skip permission checks (added to template context)")
     ] = False,
     resume_from: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--resume-from", "-r", help="Resume workflow from specified task name")
     ] = None,
     agent_lifecycle: Annotated[
-        str | None,
+        Optional[str],
         typer.Option("--agent-lifecycle", help="Agent server lifecycle mode: 'reuse' (default, keep server) or 'refresh' (restart between tasks)")
     ] = None,
     verbose: Annotated[
@@ -591,7 +846,7 @@ def run(
         typer.Option("--verbose", "-v", count=True, help="Increase verbosity (-v for INFO, -vv for DEBUG)")
     ] = 0,
     param: Annotated[
-        list[str] | None,
+        Optional[list[str]],
         typer.Option("--param", "-p", help="Parameter in format key=value")
     ] = None,
 ):

@@ -289,8 +289,11 @@ class TaskRunner:
             # Start fresh server
             self._start_server()
 
-        # Execute this task's instructions if present
-        if task.instructions:
+        # Execute this task's provider call or instructions
+        if task.provider_call:
+            logger.info(f"Task '{task_name}' is a provider call task")
+            self._run_provider_task(task, context)
+        elif task.instructions:
             if task.loop_until:
                 logger.info(f"Task '{task_name}' is a looping task with condition: {task.loop_until.status}")
                 self._run_looping_task(task, context, current_system_instructions)
@@ -298,7 +301,7 @@ class TaskRunner:
                 logger.info(f"Task '{task_name}' is a single-run task")
                 self._run_single_task(task, context, current_system_instructions)
         else:
-            logger.debug(f"Task '{task_name}' has no instructions, skipping execution")
+            logger.debug(f"Task '{task_name}' has no instructions or provider call, skipping execution")
 
         # Execute subtasks depth-first, in order
         if task.subtasks:
@@ -457,6 +460,81 @@ class TaskRunner:
                         # No more retries left
                         logger.error(f"Success criteria failed after {max_attempts} attempt(s): {error_msg}")
                         raise RuntimeError(f"Success criteria validation failed: {error_msg}")
+
+    def _run_provider_task(self, task: Task, context: dict[str, Any]) -> None:
+        """Execute a task using a provider call instead of an agent.
+
+        Args:
+            task: Task with provider_call configuration
+            context: Template context
+
+        Raises:
+            RuntimeError: If provider call fails
+        """
+        assert task.provider_call is not None, "Task must have provider_call"
+
+        provider_call = task.provider_call
+
+        # Render parameters with Jinja2 templates
+        rendered_params: dict[str, Any] = {}
+        for key, value in provider_call.params.items():
+            if isinstance(value, str):
+                rendered_params[key] = self._render_instructions(value, context)
+            elif isinstance(value, list):
+                # Render list items that are strings
+                rendered_params[key] = [
+                    self._render_instructions(item, context) if isinstance(item, str) else item
+                    for item in value
+                ]
+            else:
+                rendered_params[key] = value
+
+        logger.debug(f"Rendered provider params: {rendered_params}")
+
+        # Render output_file if present
+        output_file = None
+        if provider_call.output_file:
+            output_file = self._render_instructions(provider_call.output_file, context)
+            logger.debug(f"Output file: {output_file}")
+
+        # Get provider
+        from cyberian.providers import get_provider
+
+        try:
+            provider = get_provider(provider_call.provider)
+            logger.info(f"Using provider: {provider_call.provider}, method: {provider_call.method}")
+        except ValueError as e:
+            logger.error(f"Provider error: {e}")
+            raise RuntimeError(f"Provider not found: {e}") from e
+
+        # Execute provider method
+        try:
+            result = provider.execute(provider_call.method, rendered_params)
+            logger.info(f"Provider call successful, result length: {len(result)} chars")
+
+            # Write output file if specified
+            if output_file:
+                import os
+                os.makedirs(os.path.dirname(output_file) or ".", exist_ok=True)
+                with open(output_file, "w") as f:
+                    f.write(result)
+                logger.info(f"Wrote results to: {output_file}")
+            else:
+                # Log a preview of the result
+                logger.debug(f"Provider result preview: {result[:200]}...")
+
+        except Exception as e:
+            logger.error(f"Provider call failed: {e}")
+            raise RuntimeError(f"Provider '{provider_call.provider}' call failed: {e}") from e
+
+        # Check success criteria if present (for provider tasks too)
+        if task.success_criteria:
+            success, error_msg = self._check_success_criteria(task.success_criteria, context)
+            if success:
+                logger.info("Success criteria passed")
+            else:
+                logger.error(f"Success criteria failed: {error_msg}")
+                raise RuntimeError(f"Success criteria validation failed: {error_msg}")
 
     def _render_instructions(self, instructions: str, context: dict[str, Any]) -> str:
         """Render Jinja2 template with context variables.

@@ -329,7 +329,7 @@ def test_list_servers_with_running_servers():
     with patch("cyberian.cli.subprocess.run") as mock_run:
         mock_run.return_value = Mock(
             returncode=0,
-            stdout="12345 agentapi --host localhost --port 3284\n67890 agentapi --host 0.0.0.0 --port 8080\n",
+            stdout="USER  PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND\nuser  12345   0.0  0.5  123456  78900 s001  S+    9:00AM   0:01.23 agentapi server claude --host localhost --port 3284\nuser  67890   0.0  0.5  123456  78900 s002  S+    9:00AM   0:01.23 agentapi server claude --host 0.0.0.0 --port 8080\n",
             stderr=""
         )
 
@@ -449,6 +449,41 @@ def test_server_with_skip_permissions_other_agent():
         call_args = mock_popen.call_args[0][0]
         # Should not add any agent-specific flags for non-Claude agents
         assert call_args == ["agentapi", "server", "aider", "--port", "3284"]
+
+
+def test_server_with_name_option():
+    """Test server command with --name option sets process name."""
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
+        mock_process = Mock()
+        mock_process.pid = 12345
+        mock_popen.return_value = mock_process
+
+        result = runner.invoke(app, ["server", "start", "claude", "--name", "my-research-agent"])
+
+        assert result.exit_code == 0
+        call_args = mock_popen.call_args[0][0]
+        # Should use sh -c with exec -a to set the process name
+        assert call_args[0] == "sh"
+        assert call_args[1] == "-c"
+        assert "exec -a" in call_args[2]
+        assert "my-research-agent" in call_args[2]
+
+
+def test_server_with_name_short_option():
+    """Test server command with -n short option for name."""
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
+        mock_process = Mock()
+        mock_process.pid = 12345
+        mock_popen.return_value = mock_process
+
+        result = runner.invoke(app, ["server", "start", "claude", "-n", "worker1"])
+
+        assert result.exit_code == 0
+        call_args = mock_popen.call_args[0][0]
+        # Should use exec -a to set the process name
+        assert call_args[0] == "sh"
+        assert call_args[1] == "-c"
+        assert "worker1" in call_args[2]
 
 
 # Tests for stop command (kill agentapi server)
