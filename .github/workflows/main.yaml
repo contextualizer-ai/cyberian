@@ -49,7 +49,7 @@ jobs:
           uv tool install rust-just
 
       - name: Install project
-        run: uv sync --dev
+        run: uv sync --all-groups
 
       - name: Run test suite
         run: just test
