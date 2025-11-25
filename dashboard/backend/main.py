@@ -243,7 +243,6 @@ async def send_server_message(port: int, request: dict):
     Expects format: {"content": "message text", "type": "user"}
     """
     import httpx
-    import logging
 
     logger = logging.getLogger(__name__)
     logger.info(f"Sending message to port {port}: {request}")
