@@ -102,6 +102,8 @@ def save_dashboard_config(config: FarmConfig) -> None:
         try:
             os.unlink(temp_path)
         except OSError:
+            # Ignore cleanup errors - temp file may already be deleted or inaccessible.
+            # We re-raise the original exception below regardless.
             pass
         raise
 
