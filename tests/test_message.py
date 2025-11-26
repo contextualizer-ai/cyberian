@@ -252,3 +252,72 @@ def test_message_sync_timeout_exceeded():
 
         # Should exit with error or show timeout message
         assert "timeout" in result.stdout.lower() or result.exit_code != 0
+
+
+def test_message_with_name_resolves_port():
+    """Test message command with --name option resolves server name to port."""
+    with patch("cyberian.cli.httpx.post") as mock_post, \
+         patch("cyberian.cli.subprocess.run") as mock_run:
+
+        # Mock ps output showing a server with a specific name
+        mock_run.return_value = Mock(
+            returncode=0,
+            stdout="USER  PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND\nuser  12345   0.0  0.5  123456  78900 s001  S+    9:00AM   0:01.23 my-research-agent server claude --port 4800 -- --dangerously-skip-permissions\n",
+            stderr=""
+        )
+
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"status": "ok"}
+        mock_post.return_value = mock_response
+
+        result = runner.invoke(app, ["message", "Hello", "--name", "my-research-agent"])
+
+        assert result.exit_code == 0
+        # Should have called ps to find the server
+        mock_run.assert_called_once()
+        # Should have sent request to the resolved port
+        call_args = mock_post.call_args
+        assert call_args[0][0] == "http://localhost:4800/message"
+
+
+def test_message_with_name_short_option():
+    """Test message command with -n short option for name."""
+    with patch("cyberian.cli.httpx.post") as mock_post, \
+         patch("cyberian.cli.subprocess.run") as mock_run:
+
+        # Mock ps output
+        mock_run.return_value = Mock(
+            returncode=0,
+            stdout="USER  PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND\nuser  12345   0.0  0.5  123456  78900 s001  S+    9:00AM   0:01.23 worker1 server claude --port 4801 --\n",
+            stderr=""
+        )
+
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"status": "ok"}
+        mock_post.return_value = mock_response
+
+        result = runner.invoke(app, ["message", "Test", "-n", "worker1"])
+
+        assert result.exit_code == 0
+        call_args = mock_post.call_args
+        assert call_args[0][0] == "http://localhost:4801/message"
+
+
+def test_message_with_name_not_found():
+    """Test message command when named server is not found."""
+    with patch("cyberian.cli.subprocess.run") as mock_run:
+
+        # Mock ps output showing no matching server
+        mock_run.return_value = Mock(
+            returncode=0,
+            stdout="12345 other-server server claude --port 4800\n",
+            stderr=""
+        )
+
+        result = runner.invoke(app, ["message", "Hello", "--name", "nonexistent"])
+
+        # Should exit with error
+        assert result.exit_code != 0
+        assert "not found" in result.stdout.lower() or "no server" in result.stdout.lower()

@@ -1,0 +1,79 @@
+# Example workflow: Delegate coding tasks to specialized agents
+# This shows how to use cyberian for multi-agent software development
+
+name: delegated-coding
+description: Coordinate multiple agents for parallel development tasks
+
+params:
+  feature:
+    range: string
+    required: true
+    description: The feature to implement
+
+requires_workdir: true
+
+subtasks:
+  # Design phase
+  design:
+    instructions: |
+      Design the architecture for {{feature}}.
+
+      Create a design document (DESIGN.md) that includes:
+      - System architecture
+      - Component breakdown
+      - API interfaces
+      - Data models
+
+      COMPLETION_STATUS: COMPLETE
+
+  # Implementation phase - could be delegated to different agents
+  implement_backend:
+    instructions: |
+      Read DESIGN.md and implement the backend components for {{feature}}.
+
+      Create necessary files in backend/ directory:
+      - API endpoints
+      - Business logic
+      - Data access layer
+
+      Follow the design specification exactly.
+
+      COMPLETION_STATUS: COMPLETE
+
+  implement_frontend:
+    instructions: |
+      Read DESIGN.md and implement the frontend components for {{feature}}.
+
+      Create necessary files in frontend/ directory:
+      - UI components
+      - State management
+      - API integration
+
+      Follow the design specification exactly.
+
+      COMPLETION_STATUS: COMPLETE
+
+  # Testing phase
+  write_tests:
+    instructions: |
+      Review all implemented code and write comprehensive tests.
+
+      Create test files:
+      - backend/tests/ - backend tests
+      - frontend/tests/ - frontend tests
+
+      Ensure good coverage of edge cases.
+
+      COMPLETION_STATUS: COMPLETE
+
+  # Documentation
+  document:
+    instructions: |
+      Review all code and create documentation.
+
+      Create:
+      - README.md - Feature overview and usage
+      - API.md - API documentation
+      - ARCHITECTURE.md - Architecture decisions
+
+      COMPLETION_STATUS: COMPLETE

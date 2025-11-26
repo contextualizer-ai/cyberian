@@ -30,6 +30,15 @@ Or you can bypass installation using `uvx`:
 
 `uvx cyberian`
 
+### Claude Code Skill
+
+A Claude Code skill is available for multi-agent orchestration. See [cyberian-control/README.md](cyberian-control/README.md) for details.
+
+To install the skill in Claude Code:
+```
+/plugin marketplace add cyberian-skills
+```
+
 ## Quick Start
 
 ```bash
@@ -390,6 +399,120 @@ subtasks:
       message: |
         If you think all research avenues are exhausted,
         yield status: NO_MORE_RESEARCH
+```
+
+#### Provider Calls
+
+Tasks can call external providers directly instead of using agents. This is useful for deterministic operations like research, data retrieval, or API calls.
+
+**Installation:**
+
+```bash
+# Install with provider support
+pip install cyberian[providers]
+```
+
+**Basic Provider Call:**
+
+```yaml
+name: simple-research
+description: Research using deep-research-client provider
+
+params:
+  query:
+    range: string
+    required: true
+  output:
+    range: string
+    required: true
+
+subtasks:
+  research:
+    provider_call:
+      provider: deep-research-client
+      method: research
+      params:
+        query: "{{query}}"
+        use_cache: true
+      output_file: "{{output}}"
+```
+
+**Hybrid Workflow (Provider + Agent):**
+
+Combine provider calls for data gathering with agent-based synthesis:
+
+```yaml
+name: deep-research-hybrid
+description: Use provider for research, agent for analysis
+
+params:
+  query:
+    range: string
+    required: true
+  workdir:
+    range: string
+    required: true
+
+subtasks:
+  # Provider gathers data
+  gather_data:
+    provider_call:
+      provider: deep-research-client
+      method: research
+      params:
+        query: "{{query}}"
+        provider: openai  # specific provider
+        model: o3-mini    # specific model
+      output_file: "{{workdir}}/raw_research.md"
+
+  # Agent synthesizes and organizes
+  create_report:
+    instructions: |
+      Read {{workdir}}/raw_research.md and create a structured
+      report with citations in REPORT.md.
+      COMPLETION_STATUS: COMPLETE
+```
+
+**Provider Methods:**
+
+The `deep-research-client` provider supports:
+- `research` - Perform deep research on a query
+- `list_providers` - List available research providers
+- `list_models` - List available models
+
+**Provider Parameters:**
+
+```yaml
+provider_call:
+  provider: deep-research-client
+  method: research
+  params:
+    query: "{{query}}"           # Required: research question
+    provider: openai             # Optional: specific provider (openai, perplexity, consensus, falcon)
+    model: o3-mini              # Optional: specific model
+    use_cache: true             # Optional: enable caching
+    provider_params: {}         # Optional: provider-specific parameters
+  output_file: "{{workdir}}/results.md"  # Optional: save results to file
+```
+
+**Success Criteria with Providers:**
+
+Provider calls support success criteria validation:
+
+```yaml
+subtasks:
+  research:
+    provider_call:
+      provider: deep-research-client
+      method: research
+      params:
+        query: "{{query}}"
+      output_file: "{{workdir}}/results.md"
+    success_criteria:
+      python: |
+        import os
+        result = os.path.exists("{{workdir}}/results.md")
+      max_retries: 0
 ```
 
 #### Agent Lifecycle Control
