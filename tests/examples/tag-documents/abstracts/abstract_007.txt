@@ -1,0 +1,3 @@
+Evolutionary Dynamics of Antibiotic Resistance in Hospital Environments
+
+Through whole-genome sequencing of 1,500 bacterial isolates from hospital surfaces over 5 years, we traced the evolution and transmission of antibiotic resistance genes. We identified three major horizontal gene transfer events that disseminated carbapenem resistance across multiple species. Network analysis revealed patient-to-patient transmission pathways and environmental reservoirs contributing to outbreaks. Our findings emphasize the importance of enhanced infection control measures and environmental surveillance in hospital settings.

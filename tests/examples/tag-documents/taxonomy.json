@@ -1,0 +1,24 @@
+{
+  "allowed_tags": [
+    "genetics",
+    "gene-editing",
+    "cancer",
+    "immunology",
+    "neuroscience",
+    "metabolism",
+    "infectious-disease",
+    "structural-biology",
+    "clinical-trial",
+    "evolution",
+    "microbiology",
+    "drug-delivery",
+    "synthetic-biology",
+    "genomics",
+    "epigenetics",
+    "aging",
+    "cardiology",
+    "quantum-physics",
+    "machine-learning",
+    "climate-health"
+  ]
+}

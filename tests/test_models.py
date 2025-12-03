@@ -2,7 +2,16 @@
 
 import pytest
 
-from cyberian.models import FarmConfig, ParamDefinition, ServerConfig, Task
+from cyberian.models import (
+    AgentRequirement,
+    DependencyRequirement,
+    FarmConfig,
+    ParamDefinition,
+    Requirements,
+    ServerConfig,
+    SyncTargets,
+    Task,
+)
 
 
 def test_param_definition_with_examples():
@@ -172,3 +181,172 @@ def test_farm_config_rejects_extra_fields():
             servers=[ServerConfig(name="test", directory="/tmp")],
             unknown_field="value"
         )
+
+
+def test_sync_targets_minimal():
+    """Test SyncTargets with minimal required fields."""
+    sync = SyncTargets(paths=["taxonomy.json", "scripts/"])
+
+    assert sync.paths == ["taxonomy.json", "scripts/"]
+    assert sync.description is None
+
+
+def test_sync_targets_with_description():
+    """Test SyncTargets with description."""
+    sync = SyncTargets(
+        paths=["config.yaml", "lib/"],
+        description="Configuration and library files"
+    )
+
+    assert sync.paths == ["config.yaml", "lib/"]
+    assert sync.description == "Configuration and library files"
+
+
+def test_agent_requirement_minimal():
+    """Test AgentRequirement with minimal required fields."""
+    agent = AgentRequirement(name="claude-code")
+
+    assert agent.name == "claude-code"
+    assert agent.level == "RECOMMENDED"  # default
+    assert agent.reason is None
+    assert agent.version is None
+
+
+def test_agent_requirement_full():
+    """Test AgentRequirement with all fields."""
+    agent = AgentRequirement(
+        name="aider",
+        level="REQUIRED",
+        reason="Needs git integration",
+        version=">=0.40.0"
+    )
+
+    assert agent.name == "aider"
+    assert agent.level == "REQUIRED"
+    assert agent.reason == "Needs git integration"
+    assert agent.version == ">=0.40.0"
+
+
+def test_agent_requirement_levels():
+    """Test AgentRequirement with different levels."""
+    req = AgentRequirement(name="test", level="REQUIRED")
+    assert req.level == "REQUIRED"
+
+    rec = AgentRequirement(name="test", level="RECOMMENDED")
+    assert rec.level == "RECOMMENDED"
+
+    opt = AgentRequirement(name="test", level="OPTIONAL")
+    assert opt.level == "OPTIONAL"
+
+
+def test_agent_requirement_invalid_level():
+    """Test that AgentRequirement rejects invalid levels."""
+    with pytest.raises(Exception):  # Pydantic ValidationError
+        AgentRequirement(name="test", level="MAYBE")
+
+
+def test_dependency_requirement_minimal():
+    """Test DependencyRequirement with minimal required fields."""
+    dep = DependencyRequirement(name="python")
+
+    assert dep.name == "python"
+    assert dep.version is None
+    assert dep.level == "REQUIRED"  # default
+    assert dep.reason is None
+
+
+def test_dependency_requirement_full():
+    """Test DependencyRequirement with all fields."""
+    dep = DependencyRequirement(
+        name="python",
+        version=">=3.11",
+        level="REQUIRED",
+        reason="Uses match statement"
+    )
+
+    assert dep.name == "python"
+    assert dep.version == ">=3.11"
+    assert dep.level == "REQUIRED"
+    assert dep.reason == "Uses match statement"
+
+
+def test_dependency_requirement_levels():
+    """Test DependencyRequirement with different levels."""
+    req = DependencyRequirement(name="docker", level="REQUIRED")
+    assert req.level == "REQUIRED"
+
+    rec = DependencyRequirement(name="node", level="RECOMMENDED")
+    assert rec.level == "RECOMMENDED"
+
+    opt = DependencyRequirement(name="jq", level="OPTIONAL")
+    assert opt.level == "OPTIONAL"
+
+
+def test_requirements_empty():
+    """Test Requirements with no requirements."""
+    reqs = Requirements()
+
+    assert reqs.agents == []
+    assert reqs.dependencies == []
+    assert reqs.notes is None
+
+
+def test_requirements_with_agents():
+    """Test Requirements with agent requirements."""
+    reqs = Requirements(
+        agents=[
+            AgentRequirement(name="claude-code", level="RECOMMENDED"),
+            AgentRequirement(name="aider", level="OPTIONAL")
+        ]
+    )
+
+    assert len(reqs.agents) == 2
+    assert reqs.agents[0].name == "claude-code"
+    assert reqs.agents[0].level == "RECOMMENDED"
+    assert reqs.agents[1].name == "aider"
+    assert reqs.agents[1].level == "OPTIONAL"
+
+
+def test_requirements_with_dependencies():
+    """Test Requirements with dependency requirements."""
+    reqs = Requirements(
+        dependencies=[
+            DependencyRequirement(name="python", version=">=3.10", level="REQUIRED"),
+            DependencyRequirement(name="docker", level="OPTIONAL")
+        ]
+    )
+
+    assert len(reqs.dependencies) == 2
+    assert reqs.dependencies[0].name == "python"
+    assert reqs.dependencies[0].version == ">=3.10"
+    assert reqs.dependencies[1].name == "docker"
+
+
+def test_requirements_full():
+    """Test Requirements with all fields."""
+    reqs = Requirements(
+        agents=[AgentRequirement(name="claude-code")],
+        dependencies=[DependencyRequirement(name="python", version=">=3.10")],
+        notes="This workflow needs file I/O capabilities"
+    )
+
+    assert len(reqs.agents) == 1
+    assert len(reqs.dependencies) == 1
+    assert reqs.notes == "This workflow needs file I/O capabilities"
+
+
+def test_task_with_requirements():
+    """Test Task with requirements field."""
+    task = Task(
+        name="test-task",
+        requirements=Requirements(
+            agents=[AgentRequirement(name="claude-code", level="RECOMMENDED")],
+            dependencies=[DependencyRequirement(name="python", version=">=3.11")]
+        )
+    )
+
+    assert task.requirements is not None
+    assert len(task.requirements.agents) == 1
+    assert task.requirements.agents[0].name == "claude-code"
+    assert len(task.requirements.dependencies) == 1
+    assert task.requirements.dependencies[0].name == "python"

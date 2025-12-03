@@ -1,0 +1,3 @@
+Machine Learning Prediction of Protein Structure from Sequence
+
+We developed a deep learning architecture combining transformer models with physical constraints to predict protein 3D structure from amino acid sequence. Our method, trained on 100,000 experimentally determined structures, achieves atomic-level accuracy for 75% of predictions. Blind testing on recent PDB deposits shows significant improvement over previous methods. The model successfully predicts conformational changes and protein-protein interaction interfaces, enabling structure-based drug discovery for previously intractable targets.

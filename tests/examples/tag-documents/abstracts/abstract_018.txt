@@ -1,0 +1,3 @@
+Autophagy in Cellular Senescence and Aging
+
+We investigated the role of autophagy in regulating cellular senescence using genetic and pharmacological approaches. Autophagy-deficient cells entered premature senescence with accumulation of damaged organelles and oxidative stress. Conversely, autophagy activation through mTOR inhibition delayed senescence and extended cellular lifespan. In aged mice, treatment with the autophagy inducer rapamycin improved healthspan and reduced senescence markers in multiple tissues. Our results position autophagy modulation as a potential anti-aging intervention strategy.

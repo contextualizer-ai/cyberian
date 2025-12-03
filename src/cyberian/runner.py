@@ -1,16 +1,18 @@
 """Task runner for executing recursive task trees."""
 
+import glob
 import logging
 import os
 import re
 import subprocess
 import time
+from pathlib import Path
 from typing import Any
 
 import httpx
 from jinja2 import Template
 
-from cyberian.models import LoopCondition, SuccessCriteria, Task
+from cyberian.models import LoopCondition, Preconditions, SuccessCriteria, Task
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +43,8 @@ class TaskRunner:
         lifecycle_mode: str = "reuse",
         agent_type: str | None = None,
         skip_permissions: bool = False,
-        directory: str | None = None
+        directory: str | None = None,
+        workflow_file: str | None = None
     ):
         """Initialize the task runner.
 
@@ -55,6 +58,7 @@ class TaskRunner:
             agent_type: Agent type for server management (e.g., 'claude')
             skip_permissions: Whether to skip permissions when starting server
             directory: Working directory for server (if applicable)
+            workflow_file: Path to workflow file (for resolving relative script paths)
         """
         self.host = host
         self.port = port
@@ -69,6 +73,7 @@ class TaskRunner:
         self.agent_type = agent_type
         self.skip_permissions = skip_permissions
         self.directory = directory
+        self.workflow_file = workflow_file
         self._server_process: subprocess.Popen[bytes] | None = None  # Track the subprocess.Popen instance
 
     def _start_server(self) -> None:
@@ -279,6 +284,11 @@ class TaskRunner:
 
         logger.info(f"Starting task: {task_name}")
         logger.debug(f"Task context: {context}")
+
+        # Check preconditions before task execution
+        if task.preconditions:
+            logger.info(f"Checking preconditions for task: {task_name}")
+            self._check_preconditions(task.preconditions)
 
         # Handle agent lifecycle for tasks with instructions
         if task.instructions and self.lifecycle_mode == "refresh":
@@ -654,6 +664,43 @@ class TaskRunner:
         logger.error("No agent response found in messages")
         raise RuntimeError("No agent response found")
 
+    def _check_preconditions(self, preconditions: Preconditions) -> None:
+        """Check that preconditions are met before task execution.
+
+        Args:
+            preconditions: Preconditions to check
+
+        Raises:
+            RuntimeError: If any precondition fails
+        """
+        if not preconditions:
+            return
+
+        if preconditions.files_exist:
+            patterns = preconditions.files_exist.patterns
+            min_count = preconditions.files_exist.min_count
+
+            for pattern in patterns:
+                # Expand glob pattern
+                matches = glob.glob(pattern)
+
+                if not matches:
+                    raise RuntimeError(
+                        f"Precondition failed: No files found matching '{pattern}'\n"
+                        f"Current directory: {os.getcwd()}\n"
+                        f"Hint: Check that required files exist or use --workdir to specify working directory"
+                    )
+
+                # Check minimum count if specified
+                if min_count is not None and len(matches) < min_count:
+                    raise RuntimeError(
+                        f"Precondition failed: Pattern '{pattern}' matched {len(matches)} file(s), "
+                        f"but minimum {min_count} required\n"
+                        f"Matched files: {matches}"
+                    )
+
+                logger.info(f"Precondition OK: '{pattern}' matched {len(matches)} file(s)")
+
     def _check_completion_status(self, agent_response: str) -> None:
         """Check for COMPLETION_STATUS marker and raise if ERROR.
 
@@ -677,10 +724,10 @@ class TaskRunner:
         # (agent might have completed but not printed the marker)
 
     def _check_success_criteria(self, success_criteria: SuccessCriteria, context: dict[str, Any]) -> tuple[bool, str | None]:
-        """Execute success criteria validation code.
+        """Execute success criteria validation code or script.
 
         Args:
-            success_criteria: SuccessCriteria with Python code to execute
+            success_criteria: SuccessCriteria with Python code or script path
             context: Template context for rendering variables
 
         Returns:
@@ -690,22 +737,68 @@ class TaskRunner:
         """
         logger.info("Checking success criteria")
 
-        # Render the Python code with template context
-        rendered_code = self._render_instructions(success_criteria.python, context)
-        logger.debug(f"Rendered success criteria code: {rendered_code[:100]}...")
+        # Determine if using inline python or external script
+        if success_criteria.python and success_criteria.script:
+            error_msg = "Success criteria cannot specify both 'python' and 'script'"
+            logger.error(error_msg)
+            return (False, error_msg)
+
+        if not success_criteria.python and not success_criteria.script:
+            error_msg = "Success criteria must specify either 'python' or 'script'"
+            logger.error(error_msg)
+            return (False, error_msg)
+
+        # Get the code to execute
+        if success_criteria.script:
+            # External script
+            script_path = Path(success_criteria.script)
+            if not script_path.is_absolute():
+                # Resolve relative to workflow file
+                if self.workflow_file:
+                    script_path = Path(self.workflow_file).parent / script_path
+                else:
+                    script_path = Path.cwd() / script_path
+
+            logger.debug(f"Loading success criteria script: {script_path}")
+
+            if not script_path.exists():
+                error_msg = f"Success criteria script not found: {script_path}"
+                logger.error(error_msg)
+                return (False, error_msg)
+
+            try:
+                rendered_code = script_path.read_text()
+            except Exception as e:
+                error_msg = f"Error reading success criteria script: {e}"
+                logger.error(error_msg)
+                return (False, error_msg)
+        else:
+            # Inline python code
+            assert success_criteria.python is not None, "python must be set if script is not"
+            rendered_code = self._render_instructions(success_criteria.python, context)
+            logger.debug(f"Rendered success criteria code: {rendered_code[:100]}...")
 
         # Create a restricted namespace for code execution
         namespace = {
             "__builtins__": {
+                "__import__": __import__,
                 "len": len,
                 "open": open,
+                "print": print,
+                "sorted": sorted,
                 "str": str,
                 "int": int,
                 "float": float,
                 "bool": bool,
+                "list": list,
+                "dict": dict,
+                "set": set,
                 "True": True,
                 "False": False,
                 "None": None,
+                "Exception": Exception,
+                "ValueError": ValueError,
+                "FileNotFoundError": FileNotFoundError,
             }
         }
 

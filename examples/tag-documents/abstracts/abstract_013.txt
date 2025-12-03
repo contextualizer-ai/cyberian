@@ -1,0 +1,3 @@
+Bacterial Quorum Sensing and Biofilm Formation
+
+We elucidated the molecular mechanisms of quorum sensing in Pseudomonas aeruginosa biofilms using transcriptomic and metabolomic approaches. The LasI/LasR system coordinates expression of virulence factors and extracellular matrix components in a cell-density-dependent manner. Disruption of quorum sensing with small molecule inhibitors prevented biofilm formation and enhanced antibiotic susceptibility. Structure-activity relationship studies identified lead compounds for development as anti-virulence therapies that could address chronic infections without selecting for resistance.

@@ -4,17 +4,21 @@ import json
 import yaml
 
 
+# Get repo root directory (parent of tests/)
+REPO_ROOT = Path(__file__).parent.parent
+
+
 class TestSkillStructure:
     """Test that the skill is properly structured."""
 
     def test_marketplace_json_exists(self):
         """Test that marketplace.json exists."""
-        marketplace_file = Path(".claude-plugin/marketplace.json")
+        marketplace_file = REPO_ROOT / ".claude-plugin/marketplace.json"
         assert marketplace_file.exists(), "marketplace.json should exist"
 
     def test_marketplace_json_valid(self):
         """Test that marketplace.json is valid JSON with required fields."""
-        marketplace_file = Path(".claude-plugin/marketplace.json")
+        marketplace_file = REPO_ROOT / ".claude-plugin/marketplace.json"
         with open(marketplace_file) as f:
             data = json.load(f)
 
@@ -34,7 +38,7 @@ class TestSkillStructure:
 
     def test_marketplace_defines_cyberian_control(self):
         """Test that marketplace.json defines the cyberian-control plugin."""
-        marketplace_file = Path(".claude-plugin/marketplace.json")
+        marketplace_file = REPO_ROOT / ".claude-plugin/marketplace.json"
         with open(marketplace_file) as f:
             data = json.load(f)
 
@@ -50,12 +54,12 @@ class TestSkillStructure:
 
     def test_skill_md_exists(self):
         """Test that SKILL.md exists."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         assert skill_file.exists(), "SKILL.md should exist"
 
     def test_skill_md_has_frontmatter(self):
         """Test that SKILL.md has valid YAML frontmatter."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         with open(skill_file) as f:
             content = f.read()
 
@@ -75,7 +79,7 @@ class TestSkillStructure:
 
     def test_skill_md_has_content(self):
         """Test that SKILL.md has substantial content."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         with open(skill_file) as f:
             content = f.read()
 
@@ -94,7 +98,7 @@ class TestSkillExamples:
 
     def test_example_scripts_exist(self):
         """Test that example scripts exist."""
-        examples_dir = Path("skills/cyberian-control/examples")
+        examples_dir = REPO_ROOT / "skills/cyberian-control/examples"
         assert examples_dir.exists(), "examples directory should exist"
 
         # Check for shell scripts
@@ -104,7 +108,7 @@ class TestSkillExamples:
 
     def test_example_scripts_executable(self):
         """Test that example scripts are executable."""
-        examples_dir = Path("skills/cyberian-control/examples")
+        examples_dir = REPO_ROOT / "skills/cyberian-control/examples"
 
         scripts = [
             "simple-delegation.sh",
@@ -121,7 +125,7 @@ class TestSkillExamples:
 
     def test_example_workflows_exist(self):
         """Test that example workflow YAML files exist."""
-        examples_dir = Path("skills/cyberian-control/examples")
+        examples_dir = REPO_ROOT / "skills/cyberian-control/examples"
 
         assert (examples_dir / "multi-agent-research.yaml").exists()
         assert (examples_dir / "delegated-coding.yaml").exists()
@@ -129,7 +133,7 @@ class TestSkillExamples:
 
     def test_example_workflows_valid_yaml(self):
         """Test that example workflows are valid YAML."""
-        examples_dir = Path("skills/cyberian-control/examples")
+        examples_dir = REPO_ROOT / "skills/cyberian-control/examples"
 
         workflows = [
             "multi-agent-research.yaml",
@@ -145,7 +149,7 @@ class TestSkillExamples:
 
     def test_multi_agent_research_workflow_structure(self):
         """Test that multi-agent-research.yaml has proper structure."""
-        workflow_file = Path("skills/cyberian-control/examples/multi-agent-research.yaml")
+        workflow_file = REPO_ROOT / "skills/cyberian-control/examples/multi-agent-research.yaml"
         with open(workflow_file) as f:
             data = yaml.safe_load(f)
 
@@ -164,7 +168,7 @@ class TestSkillExamples:
 
     def test_delegated_coding_workflow_structure(self):
         """Test that delegated-coding.yaml has proper structure."""
-        workflow_file = Path("skills/cyberian-control/examples/delegated-coding.yaml")
+        workflow_file = REPO_ROOT / "skills/cyberian-control/examples/delegated-coding.yaml"
         with open(workflow_file) as f:
             data = yaml.safe_load(f)
 
@@ -179,7 +183,7 @@ class TestSkillExamples:
 
     def test_farm_config_structure(self):
         """Test that farm-config.yaml has proper structure."""
-        farm_file = Path("skills/cyberian-control/examples/farm-config.yaml")
+        farm_file = REPO_ROOT / "skills/cyberian-control/examples/farm-config.yaml"
         with open(farm_file) as f:
             data = yaml.safe_load(f)
 
@@ -196,7 +200,7 @@ class TestSkillExamples:
 
     def test_examples_readme_exists(self):
         """Test that examples README exists."""
-        readme = Path("skills/cyberian-control/examples/README.md")
+        readme = REPO_ROOT / "skills/cyberian-control/examples/README.md"
         assert readme.exists()
 
         with open(readme) as f:
@@ -216,7 +220,7 @@ class TestSkillContent:
 
     def test_skill_documents_common_commands(self):
         """Test that SKILL.md documents all major cyberian commands."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         with open(skill_file) as f:
             content = f.read()
 
@@ -236,7 +240,7 @@ class TestSkillContent:
 
     def test_skill_has_examples(self):
         """Test that SKILL.md includes example usage."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         with open(skill_file) as f:
             content = f.read()
 
@@ -246,7 +250,7 @@ class TestSkillContent:
 
     def test_skill_explains_use_cases(self):
         """Test that SKILL.md explains when to use the skill."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         with open(skill_file) as f:
             content = f.read()
 
@@ -256,7 +260,7 @@ class TestSkillContent:
 
     def test_skill_documents_workflow_system(self):
         """Test that SKILL.md documents the workflow system."""
-        skill_file = Path("skills/cyberian-control/SKILL.md")
+        skill_file = REPO_ROOT / "skills/cyberian-control/SKILL.md"
         with open(skill_file) as f:
             content = f.read()
 

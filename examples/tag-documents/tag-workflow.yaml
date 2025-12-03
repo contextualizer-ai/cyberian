@@ -1,0 +1,100 @@
+name: tag-documents
+description: |
+  Tag biomedical abstracts with controlled vocabulary keywords.
+
+  This workflow demonstrates the "determinism sandwich" pattern:
+  1. Deterministic input: 20 abstract files, fixed taxonomy
+  2. Non-deterministic work: Agent reads and assigns relevant tags
+  3. Deterministic validation: Script checks all constraints
+  4. Deterministic feedback: Errors fed back to agent for retry
+
+# Requirements (informational/documentation)
+requirements:
+  agents:
+    - name: claude-code
+      level: RECOMMENDED
+      reason: Works best with file reading and JSON manipulation capabilities
+    - name: aider
+      level: OPTIONAL
+      reason: Also works well for this task
+  dependencies:
+    - name: python
+      version: ">=3.10"
+      level: REQUIRED
+      reason: Validation script uses match statement and type hints
+  notes: |
+    This workflow reads multiple files and creates structured JSON output.
+    Any agent with file I/O capabilities should work.
+
+# Preconditions checked before workflow execution
+preconditions:
+  files_exist:
+    patterns:
+      - abstracts/*.txt
+      - taxonomy.json
+      - scripts/validate_tags.py
+  sync_targets:
+    paths:
+      - taxonomy.json
+      - scripts/
+    description: |
+      Configuration and validation files needed for the workflow.
+      Note: abstracts/*.txt are test data and should exist in the workspace.
+
+subtasks:
+  tag_abstracts:
+    instructions: |
+      You need to tag biomedical research abstracts with keywords from a controlled vocabulary.
+
+      ## Your Task
+
+      1. Read all .txt files in the abstracts/ directory
+      2. For each abstract, read the content and understand the research topic
+      3. Assign 2-4 relevant keywords from the allowed list in taxonomy.json
+      4. Create tags.json with the following structure:
+
+      ```json
+      {
+        "documents": [
+          {
+            "filename": "abstract_001.txt",
+            "tags": ["genetics", "gene-editing", "clinical-trial"]
+          },
+          {
+            "filename": "abstract_002.txt",
+            "tags": ["quantum-physics", "structural-biology"]
+          }
+        ]
+      }
+      ```
+
+      ## Important Constraints
+
+      - Each document must have 2-4 tags (not more, not less)
+      - All tags MUST come from the "allowed_tags" list in taxonomy.json
+      - Do NOT invent new tags - only use tags from the taxonomy
+      - Tag all abstract files
+      - The tags should accurately reflect the content of each abstract
+
+      ## Strategy
+
+      1. First, read taxonomy.json to see the allowed tags
+      2. Then, read each abstract and identify the most relevant 2-4 tags
+      3. Create tags.json with all documents tagged
+      4. Double-check that all your tags are from the allowed list
+
+      The validation script will check your work!
+
+    success_criteria:
+      script: scripts/validate_tags.py
+      max_retries: 3
+      retry_message: |
+        Your tagging had validation errors:
+
+        {{error}}
+
+        Please review the errors above and fix your tags.json file.
+        Remember:
+        - Use ONLY tags from taxonomy.json allowed_tags list
+        - Each document needs 2-4 tags
+        - All 20 abstract files must be tagged

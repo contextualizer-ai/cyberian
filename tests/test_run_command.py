@@ -38,7 +38,7 @@ instructions: Do something
 
 
 def test_run_command_without_dir_option(tmp_path):
-    """Test run command does not change directory when --dir option is not provided."""
+    """Test run command changes to workflow file's directory by default."""
     workflow_file = tmp_path / "workflow.yaml"
     workflow_file.write_text("""
 name: test-workflow
@@ -54,7 +54,8 @@ instructions: Do something
         result = runner.invoke(app, ["run", str(workflow_file)])
 
         assert result.exit_code == 0
-        mock_chdir.assert_not_called()
+        # Now we DO change to the workflow's directory
+        mock_chdir.assert_called_once_with(str(tmp_path))
         mock_runner.run_task.assert_called_once()
 
 

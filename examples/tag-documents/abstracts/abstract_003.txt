@@ -1,0 +1,3 @@
+Neuroplasticity in Adult Brain Following Stroke: A Longitudinal MRI Study
+
+We conducted a 12-month longitudinal study of 45 stroke patients using functional MRI to assess neuroplastic changes. Patients showed significant reorganization of motor cortex adjacent to lesion sites, with compensatory activation in contralateral hemispheres. The degree of plasticity correlated strongly with functional recovery outcomes. Our results support intensive early rehabilitation protocols and suggest potential targets for neuromodulation therapies to enhance recovery.

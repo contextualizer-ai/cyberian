@@ -1,0 +1,3 @@
+Adaptive Immune Response to mRNA Vaccines
+
+We characterized the immune response to COVID-19 mRNA vaccines through longitudinal analysis of B and T cell responses. Vaccination induced robust germinal center reactions with somatic hypermutation and affinity maturation of antibodies. Memory B cells persisted for at least 12 months with ability to neutralize variants. CD8+ T cells recognized conserved epitopes across variants. These findings explain the durability of vaccine protection and inform next-generation vaccine design for rapidly evolving pathogens.

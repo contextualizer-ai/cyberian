@@ -7,6 +7,14 @@ theme:
   #  primary: cyan
   features:
     - content.tabs.link
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
 
 # for adding extra css/js see https://www.mkdocs.org/user-guide/customizing-your-theme/
 
@@ -22,11 +30,58 @@ plugins:
 
 nav:
   - Home: index.md
-  - Providers: providers.md
-  - Claude Code Skill: claude-skill.md
+
+  - Tutorials:
+    - tutorials/index.md
+    - Getting Started: tutorials/getting-started.md
+    - Tag Documents Walkthrough: tutorials/tag-documents-walkthrough.md
+    - Multi-Agent Farm: tutorials/multi-agent-farm.md
+
+  - How-To Guides:
+    - how-to/index.md
+    - Send Messages: how-to/send-messages.md
+    - Manage Servers: how-to/manage-servers.md
+    - Write a Deep Research Workflow: how-to/write-deep-research-workflow.md
+    - Use Templates: how-to/use-templates.md
+    - Troubleshooting: how-to/troubleshooting.md
+
+  - Explanation:
+    - explanation/index.md
+    - Architecture: explanation/architecture.md
+    - Workflow Model: explanation/workflow-model.md
+    - Agent Lifecycle: explanation/agent-lifecycle.md
+    - Design Decisions: explanation/design-decisions.md
+
+  - Reference:
+    - reference/index.md
+    - CLI Commands: reference/cli-commands.md
+    - Workflow Schema: reference/workflow-schema.md
+    - Configuration: reference/configuration.md
+
+  - Integrations:
+    - integrations/index.md
+    - Claude Code Skill: integrations/claude-skill.md
+
+  - Development:
+    - development/index.md
+    - Setup: development/setup.md
+    - Testing: development/testing.md
+    - Contributing: development/contributing.md
 
 exclude_docs: |
   /templates-linkml/
 
 site_url: https://monarch-initiative.github.io/cyberian
 repo_url: https://github.com/monarch-initiative/cyberian
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html

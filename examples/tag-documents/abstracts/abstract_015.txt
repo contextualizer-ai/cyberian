@@ -1,0 +1,3 @@
+Genome-Wide Association Study of Type 2 Diabetes in Diverse Populations
+
+We performed a multi-ethnic GWAS meta-analysis of type 2 diabetes including 180,000 cases and 400,000 controls from European, African, East Asian, and South Asian ancestries. We identified 78 novel risk loci and improved fine-mapping of known loci through inclusion of diverse populations. Polygenic risk scores showed variable performance across ancestries, highlighting the need for ancestry-specific genetic studies. Functional annotation implicated beta-cell function and insulin signaling pathways as primary drivers of genetic risk.

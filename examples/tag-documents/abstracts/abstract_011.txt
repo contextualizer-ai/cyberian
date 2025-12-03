@@ -1,0 +1,3 @@
+Epigenetic Modifications in Cancer Stem Cell Maintenance
+
+We characterized DNA methylation and histone modification patterns in glioblastoma stem cells compared to differentiated tumor cells. Cancer stem cells exhibit hypomethylation at stem cell gene promoters and H3K27me3 enrichment at differentiation loci. Treatment with DNMT and EZH2 inhibitors induced differentiation and sensitized cells to chemotherapy. Single-cell epigenomics revealed heterogeneous epigenetic states within the stem cell population. These results identify epigenetic regulators as therapeutic targets for eliminating cancer stem cells and preventing recurrence.

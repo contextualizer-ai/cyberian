@@ -1,0 +1,3 @@
+Synthetic Biology Approach to Biofuel Production
+
+We engineered Escherichia coli to produce isobutanol from cellulosic biomass through expression of a heterologous biosynthetic pathway. Optimization of carbon flux using CRISPR-based gene regulation increased titer to 50 g/L, approaching commercial viability. Life cycle analysis shows 75% reduction in greenhouse gas emissions compared to gasoline. Technoeconomic modeling indicates production cost of $2.50 per gallon at scale. This work demonstrates the potential of synthetic biology to enable sustainable biofuel production from non-food feedstocks.

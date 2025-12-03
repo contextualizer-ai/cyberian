@@ -1,0 +1,3 @@
+Single-Cell RNA Sequencing of Tumor Microenvironment
+
+We performed single-cell RNA sequencing of 50,000 cells from melanoma tumors, profiling malignant cells, immune cells, and stromal cells. Analysis revealed extensive heterogeneity in tumor cell states including proliferative, invasive, and drug-resistant subpopulations. The immune microenvironment showed exhausted T cell phenotypes and immunosuppressive myeloid cells. Cell-cell interaction analysis identified cancer-associated fibroblast signaling that promotes immune evasion. These insights inform combination immunotherapy strategies targeting both tumor and microenvironment.
