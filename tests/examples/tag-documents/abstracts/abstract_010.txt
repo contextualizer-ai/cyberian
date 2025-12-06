@@ -1,0 +1,3 @@
+Climate Change Impact on Vector-Borne Disease Distribution
+
+We modeled the projected distribution of malaria, dengue, and Zika vectors under various climate scenarios through 2100. Rising temperatures and altered precipitation patterns are predicted to expand suitable habitats into currently temperate regions, potentially exposing an additional 1 billion people to these diseases. Southern Europe, parts of North America, and highland regions of Africa show highest risk for emergence. Our findings emphasize the urgent need for enhanced surveillance systems and vector control infrastructure in at-risk areas.

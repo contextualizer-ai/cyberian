@@ -10,6 +10,7 @@ import shlex
 import shutil
 import subprocess
 import time
+from pathlib import Path
 from typing import Any, Literal, Optional
 
 import httpx
@@ -823,7 +824,11 @@ def run(
     poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds")] = 2.0,
     directory: Annotated[
         Optional[str],
-        typer.Option("--dir", "-d", help="Change to this directory before running workflow")
+        typer.Option("--dir", "-d", help="Change to this directory before running workflow (deprecated: use --workdir)")
+    ] = None,
+    workdir: Annotated[
+        Optional[str],
+        typer.Option("--workdir", "-w", help="Working directory for agent execution. Agent output files will be created here. If not specified, uses workflow file's directory.")
     ] = None,
     agent_type: Annotated[
         Optional[str],
@@ -889,19 +894,73 @@ def run(
 
     logger.info(f"Loading workflow from {workflow_file}")
 
-    # Change directory if requested
-    if directory:
-        logger.info(f"Changing directory to {directory}")
-        os.chdir(directory)
-
-    # Load workflow YAML
-    with open(workflow_file, 'r') as f:
+    # Load workflow YAML first to check for sync_targets
+    original_cwd = os.getcwd()
+    workflow_path = Path(workflow_file) if Path(workflow_file).is_absolute() else Path(original_cwd) / workflow_file
+    with open(workflow_path, 'r') as f:
         workflow_data = yaml.safe_load(f)
 
     # Parse into Task model
     task = Task(**workflow_data)
     logger.info(f"Loaded workflow: {task.name or 'unnamed'}")
     logger.debug(f"Workflow data: {workflow_data}")
+
+    # Determine working directory
+    # Priority: --workdir > --dir (deprecated) > workflow file's directory
+    if workdir:
+        work_directory = workdir
+        logger.info(f"Using working directory: {work_directory}")
+    elif directory:
+        work_directory = directory
+        logger.warning("--dir is deprecated, use --workdir instead")
+    else:
+        # Default: use workflow file's directory
+        work_directory = str(Path(workflow_file).parent.absolute())
+        logger.info(f"Using workflow file's directory as workdir: {work_directory}")
+
+    # Sync files if needed (before changing directory)
+    if task.preconditions and task.preconditions.sync_targets:
+        sync_targets = task.preconditions.sync_targets
+        workflow_dir = workflow_path.parent
+
+        logger.info(f"Syncing {len(sync_targets.paths)} target(s) to working directory")
+        if sync_targets.description:
+            logger.info(f"  Purpose: {sync_targets.description}")
+
+        # Create working directory if it doesn't exist
+        Path(work_directory).mkdir(parents=True, exist_ok=True)
+
+        for path in sync_targets.paths:
+            src_path = workflow_dir / path
+
+            # Remove trailing slash for path operations
+            path_clean = path.rstrip('/')
+            dest_path = Path(work_directory) / path_clean
+
+            if not src_path.exists():
+                logger.warning(f"  Sync target not found (skipping): {src_path}")
+                continue
+
+            if src_path.is_dir():
+                # Sync directory
+                if dest_path.exists():
+                    logger.info(f"  Updating directory: {path_clean}/")
+                    shutil.rmtree(dest_path)
+                else:
+                    logger.info(f"  Copying directory: {path_clean}/")
+                shutil.copytree(src_path, dest_path)
+            else:
+                # Sync file
+                dest_path.parent.mkdir(parents=True, exist_ok=True)
+                if dest_path.exists():
+                    logger.info(f"  Updating file: {path_clean}")
+                else:
+                    logger.info(f"  Copying file: {path_clean}")
+                shutil.copy2(src_path, dest_path)
+
+    # Change to working directory
+    os.chdir(work_directory)
+    logger.info(f"Changed to working directory: {os.getcwd()}")
 
     # Build context from --agent-type and --skip-permissions (can be overridden by --param)
     context: dict[str, Any] = {}
@@ -965,7 +1024,8 @@ def run(
         lifecycle_mode=lifecycle_mode,
         agent_type=agent_type,
         skip_permissions=skip_permissions,
-        directory=directory
+        directory=work_directory,  # Use the computed working directory
+        workflow_file=str(workflow_path)  # Use absolute path to workflow
     )
 
     typer.echo(f"Starting workflow: {task.name or 'unnamed'}")

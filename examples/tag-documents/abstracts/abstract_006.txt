@@ -1,0 +1,3 @@
+Structural Basis of SARS-CoV-2 Spike Protein Receptor Binding
+
+We determined the crystal structure of the SARS-CoV-2 spike protein receptor-binding domain complexed with human ACE2 at 2.45Å resolution. The structure reveals key molecular interactions involving residues N487, Y489, and T500 that enable high-affinity binding. Comparison with SARS-CoV-1 shows additional contact points explaining increased transmissibility. These structural insights guided the rational design of neutralizing antibodies now in clinical use and inform vaccine development strategies targeting conserved epitopes.

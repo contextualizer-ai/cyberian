@@ -1,0 +1,3 @@
+Chimeric Antigen Receptor T-Cell Therapy for Treatment-Resistant Lymphoma
+
+CAR-T cell therapy represents a breakthrough in cancer immunotherapy. We engineered patient T-cells to express a chimeric receptor targeting CD19 on B-cell lymphomas. In a phase II clinical trial of 68 patients with relapsed/refractory lymphoma, we observed an 82% complete response rate. Cytokine release syndrome was manageable with tocilizumab. Long-term follow-up shows durable remissions exceeding 3 years, establishing CAR-T as a curative option for refractory hematologic malignancies.

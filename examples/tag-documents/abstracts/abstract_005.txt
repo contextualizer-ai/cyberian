@@ -1,0 +1,3 @@
+Metabolic Syndrome and Gut Microbiome Dysbiosis: A Metagenomic Analysis
+
+We performed shotgun metagenomic sequencing of fecal samples from 200 individuals with metabolic syndrome and 200 healthy controls. Patients exhibited reduced microbial diversity with depletion of butyrate-producing bacteria and enrichment of pro-inflammatory species. Metabolomic profiling revealed altered bile acid metabolism and increased lipopolysaccharide production. These findings suggest that microbiome-targeted interventions, including prebiotics and fecal transplantation, may offer novel therapeutic strategies for metabolic disease.

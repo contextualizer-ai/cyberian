@@ -1,0 +1,67 @@
+name: tag-documents
+description: |
+  Tag biomedical abstracts with controlled vocabulary keywords.
+
+  This workflow demonstrates the "determinism sandwich" pattern:
+  1. Deterministic input: 20 abstract files, fixed taxonomy
+  2. Non-deterministic work: Agent reads and assigns relevant tags
+  3. Deterministic validation: Script checks all constraints
+  4. Deterministic feedback: Errors fed back to agent for retry
+
+subtasks:
+  tag_abstracts:
+    instructions: |
+      You need to tag biomedical research abstracts with keywords from a controlled vocabulary.
+
+      ## Your Task
+
+      1. Read all .txt files in the abstracts/ directory (there are 20 files)
+      2. For each abstract, read the content and understand the research topic
+      3. Assign 2-4 relevant keywords from the allowed list in taxonomy.json
+      4. Create tags.json with the following structure:
+
+      ```json
+      {
+        "documents": [
+          {
+            "filename": "abstract_001.txt",
+            "tags": ["genetics", "gene-editing", "clinical-trial"]
+          },
+          {
+            "filename": "abstract_002.txt",
+            "tags": ["quantum-physics", "structural-biology"]
+          }
+        ]
+      }
+      ```
+
+      ## Important Constraints
+
+      - Each document must have 2-4 tags (not more, not less)
+      - All tags MUST come from the "allowed_tags" list in taxonomy.json
+      - Do NOT invent new tags - only use tags from the taxonomy
+      - Tag all 20 abstract files (abstract_001.txt through abstract_020.txt)
+      - The tags should accurately reflect the content of each abstract
+
+      ## Strategy
+
+      1. First, read taxonomy.json to see the allowed tags
+      2. Then, read each abstract and identify the most relevant 2-4 tags
+      3. Create tags.json with all 20 documents tagged
+      4. Double-check that all your tags are from the allowed list
+
+      The validation script will check your work!
+
+    success_criteria:
+      script: scripts/validate_tags.py
+      max_retries: 3
+      retry_message: |
+        Your tagging had validation errors:
+
+        {{error}}
+
+        Please review the errors above and fix your tags.json file.
+        Remember:
+        - Use ONLY tags from taxonomy.json allowed_tags list
+        - Each document needs 2-4 tags
+        - All 20 abstract files must be tagged

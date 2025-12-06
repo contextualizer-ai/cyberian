@@ -1,0 +1,3 @@
+Mitochondrial Dysfunction in Parkinson's Disease Pathogenesis
+
+We investigated mitochondrial function in dopaminergic neurons derived from Parkinson's disease patient iPSCs carrying PINK1 mutations. Cells exhibited impaired mitophagy, accumulation of dysfunctional mitochondria, and increased oxidative stress. Treatment with mitochondrial-targeted antioxidants partially rescued the phenotype. Proteomic analysis identified dysregulated mitochondrial quality control pathways. These findings support mitochondrial dysfunction as a central mechanism in PD and identify potential therapeutic targets for disease modification.

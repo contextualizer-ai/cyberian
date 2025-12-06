@@ -1,0 +1,84 @@
+{
+  "documents": [
+    {
+      "filename": "abstract_001.txt",
+      "tags": ["genetics", "gene-editing", "clinical-trial"]
+    },
+    {
+      "filename": "abstract_002.txt",
+      "tags": ["quantum-physics", "structural-biology"]
+    },
+    {
+      "filename": "abstract_003.txt",
+      "tags": ["neuroscience", "clinical-trial"]
+    },
+    {
+      "filename": "abstract_004.txt",
+      "tags": ["cancer", "immunology", "clinical-trial"]
+    },
+    {
+      "filename": "abstract_005.txt",
+      "tags": ["metabolism", "microbiology", "genomics"]
+    },
+    {
+      "filename": "abstract_006.txt",
+      "tags": ["structural-biology", "infectious-disease"]
+    },
+    {
+      "filename": "abstract_007.txt",
+      "tags": ["evolution", "microbiology", "genomics", "infectious-disease"]
+    },
+    {
+      "filename": "abstract_008.txt",
+      "tags": ["neuroscience", "metabolism", "genetics"]
+    },
+    {
+      "filename": "abstract_009.txt",
+      "tags": ["machine-learning", "structural-biology"]
+    },
+    {
+      "filename": "abstract_010.txt",
+      "tags": ["climate-health", "infectious-disease"]
+    },
+    {
+      "filename": "abstract_011.txt",
+      "tags": ["cancer", "epigenetics", "genomics"]
+    },
+    {
+      "filename": "abstract_012.txt",
+      "tags": ["drug-delivery", "cancer", "neuroscience"]
+    },
+    {
+      "filename": "abstract_013.txt",
+      "tags": ["microbiology", "infectious-disease"]
+    },
+    {
+      "filename": "abstract_014.txt",
+      "tags": ["immunology", "infectious-disease"]
+    },
+    {
+      "filename": "abstract_015.txt",
+      "tags": ["genomics", "genetics", "metabolism"]
+    },
+    {
+      "filename": "abstract_016.txt",
+      "tags": ["synthetic-biology", "microbiology", "climate-health"]
+    },
+    {
+      "filename": "abstract_017.txt",
+      "tags": ["cancer", "immunology", "genomics"]
+    },
+    {
+      "filename": "abstract_018.txt",
+      "tags": ["aging", "metabolism"]
+    },
+    {
+      "filename": "abstract_019.txt",
+      "tags": ["cancer", "drug-delivery", "clinical-trial"]
+    },
+    {
+      "filename": "abstract_020.txt",
+      "tags": ["cardiology", "genetics", "clinical-trial"]
+    }
+  ]
+}

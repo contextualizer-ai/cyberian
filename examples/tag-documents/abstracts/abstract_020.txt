@@ -1,0 +1,3 @@
+Optogenetics for Cardiac Arrhythmia Treatment
+
+We developed an optogenetic approach for precise control of cardiac rhythm using light-sensitive ion channels expressed in cardiomyocytes. In large animal models of ventricular tachycardia, targeted light delivery successfully terminated arrhythmias with millisecond precision. The method showed superior efficacy and reduced tissue damage compared to electrical defibrillation. Wireless, implantable LED devices enabled chronic arrhythmia management in freely moving animals. This technology represents a paradigm shift in cardiac electrophysiology with potential for patient-specific, adaptive pacing therapies.

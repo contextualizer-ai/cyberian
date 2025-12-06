@@ -1,0 +1,3 @@
+Organoid Models for Drug Screening and Disease Modeling
+
+We established a biobank of patient-derived organoids representing 25 cancer types for high-throughput drug screening. Organoids recapitulate tumor architecture, genetic heterogeneity, and drug response patterns observed in patients. Screening of 150 FDA-approved drugs identified precision medicine opportunities, with responses correlating with genomic alterations. For colorectal cancer, organoid drug sensitivity predicted clinical outcomes with 88% accuracy. This platform enables personalized medicine approaches and accelerates identification of effective therapies for individual patients.

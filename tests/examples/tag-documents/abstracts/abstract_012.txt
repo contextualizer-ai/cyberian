@@ -1,0 +1,3 @@
+Nanotechnology-Based Drug Delivery for Blood-Brain Barrier Penetration
+
+We engineered lipid nanoparticles functionalized with transferrin receptor antibodies to enable targeted drug delivery across the blood-brain barrier. In mouse models of glioblastoma, nanoparticles achieved 15-fold higher brain accumulation compared to free drug. Treatment significantly extended survival and reduced tumor volume without systemic toxicity. Biodistribution studies confirmed preferential accumulation in tumor tissue. This platform technology could enable treatment of previously undruggable brain tumors and neurodegenerative diseases.
