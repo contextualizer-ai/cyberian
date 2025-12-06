@@ -8,23 +8,25 @@
       
       
       
-        <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/">
+        <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/reference/">
       
       
+        <link rel="prev" href="../explanation/design-decisions/">
       
-        <link rel="next" href="tutorials/">
+      
+        <link rel="next" href="cli-commands/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
-        <title>cyberian</title>
+        <title>Reference Documentation - cyberian</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
       
       
 
@@ -43,13 +45,13 @@
       
     
     
-      <link rel="stylesheet" href="css/ansi-colours.css">
+      <link rel="stylesheet" href="../css/ansi-colours.css">
     
-      <link rel="stylesheet" href="css/jupyter-cells.css">
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
     
-      <link rel="stylesheet" href="css/pandas-dataframe.css">
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -68,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cyberian" class="md-skip">
+        <a href="#reference-documentation" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +84,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="cyberian" class="md-header__button md-logo" aria-label="cyberian" data-md-component="logo">
+    <a href=".." title="cyberian" class="md-header__button md-logo" aria-label="cyberian" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -102,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Reference Documentation
             
           </span>
         </div>
@@ -187,11 +189,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
         
   
   
@@ -212,7 +212,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="tutorials/" class="md-tabs__link">
+        <a href="../tutorials/" class="md-tabs__link">
           
   
   
@@ -232,7 +232,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="how-to/" class="md-tabs__link">
+        <a href="../how-to/" class="md-tabs__link">
           
   
   
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="explanation/" class="md-tabs__link">
+        <a href="../explanation/" class="md-tabs__link">
           
   
   
@@ -268,11 +268,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="reference/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -292,7 +294,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="integrations/" class="md-tabs__link">
+        <a href="../integrations/" class="md-tabs__link">
           
   
   
@@ -312,7 +314,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="development/" class="md-tabs__link">
+        <a href="../development/" class="md-tabs__link">
           
   
   
@@ -346,7 +348,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="cyberian" class="md-nav__button md-logo" aria-label="cyberian" data-md-component="logo">
+    <a href=".." title="cyberian" class="md-nav__button md-logo" aria-label="cyberian" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -373,32 +375,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -409,131 +389,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-cyberian" class="md-nav__link">
-    <span class="md-ellipsis">
-      What is cyberian?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Start
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Features
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Key Features">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#simple-message-sending" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simple Message Sending
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#server-farm-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      Server Farm Management
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#workflow-automation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Workflow Automation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      Where to Go Next
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#integration-with-claude-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integration with Claude Code
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-links" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Links
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technology-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technology Stack
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -590,7 +445,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorials/" class="md-nav__link">
+      <a href="../tutorials/" class="md-nav__link">
         
   
   
@@ -613,7 +468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorials/getting-started/" class="md-nav__link">
+      <a href="../tutorials/getting-started/" class="md-nav__link">
         
   
   
@@ -636,7 +491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorials/tag-documents-walkthrough/" class="md-nav__link">
+      <a href="../tutorials/tag-documents-walkthrough/" class="md-nav__link">
         
   
   
@@ -659,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorials/multi-agent-farm/" class="md-nav__link">
+      <a href="../tutorials/multi-agent-farm/" class="md-nav__link">
         
   
   
@@ -734,7 +589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to/" class="md-nav__link">
+      <a href="../how-to/" class="md-nav__link">
         
   
   
@@ -757,7 +612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to/send-messages/" class="md-nav__link">
+      <a href="../how-to/send-messages/" class="md-nav__link">
         
   
   
@@ -780,7 +635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to/manage-servers/" class="md-nav__link">
+      <a href="../how-to/manage-servers/" class="md-nav__link">
         
   
   
@@ -803,7 +658,7 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to/write-deep-research-workflow/" class="md-nav__link">
+      <a href="../how-to/write-deep-research-workflow/" class="md-nav__link">
         
   
   
@@ -826,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to/use-templates/" class="md-nav__link">
+      <a href="../how-to/use-templates/" class="md-nav__link">
         
   
   
@@ -849,7 +704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to/troubleshooting/" class="md-nav__link">
+      <a href="../how-to/troubleshooting/" class="md-nav__link">
         
   
   
@@ -924,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explanation/" class="md-nav__link">
+      <a href="../explanation/" class="md-nav__link">
         
   
   
@@ -947,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explanation/architecture/" class="md-nav__link">
+      <a href="../explanation/architecture/" class="md-nav__link">
         
   
   
@@ -970,7 +825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explanation/workflow-model/" class="md-nav__link">
+      <a href="../explanation/workflow-model/" class="md-nav__link">
         
   
   
@@ -993,7 +848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explanation/agent-lifecycle/" class="md-nav__link">
+      <a href="../explanation/agent-lifecycle/" class="md-nav__link">
         
   
   
@@ -1016,7 +871,7 @@
   
   
     <li class="md-nav__item">
-      <a href="explanation/design-decisions/" class="md-nav__link">
+      <a href="../explanation/design-decisions/" class="md-nav__link">
         
   
   
@@ -1043,28 +898,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1077,7 +935,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -1088,10 +946,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Reference Documentation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1102,6 +982,95 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-reference-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Reference Documentation?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available References
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      CLI Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-reference-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Reference Docs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See Also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1114,7 +1083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/cli-commands/" class="md-nav__link">
+      <a href="cli-commands/" class="md-nav__link">
         
   
   
@@ -1137,7 +1106,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/workflow-schema/" class="md-nav__link">
+      <a href="workflow-schema/" class="md-nav__link">
         
   
   
@@ -1160,7 +1129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/configuration/" class="md-nav__link">
+      <a href="configuration/" class="md-nav__link">
         
   
   
@@ -1235,7 +1204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integrations/" class="md-nav__link">
+      <a href="../integrations/" class="md-nav__link">
         
   
   
@@ -1258,7 +1227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="integrations/claude-skill/" class="md-nav__link">
+      <a href="../integrations/claude-skill/" class="md-nav__link">
         
   
   
@@ -1333,7 +1302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="development/" class="md-nav__link">
+      <a href="../development/" class="md-nav__link">
         
   
   
@@ -1356,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="development/setup/" class="md-nav__link">
+      <a href="../development/setup/" class="md-nav__link">
         
   
   
@@ -1379,7 +1348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="development/testing/" class="md-nav__link">
+      <a href="../development/testing/" class="md-nav__link">
         
   
   
@@ -1402,7 +1371,7 @@
   
   
     <li class="md-nav__item">
-      <a href="development/contributing/" class="md-nav__link">
+      <a href="../development/contributing/" class="md-nav__link">
         
   
   
@@ -1452,55 +1421,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-cyberian" class="md-nav__link">
+  <a href="#what-is-reference-documentation" class="md-nav__link">
     <span class="md-ellipsis">
-      What is cyberian?
+      What is Reference Documentation?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
+  <a href="#available-references" class="md-nav__link">
     <span class="md-ellipsis">
-      Quick Start
+      Available References
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Features
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Key Features">
+    <nav class="md-nav" aria-label="Available References">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#simple-message-sending" class="md-nav__link">
+  <a href="#cli-commands" class="md-nav__link">
     <span class="md-ellipsis">
-      Simple Message Sending
+      CLI Commands
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#server-farm-management" class="md-nav__link">
+  <a href="#workflow-schema" class="md-nav__link">
     <span class="md-ellipsis">
-      Server Farm Management
+      Workflow Schema
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#workflow-automation" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow Automation
+      Configuration
     </span>
   </a>
   
@@ -1512,45 +1472,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#using-reference-docs" class="md-nav__link">
     <span class="md-ellipsis">
-      Installation
+      Using Reference Docs
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
-      Where to Go Next
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#integration-with-claude-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integration with Claude Code
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-links" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Links
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technology-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technology Stack
+      See Also
     </span>
   </a>
   
@@ -1575,144 +1508,78 @@
   
 
 
-<h1 id="cyberian">cyberian</h1>
-<p><strong>A Python CLI wrapper for <a href="https://github.com/coder/agentapi">agentapi</a> that enables automated agent pipelines and workflows.</strong></p>
-<p><a href="https://asciinema.org/a/U3zU02WqnFgq31nSxa8unSOpG"><img alt="asciicast" src="https://asciinema.org/a/U3zU02WqnFgq31nSxa8unSOpG.svg" /></a></p>
-<h2 id="what-is-cyberian">What is cyberian?</h2>
-<p><code>cyberian</code> provides a comprehensive command-line interface for orchestrating AI agents through agentapi. It enables you to:</p>
+<h1 id="reference-documentation">Reference Documentation</h1>
+<p>The reference section provides <strong>information-oriented</strong> documentation: complete specifications, command references, and schemas.</p>
+<h2 id="what-is-reference-documentation">What is Reference Documentation?</h2>
+<p>Reference docs are like a dictionary - you look things up when you need specific information:</p>
 <ul>
-<li><strong>Send messages</strong> to AI agents via agentapi with synchronous or asynchronous modes</li>
-<li><strong>Manage agentapi servers</strong> - start, stop, and list running servers</li>
-<li><strong>Run server farms</strong> - manage multiple agent servers simultaneously</li>
-<li><strong>Execute complex workflows</strong> from YAML definitions with recursive task trees</li>
-<li><strong>Use template-based instructions</strong> with Jinja2 for dynamic, parameterized workflows</li>
-<li><strong>Call external providers</strong> directly in workflows for deterministic operations</li>
+<li>Complete command syntax</li>
+<li>All available options</li>
+<li>YAML schema specifications</li>
+<li>Configuration file formats</li>
 </ul>
-<h2 id="quick-start">Quick Start</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install</span>
-pip<span class="w"> </span>install<span class="w"> </span>cyberian
-
-<span class="c1"># Start an agentapi server</span>
-cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>--skip-permissions<span class="w"> </span>--port<span class="w"> </span><span class="m">3284</span><span class="w"> </span>--dir<span class="w"> </span>/tmp/workdir
-
-<span class="c1"># Send a message</span>
-cyberian<span class="w"> </span>message<span class="w"> </span><span class="s2">&quot;Write a hello world function in Python&quot;</span>
-
-<span class="c1"># Check status</span>
-cyberian<span class="w"> </span>status
-
-<span class="c1"># View in chat interface</span>
-open<span class="w"> </span>http://localhost:3284/chat
-</code></pre></div>
-<h2 id="key-features">Key Features</h2>
-<h3 id="simple-message-sending">Simple Message Sending</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Fire-and-forget message</span>
-cyberian<span class="w"> </span>message<span class="w"> </span><span class="s2">&quot;Your prompt here&quot;</span>
-
-<span class="c1"># Synchronous mode - wait for response</span>
-cyberian<span class="w"> </span>message<span class="w"> </span><span class="s2">&quot;What is 2+2?&quot;</span><span class="w"> </span>--sync
-</code></pre></div>
-<h3 id="server-farm-management">Server Farm Management</h3>
-<p>Start and manage multiple agent servers from a single configuration:</p>
-<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>farm<span class="w"> </span>start<span class="w"> </span>my-farm.yaml
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">base_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4000</span>
-<span class="nt">servers</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worker1</span>
-<span class="w">    </span><span class="nt">agent_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
-<span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/worker1</span>
-<span class="w">    </span><span class="nt">skip_permissions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worker2</span>
-<span class="w">    </span><span class="nt">agent_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
-<span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/worker2</span>
-</code></pre></div>
-<h3 id="workflow-automation">Workflow Automation</h3>
-<p>Execute complex multi-step workflows with recursive task trees:</p>
-<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>deep-research.yaml<span class="w"> </span>--param<span class="w"> </span><span class="nv">query</span><span class="o">=</span><span class="s2">&quot;quantum computing&quot;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deep-research</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Iteratively performs deep research on a topic</span>
-
-<span class="nt">params</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">query</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-
-<span class="nt">subtasks</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">initial_search</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">      </span><span class="no">Perform deep research on {{query}}.</span>
-<span class="w">      </span><span class="no">Write a comprehensive research plan.</span>
-
-<span class="w">  </span><span class="nt">iterate</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">      </span><span class="no">Continue researching {{query}}.</span>
-<span class="w">      </span><span class="no">Explore new angles and perspectives.</span>
-
-<span class="w">    </span><span class="nt">loop_until</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NO_MORE_RESEARCH</span>
-<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">        </span><span class="no">If exhausted, yield status: NO_MORE_RESEARCH</span>
-</code></pre></div>
-<h2 id="installation">Installation</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Basic installation</span>
-pip<span class="w"> </span>install<span class="w"> </span>cyberian
-
-<span class="c1"># With provider support for external API calls</span>
-pip<span class="w"> </span>install<span class="w"> </span>cyberian<span class="o">[</span>providers<span class="o">]</span>
-
-<span class="c1"># Or use without installation</span>
-uvx<span class="w"> </span>cyberian
-</code></pre></div>
-<h2 id="where-to-go-next">Where to Go Next</h2>
-<div class="grid cards">
+<p>For learning, see <a href="../tutorials/">Tutorials</a>. For solving problems, see <a href="../how-to/">How-To Guides</a>.</p>
+<h2 id="available-references">Available References</h2>
+<h3 id="cli-commands"><a href="cli-commands/">CLI Commands</a></h3>
+<p>Complete reference for all cyberian commands:</p>
 <ul>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17z"/></svg></span> <strong>Tutorials</strong></p>
-<hr />
-<p>New to cyberian? Start here to learn the basics.</p>
-<p><a href="tutorials/getting-started/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Getting Started</a></p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg></span> <strong>How-To Guides</strong></p>
-<hr />
-<p>Task-oriented guides for specific problems.</p>
-<p><a href="how-to/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Browse Guides</a></p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg></span> <strong>Explanation</strong></p>
-<hr />
-<p>Understand how cyberian works under the hood.</p>
-<p><a href="explanation/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Learn Concepts</a></p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.81 2C4.83 2.09 4 3 4 4v16c0 1.05.95 2 2 2h12c1.05 0 2-.95 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H5.81M12 13h1a1 1 0 0 1 1 1v4h-1v-2h-1v2h-1v-4a1 1 0 0 1 1-1m0 1v1h1v-1zm3 1h3v1l-2 3h2v1h-3v-1l2-3h-2z"/></svg></span> <strong>Reference</strong></p>
-<hr />
-<p>Complete reference for all commands and schemas.</p>
-<p><a href="reference/cli-commands/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> CLI Reference</a></p>
-</li>
+<li><code>message</code> - Send messages to agents</li>
+<li><code>messages</code> - Retrieve conversation history</li>
+<li><code>status</code> - Check agent status</li>
+<li><code>server</code> - Start agentapi servers</li>
+<li><code>farm</code> - Manage server farms</li>
+<li><code>list-servers</code> - Find running servers</li>
+<li><code>stop</code> - Stop servers</li>
+<li><code>run</code> - Execute workflows</li>
 </ul>
-</div>
-<h2 id="integration-with-claude-code">Integration with Claude Code</h2>
-<p>A Claude Code skill is available for multi-agent orchestration:</p>
-<div class="highlight"><pre><span></span><code>/plugin<span class="w"> </span>marketplace<span class="w"> </span>add<span class="w"> </span>cyberian-skills
-</code></pre></div>
-<p>See <a href="integrations/claude-skill/">Claude Code Skill</a> for details.</p>
-<h2 id="project-links">Project Links</h2>
+<p>Each command includes:</p>
 <ul>
-<li><strong>Documentation</strong>: <a href="https://monarch-initiative.github.io/cyberian">https://monarch-initiative.github.io/cyberian</a></li>
-<li><strong>Source Code</strong>: <a href="https://github.com/monarch-initiative/cyberian">https://github.com/monarch-initiative/cyberian</a></li>
-<li><strong>Issue Tracker</strong>: <a href="https://github.com/monarch-initiative/cyberian/issues">https://github.com/monarch-initiative/cyberian/issues</a></li>
-<li><strong>agentapi</strong>: <a href="https://github.com/coder/agentapi">https://github.com/coder/agentapi</a></li>
+<li>Full syntax</li>
+<li>All options and flags</li>
+<li>Shorthands</li>
+<li>Examples</li>
+<li>Exit codes</li>
 </ul>
-<h2 id="technology-stack">Technology Stack</h2>
+<h3 id="workflow-schema"><a href="workflow-schema/">Workflow Schema</a></h3>
+<p>Complete YAML schema specification for workflows:</p>
 <ul>
-<li><strong>Python 3.10+</strong> with <code>uv</code> for dependency management</li>
-<li><strong>Typer</strong> for CLI interface</li>
-<li><strong>httpx</strong> for HTTP client interactions</li>
-<li><strong>Pydantic</strong> for data modeling and validation</li>
-<li><strong>Jinja2</strong> for template rendering in workflows</li>
-<li><strong>pytest</strong> for comprehensive testing</li>
+<li>Top-level workflow fields</li>
+<li>Task structure</li>
+<li>Parameter types</li>
+<li>Loop configuration</li>
+<li>Success criteria</li>
+<li>Provider calls</li>
+<li>All optional fields</li>
+</ul>
+<p>Includes:</p>
+<ul>
+<li>Field descriptions</li>
+<li>Types and constraints</li>
+<li>Required vs optional</li>
+<li>Default values</li>
+<li>Examples</li>
+</ul>
+<h3 id="configuration"><a href="configuration/">Configuration</a></h3>
+<p>Configuration file formats:</p>
+<ul>
+<li>Farm configuration files</li>
+<li>Server configuration</li>
+<li>Template directories</li>
+<li>CORS settings</li>
+</ul>
+<h2 id="using-reference-docs">Using Reference Docs</h2>
+<p><strong>Look things up</strong> when you need to know:</p>
+<ul>
+<li>"What flags does <code>message</code> accept?"</li>
+<li>"What's the syntax for loop_until?"</li>
+<li>"What fields are required in a farm config?"</li>
+</ul>
+<p><strong>Don't read cover-to-cover</strong> - Use as a reference when needed.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><strong><a href="../tutorials/">Tutorials</a></strong> - Learning-oriented guides</li>
+<li><strong><a href="../how-to/">How-To Guides</a></strong> - Task-oriented recipes</li>
+<li><strong><a href="../explanation/">Explanation</a></strong> - Understanding-oriented discussions</li>
 </ul>
 
 
@@ -1770,10 +1637,10 @@ uvx<span class="w"> </span>cyberian
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": ["content.tabs.link", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>

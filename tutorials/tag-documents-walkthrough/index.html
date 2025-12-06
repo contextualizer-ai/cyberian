@@ -1,0 +1,2504 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/tutorials/tag-documents-walkthrough/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../multi-agent-farm/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Tag Documents Walkthrough - cyberian</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tag-documents-workflow-walkthrough" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="cyberian" class="md-header__button md-logo" aria-label="cyberian" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            cyberian
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tag Documents Walkthrough
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/monarch-initiative/cyberian" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../how-to/" class="md-tabs__link">
+          
+  
+  
+  How-To Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../explanation/" class="md-tabs__link">
+          
+  
+  
+  Explanation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../integrations/" class="md-tabs__link">
+          
+  
+  
+  Integrations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="cyberian" class="md-nav__button md-logo" aria-label="cyberian" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    cyberian
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/monarch-initiative/cyberian" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Tag Documents Walkthrough
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tag Documents Walkthrough
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You'll Build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-workflow-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Workflow Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Workflow Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output File
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Walkthrough
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-Step Walkthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-your-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create Your Workspace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-copy-test-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Copy Test Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-start-an-agent-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Start an Agent Server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-run-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Run the Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-view-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: View the Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-verify-all-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Verify All Files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Key Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the Key Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-preconditions-file-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Preconditions (File Validation)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sync-targets-auto-copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Sync Targets (Auto-Copy)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-success-criteria-external-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Success Criteria (External Validation)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-on-validation-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens on Validation Failure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it-yourself-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Try It Yourself: Experiment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Try It Yourself: Experiment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#experiment-1-missing-test-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Experiment 1: Missing Test Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#experiment-2-different-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Experiment 2: Different Workspace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#experiment-3-multiple-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Experiment 3: Multiple Runs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pattern-1-separating-config-from-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: Separating Config from Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-2-reproducible-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Reproducible Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-3-self-documenting-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Self-Documenting Workflows
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-files-found-matching-abstractstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      "No files found matching 'abstracts/*.txt'"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-refused-or-no-server-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Connection refused" or "No server running"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-script-failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Validation script failed"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youve-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Learned
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Takeaways
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi-agent-farm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Multi-Agent Farm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    How-To Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            How-To Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How-To Guides
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/send-messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Send Messages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/manage-servers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manage Servers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/write-deep-research-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Write a Deep Research Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/use-templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Use Templates
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Explanation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Explanation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Explanation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/workflow-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/agent-lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Lifecycle
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/design-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design Decisions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reference Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli-commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CLI Commands
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/workflow-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Integrations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Integrations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/claude-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Code Skill
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You'll Build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-workflow-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Workflow Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Workflow Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output File
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-walkthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Walkthrough
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-Step Walkthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-your-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create Your Workspace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-copy-test-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Copy Test Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-start-an-agent-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Start an Agent Server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-run-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Run the Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-view-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: View the Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-verify-all-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Verify All Files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Key Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the Key Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-preconditions-file-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Preconditions (File Validation)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sync-targets-auto-copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Sync Targets (Auto-Copy)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-success-criteria-external-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Success Criteria (External Validation)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-on-validation-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens on Validation Failure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it-yourself-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Try It Yourself: Experiment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Try It Yourself: Experiment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#experiment-1-missing-test-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Experiment 1: Missing Test Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#experiment-2-different-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Experiment 2: Different Workspace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#experiment-3-multiple-runs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Experiment 3: Multiple Runs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pattern-1-separating-config-from-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: Separating Config from Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-2-reproducible-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Reproducible Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-3-self-documenting-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Self-Documenting Workflows
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-files-found-matching-abstractstxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      "No files found matching 'abstracts/*.txt'"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-refused-or-no-server-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Connection refused" or "No server running"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-script-failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Validation script failed"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youve-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Learned
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Takeaways
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="tag-documents-workflow-walkthrough">Tag Documents Workflow Walkthrough</h1>
+<p><strong>Time: 10 minutes</strong></p>
+<p>This tutorial walks you through running a complete real-world workflow that demonstrates cyberian's key features: preconditions, auto-sync, validation, and error handling.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Completed <a href="../getting-started/">Getting Started</a></li>
+<li>Python 3.10+ installed (for validation script)</li>
+</ul>
+<h2 id="what-youll-build">What You'll Build</h2>
+<p>A workflow that:</p>
+<ol>
+<li><strong>Tags biomedical abstracts</strong> with controlled vocabulary keywords</li>
+<li><strong>Validates</strong> the results using an external Python script</li>
+<li><strong>Retries</strong> automatically if validation fails</li>
+<li><strong>Auto-syncs</strong> configuration files to your workspace</li>
+</ol>
+<p>This demonstrates <strong>workflow-level validation</strong> with the "determinism sandwich" pattern:</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────┐
+│  Outer Loop (cyberian)              │  ← Deterministic orchestration
+│  • Workflow definition              │
+│  • Success criteria validation      │
+│  • Retry logic                      │
+└─────────────────────────────────────┘
+              ↓
+┌─────────────────────────────────────┐
+│  Middle Layer (AI Agent)            │  ← Non-deterministic reasoning
+│  • Reads abstracts                  │
+│  • Decides which tags fit           │
+│  • Creates tags.json                │
+└─────────────────────────────────────┘
+              ↓
+┌─────────────────────────────────────┐
+│  Bottom Layer (Tools/Validation)    │  ← Deterministic operations
+│  • File I/O (read, write)           │
+│  • Validation script checks         │
+│  • Per-file constraint checks       │
+└─────────────────────────────────────┘
+</code></pre></div>
+<p>The key: <strong>deterministic validation wraps non-deterministic AI work</strong>.</p>
+<h2 id="the-workflow-files">The Workflow Files</h2>
+<p>Before diving into the workflow, let's understand what files we're working with:</p>
+<h3 id="input-files">Input Files</h3>
+<p><strong><code>abstracts/*.txt</code></strong> - 20 biomedical research abstracts (one per file)</p>
+<p>Example (<code>abstract_001.txt</code>):
+<div class="highlight"><pre><span></span><code>CRISPR-Cas9 Gene Editing in Hematopoietic Stem Cells for Sickle Cell Disease Treatment
+
+Sickle cell disease is caused by a single point mutation in the beta-globin gene.
+We developed a CRISPR-Cas9-based approach to correct this mutation in patient-derived
+hematopoietic stem cells. Our method achieved 67% correction efficiency...
+</code></pre></div></p>
+<p><strong><code>taxonomy.json</code></strong> - Controlled vocabulary of allowed keywords</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;allowed_tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;genetics&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;gene-editing&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;cancer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;immunology&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;neuroscience&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;clinical-trial&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="err">...</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong><code>scripts/validate_tags.py</code></strong> - Python validation script</p>
+<p>Checks that:
+- All 20 abstracts are tagged
+- Each has 2-4 tags
+- All tags come from <code>taxonomy.json</code>
+- JSON structure is correct</p>
+<h3 id="output-file">Output File</h3>
+<p><strong><code>tags.json</code></strong> - The agent creates this</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;documents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abstract_001.txt&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;genetics&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gene-editing&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;clinical-trial&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="err">...</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="the-workflow">The Workflow</h2>
+<p>The workflow is at <code>examples/tag-documents/tag-workflow.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag-documents</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tag biomedical abstracts with controlled vocabulary keywords</span>
+
+<span class="c1"># Files that must exist and files to auto-sync</span>
+<span class="nt">preconditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files_exist</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">patterns</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">abstracts/*.txt</span><span class="w">          </span><span class="c1"># Test data (you provide)</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">taxonomy.json</span><span class="w">            </span><span class="c1"># Config (auto-synced)</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/validate_tags.py</span><span class="w"> </span><span class="c1"># Script (auto-synced)</span>
+<span class="w">  </span><span class="nt">sync_targets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">taxonomy.json</span><span class="w">            </span><span class="c1"># Auto-copy to workspace</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/</span><span class="w">                 </span><span class="c1"># Auto-copy to workspace</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Configuration and validation files.</span>
+<span class="w">      </span><span class="no">Note: abstracts/*.txt are test data and should exist in workspace.</span>
+
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tag_abstracts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">You need to tag biomedical research abstracts with keywords.</span>
+
+<span class="w">      </span><span class="no">1. Read all .txt files in the abstracts/ directory (20 files)</span>
+<span class="w">      </span><span class="no">2. For each abstract, assign 2-4 relevant keywords from taxonomy.json</span>
+<span class="w">      </span><span class="no">3. Create tags.json with the results</span>
+
+<span class="w">      </span><span class="no">Important: Only use tags from the allowed_tags list in taxonomy.json!</span>
+
+<span class="w">    </span><span class="nt">success_criteria</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/validate_tags.py</span><span class="w">  </span><span class="c1"># Validates the output</span>
+<span class="w">      </span><span class="nt">max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w">                    </span><span class="c1"># Try up to 3 times if validation fails</span>
+<span class="w">      </span><span class="nt">retry_message</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">Validation errors: {{error}}</span>
+<span class="w">        </span><span class="no">Please fix tags.json.</span>
+</code></pre></div>
+<p><strong>Key parts:</strong></p>
+<ul>
+<li><strong><code>files_exist</code></strong>: Checks required files before starting</li>
+<li><strong><code>sync_targets</code></strong>: Auto-copies <code>taxonomy.json</code> and <code>scripts/</code> to your workspace</li>
+<li><strong><code>success_criteria</code></strong>: Runs validation script after agent finishes</li>
+<li><strong><code>max_retries: 3</code></strong>: Agent gets 3 chances to fix errors</li>
+</ul>
+<h2 id="step-by-step-walkthrough">Step-by-Step Walkthrough</h2>
+<h3 id="step-1-create-your-workspace">Step 1: Create Your Workspace</h3>
+<p>Create a clean workspace directory:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/workspace/tag-abstracts
+<span class="nb">cd</span><span class="w"> </span>~/workspace/tag-abstracts
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Clean Workspace</p>
+<p>Using a fresh directory ensures no leftover files interfere with the workflow.</p>
+</div>
+<h3 id="step-2-copy-test-data">Step 2: Copy Test Data</h3>
+<p>Copy the abstracts (test data) to your workspace:</p>
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>-r<span class="w"> </span>examples/tag-documents/abstracts<span class="w"> </span>.
+</code></pre></div>
+<p>Verify you have the files:</p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>abstracts/
+<span class="c1"># Should show: abstract_001.txt through abstract_020.txt</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Why Only Abstracts?</p>
+<p>The workflow's <code>sync_targets</code> will automatically copy <code>taxonomy.json</code> and <code>scripts/</code> for you! You only need to provide the test data.</p>
+</div>
+<h3 id="step-3-start-an-agent-server">Step 3: Start an Agent Server</h3>
+<p>Start a Claude Code server in your workspace:</p>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>--skip-permissions<span class="w"> </span>--dir<span class="w"> </span>~/workspace/tag-abstracts
+</code></pre></div>
+<p>This starts an agentapi server:
+- <strong>Agent</strong>: Claude Code (recommended for this workflow)
+- <strong>Port</strong>: 3284 (default)
+- <strong>Directory</strong>: Your workspace
+- <strong>Skip permissions</strong>: Allows file operations</p>
+<div class="admonition important">
+<p class="admonition-title">Server Directory</p>
+<p>The server must run in the same directory where the workflow will execute (<code>~/workspace/tag-abstracts</code>).</p>
+</div>
+<h3 id="step-4-run-the-workflow">Step 4: Run the Workflow</h3>
+<p>Now run the workflow with auto-sync:</p>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--workdir<span class="w"> </span>~/workspace/tag-abstracts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>examples/tag-documents/tag-workflow.yaml
+</code></pre></div>
+<p><strong>What happens:</strong></p>
+<ol>
+<li>
+<p><strong>Auto-sync</strong> (before execution):
+   <div class="highlight"><pre><span></span><code>INFO - Syncing 2 target(s) to working directory
+INFO -   Copying file: taxonomy.json
+INFO -   Copying directory: scripts/
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Precondition check</strong>:
+   <div class="highlight"><pre><span></span><code>INFO - Precondition OK: &#39;abstracts/*.txt&#39; matched 20 file(s)
+INFO - Precondition OK: &#39;taxonomy.json&#39; matched 1 file(s)
+INFO - Precondition OK: &#39;scripts/validate_tags.py&#39; matched 1 file(s)
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Agent execution</strong>:</p>
+</li>
+<li>Agent reads all 20 abstracts</li>
+<li>Reads taxonomy.json for allowed keywords</li>
+<li>Assigns 2-4 tags per abstract</li>
+<li>
+<p>Creates tags.json</p>
+</li>
+<li>
+<p><strong>Validation</strong>:</p>
+</li>
+<li>Runs <code>scripts/validate_tags.py</code></li>
+<li>Checks all constraints</li>
+<li>Either succeeds or provides errors for retry</li>
+</ol>
+<h3 id="step-5-view-the-results">Step 5: View the Results</h3>
+<p>Check the generated tags:</p>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>~/workspace/tag-abstracts/tags.json
+</code></pre></div>
+<p>You should see structured JSON like:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;documents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abstract_001.txt&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;genetics&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gene-editing&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;clinical-trial&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abstract_002.txt&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;quantum-physics&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;structural-biology&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="err">...</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="step-6-verify-all-files">Step 6: Verify All Files</h3>
+<p>See what's in your workspace now:</p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-la<span class="w"> </span>~/workspace/tag-abstracts/
+</code></pre></div>
+<p>You should see:</p>
+<div class="highlight"><pre><span></span><code>abstracts/              # You provided (test data)
+taxonomy.json           # Auto-synced from workflow
+scripts/                # Auto-synced from workflow
+tags.json              # Agent output
+</code></pre></div>
+<h2 id="understanding-the-key-features">Understanding the Key Features</h2>
+<h3 id="1-preconditions-file-validation">1. Preconditions (File Validation)</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">preconditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files_exist</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">patterns</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">abstracts/*.txt</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">taxonomy.json</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/validate_tags.py</span>
+</code></pre></div>
+<p><strong>Purpose</strong>: Fail fast if required files are missing
+- Checked <strong>before</strong> task execution
+- Clear error messages with hints
+- Prevents cryptic errors later</p>
+<h3 id="2-sync-targets-auto-copy">2. Sync Targets (Auto-Copy)</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">preconditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sync_targets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">taxonomy.json</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/</span>
+</code></pre></div>
+<p><strong>Purpose</strong>: Automatically copy config files to workspace
+- Syncs <strong>before</strong> changing directory
+- Overwrites existing files (ensures fresh copy)
+- Non-fatal if file missing (just warns)</p>
+<h3 id="3-success-criteria-external-validation">3. Success Criteria (External Validation)</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">success_criteria</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/validate_tags.py</span>
+<span class="w">  </span><span class="nt">max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">retry_message</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">Validation errors: {{error}}</span>
+<span class="w">    </span><span class="no">Please fix tags.json.</span>
+</code></pre></div>
+<p><strong>Purpose</strong>: Deterministic validation with automatic retry
+- Runs Python script after agent finishes
+- Script must set <code>result = True/False</code>
+- Errors fed back to agent for correction
+- Up to 3 retries</p>
+<h2 id="what-happens-on-validation-failure">What Happens on Validation Failure</h2>
+<p>The validation script (<code>scripts/validate_tags.py</code>) performs deterministic checks:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Loads taxonomy.json to get allowed tags</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;taxonomy.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">allowed_tags</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;allowed_tags&quot;</span><span class="p">]</span>
+
+<span class="c1"># Checks each document</span>
+<span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">]:</span>
+    <span class="c1"># Check 1: All tags must be from taxonomy.json</span>
+    <span class="n">invalid_tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_tags</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">invalid_tags</span><span class="p">:</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">: Invalid tags </span><span class="si">{</span><span class="n">invalid_tags</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check 2: Must have 2-4 tags</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">: Has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> tags (must be 2-4)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Sets result = True/False</span>
+<span class="n">result</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div>
+<p>If validation fails, the error is fed back to the agent:</p>
+<div class="highlight"><pre><span></span><code>Validation errors:
+  - abstract_005.txt: Invalid tags [&#39;machine-learning&#39;]
+  - abstract_012.txt: Document has 5 tags (must be 2-4)
+
+Please fix tags.json.
+</code></pre></div>
+<p>The agent reads the error, understands what's wrong, and fixes <code>tags.json</code>. This repeats up to 3 times.</p>
+<h2 id="try-it-yourself-experiment">Try It Yourself: Experiment</h2>
+<h3 id="experiment-1-missing-test-data">Experiment 1: Missing Test Data</h3>
+<p>Try running without abstracts:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/tmp/test-fail
+cyberian<span class="w"> </span>run<span class="w"> </span>--workdir<span class="w"> </span>/tmp/test-fail<span class="w"> </span>examples/tag-documents/tag-workflow.yaml
+</code></pre></div>
+<p><strong>Result</strong>: Clear error message:
+<div class="highlight"><pre><span></span><code>RuntimeError: Precondition failed: No files found matching &#39;abstracts/*.txt&#39;
+Current directory: /tmp/test-fail
+Hint: Check that required files exist or use --workdir to specify working directory
+</code></pre></div></p>
+<h3 id="experiment-2-different-workspace">Experiment 2: Different Workspace</h3>
+<p>Run in a completely different location:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/tmp/another-workspace
+cp<span class="w"> </span>-r<span class="w"> </span>examples/tag-documents/abstracts<span class="w"> </span>/tmp/another-workspace/
+cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>-s<span class="w"> </span>--dir<span class="w"> </span>/tmp/another-workspace
+cyberian<span class="w"> </span>run<span class="w"> </span>--workdir<span class="w"> </span>/tmp/another-workspace<span class="w"> </span>examples/tag-documents/tag-workflow.yaml
+</code></pre></div>
+<p><strong>Result</strong>: Works perfectly! Auto-sync copies config files.</p>
+<h3 id="experiment-3-multiple-runs">Experiment 3: Multiple Runs</h3>
+<p>Run the workflow twice in the same workspace:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># First run</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>--workdir<span class="w"> </span>~/workspace/tag-abstracts<span class="w"> </span>examples/tag-documents/tag-workflow.yaml
+
+<span class="c1"># Second run (immediately after)</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>--workdir<span class="w"> </span>~/workspace/tag-abstracts<span class="w"> </span>examples/tag-documents/tag-workflow.yaml
+</code></pre></div>
+<p><strong>Result</strong>: Second run overwrites tags.json with fresh results. Config files are re-synced (updated).</p>
+<h2 id="common-patterns">Common Patterns</h2>
+<h3 id="pattern-1-separating-config-from-data">Pattern 1: Separating Config from Data</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">sync_targets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config.json</span><span class="w">       </span><span class="c1"># Configuration (changes rarely)</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/</span><span class="w">          </span><span class="c1"># Validation/processing scripts</span>
+
+<span class="nt">files_exist</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">patterns</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/*.csv</span><span class="w">        </span><span class="c1"># Test data (changes per run)</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config.json</span><span class="w">       </span><span class="c1"># Must exist (synced)</span>
+</code></pre></div>
+<p><strong>Benefit</strong>: Users provide data, workflow provides config</p>
+<h3 id="pattern-2-reproducible-validation">Pattern 2: Reproducible Validation</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">success_criteria</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/validate.py</span>
+<span class="w">  </span><span class="nt">max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">retry_message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Errors:</span><span class="nv"> </span><span class="s">{{error}}&quot;</span>
+</code></pre></div>
+<p><strong>Benefit</strong>: Deterministic validation, automatic correction</p>
+<h3 id="pattern-3-self-documenting-workflows">Pattern 3: Self-Documenting Workflows</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">requirements</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">agents</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-code</span>
+<span class="w">      </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RECOMMENDED</span>
+<span class="w">  </span><span class="nt">dependencies</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
+<span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&gt;=3.11&quot;</span>
+<span class="w">      </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REQUIRED</span>
+<span class="w">  </span><span class="nt">notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">This workflow requires file I/O capabilities</span>
+</code></pre></div>
+<p><strong>Benefit</strong>: Users know what's needed before running</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="no-files-found-matching-abstractstxt">"No files found matching 'abstracts/*.txt'"</h3>
+<p><strong>Cause</strong>: Test data not in workspace</p>
+<p><strong>Fix</strong>: Copy abstracts to your workspace:
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>-r<span class="w"> </span>examples/tag-documents/abstracts<span class="w"> </span>~/workspace/tag-abstracts/
+</code></pre></div></p>
+<h3 id="connection-refused-or-no-server-running">"Connection refused" or "No server running"</h3>
+<p><strong>Cause</strong>: Agent server not started</p>
+<p><strong>Fix</strong>: Start a server first:
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>-s<span class="w"> </span>--dir<span class="w"> </span>~/workspace/tag-abstracts
+</code></pre></div></p>
+<h3 id="validation-script-failed">"Validation script failed"</h3>
+<p><strong>Cause</strong>: Python not installed or wrong version</p>
+<p><strong>Fix</strong>: Check Python version:
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>--version<span class="w">  </span><span class="c1"># Should be 3.10+</span>
+</code></pre></div></p>
+<h2 id="what-youve-learned">What You've Learned</h2>
+<p>You now understand:</p>
+<ul>
+<li>✅ <strong>Preconditions</strong> - Validate files exist before running (fail fast)</li>
+<li>✅ <strong>Sync Targets</strong> - Auto-copy config files to workspace</li>
+<li>✅ <strong>Success Criteria</strong> - External validation with automatic retry</li>
+<li>✅ <strong>Workdir Management</strong> - Control where workflows execute</li>
+<li>✅ <strong>Determinism Sandwich</strong> - Wrap non-deterministic AI work with deterministic validation</li>
+<li>✅ <strong>Real-world Pattern</strong> - Separating config (synced) from test data (user-provided)</li>
+</ul>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><strong><a href="../multi-agent-farm/">Multi-Agent Farm</a></strong> - Run multiple agents in parallel</li>
+<li><strong><a href="../how-to/write-workflows.md">How-To: Write Workflows</a></strong> - Advanced patterns</li>
+<li><strong><a href="../../reference/workflow-schema/">Reference: Workflow Schema</a></strong> - Complete YAML reference</li>
+</ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<div class="admonition success">
+<p class="admonition-title">Auto-Sync Saves Time</p>
+<p>You only copy test data once. Config files are auto-synced on each run.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Fail Fast is Good</p>
+<p>Preconditions catch errors before wasting agent time.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">External Validation Works</p>
+<p>Deterministic validation scripts ensure correctness, even with non-deterministic agents.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Clean Workspaces</p>
+<p>Use separate workspaces for different runs to avoid confusion.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.tabs.link", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

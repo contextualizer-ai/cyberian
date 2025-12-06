@@ -1,0 +1,2700 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/explanation/agent-lifecycle/">
+      
+      
+        <link rel="prev" href="../workflow-model/">
+      
+      
+        <link rel="next" href="../design-decisions/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Agent Lifecycle - cyberian</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agent-lifecycle" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="cyberian" class="md-header__button md-logo" aria-label="cyberian" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            cyberian
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent Lifecycle
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/monarch-initiative/cyberian" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tutorials/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../how-to/" class="md-tabs__link">
+          
+  
+  
+  How-To Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Explanation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../integrations/" class="md-tabs__link">
+          
+  
+  
+  Integrations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="cyberian" class="md-nav__button md-logo" aria-label="cyberian" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    cyberian
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/monarch-initiative/cyberian" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/tag-documents-walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tag Documents Walkthrough
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/multi-agent-farm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Multi-Agent Farm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    How-To Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            How-To Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How-To Guides
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/send-messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Send Messages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/manage-servers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Manage Servers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/write-deep-research-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Write a Deep Research Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/use-templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Use Templates
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Explanation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Explanation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Explanation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflow-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Agent Lifecycle
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Lifecycle
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#server-lifecycle-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server Lifecycle Basics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server Lifecycle Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-agent-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is an Agent Server?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lifecycle-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lifecycle Phases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-agent-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Agent State?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Persistence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reuse-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reuse Mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reuse Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-reuse-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Reuse Mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-iterative-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Iterative Development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refresh-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refresh Mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Refresh Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-refresh-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Refresh Mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-flow_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-independent-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Independent Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing a Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-reuse-mode-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Reuse Mode When:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-refresh-mode-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Refresh Mode When:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-trade-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Trade-offs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command-Line Override
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command-Line Override">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#override-in-workflow-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Override in Workflow File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#override-from-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Override from Command Line
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-window-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context Window Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context Window Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#context-window-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context Window Overflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symptoms-of-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Symptoms of Overflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mitigation Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-isolation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Isolation Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State Isolation Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-based-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      File-Based Communication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-task-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Task Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-server-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Server Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Server Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-server-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting Server Manually
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting-for-fresh-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restarting for Fresh State
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-workflow-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Workflow Sessions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Workflow Sessions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequential-workflows-shared-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequential Workflows (Shared State)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independent-workflows-isolated-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Independent Workflows (Isolated State)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-to-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default to Reuse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch-to-refresh-when-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Switch to Refresh When Needed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-your-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Your Choice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-both-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Both Modes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design Decisions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reference Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli-commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CLI Commands
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/workflow-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Integrations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Integrations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Integrations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/claude-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Code Skill
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#server-lifecycle-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server Lifecycle Basics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server Lifecycle Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-agent-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is an Agent Server?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lifecycle-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lifecycle Phases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-agent-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Agent State?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Persistence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reuse-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reuse Mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reuse Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-reuse-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Reuse Mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-iterative-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Iterative Development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refresh-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refresh Mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Refresh Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-refresh-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Refresh Mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-flow_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-independent-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Independent Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing a Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-reuse-mode-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Reuse Mode When:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-refresh-mode-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Refresh Mode When:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-trade-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Trade-offs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command-Line Override
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command-Line Override">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#override-in-workflow-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Override in Workflow File
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#override-from-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Override from Command Line
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-window-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context Window Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context Window Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#context-window-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context Window Overflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symptoms-of-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Symptoms of Overflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mitigation Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-isolation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Isolation Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State Isolation Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-based-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      File-Based Communication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateless-task-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stateless Task Design
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-server-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Server Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Server Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-server-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting Server Manually
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting-for-fresh-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restarting for Fresh State
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-workflow-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Workflow Sessions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Workflow Sessions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequential-workflows-shared-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequential Workflows (Shared State)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independent-workflows-isolated-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Independent Workflows (Isolated State)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-to-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default to Reuse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch-to-refresh-when-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Switch to Refresh When Needed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-your-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Your Choice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-both-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Both Modes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agent-lifecycle">Agent Lifecycle</h1>
+<p>This document explains how agent servers are managed during workflow execution and the implications of different lifecycle modes.</p>
+<h2 id="server-lifecycle-basics">Server Lifecycle Basics</h2>
+<h3 id="what-is-an-agent-server">What is an Agent Server?</h3>
+<p>An agent server is an <strong>agentapi process</strong> that:</p>
+<ul>
+<li>Listens on a port (e.g., 3284)</li>
+<li>Maintains conversation state</li>
+<li>Executes agent (Claude, Aider, etc.)</li>
+<li>Persists in background</li>
+</ul>
+<h3 id="lifecycle-phases">Lifecycle Phases</h3>
+<div class="highlight"><pre><span></span><code>Start → Running → Stop
+  │       │         │
+  │       │         └─► Process terminates
+  │       │             Conversation lost
+  │       │
+  │       └─► Accepts messages
+  │           Maintains state
+  │
+  └─► Process spawned
+      Fresh state
+</code></pre></div>
+<h2 id="state-management">State Management</h2>
+<h3 id="what-is-agent-state">What is Agent State?</h3>
+<p>Agent state includes:</p>
+<ul>
+<li><strong>Conversation history</strong> - All messages exchanged</li>
+<li><strong>Agent memory</strong> - Context window contents</li>
+<li><strong>Working directory</strong> - Files created/modified</li>
+<li><strong>Tool permissions</strong> - Approved/denied tools</li>
+</ul>
+<h3 id="state-persistence">State Persistence</h3>
+<p><strong>During server lifetime:</strong></p>
+<ul>
+<li>State persists in memory</li>
+<li>Conversation accumulates</li>
+<li>Agent "remembers" previous interactions</li>
+</ul>
+<p><strong>After server stops:</strong></p>
+<ul>
+<li>Memory state lost</li>
+<li>Conversation history lost</li>
+<li>Files remain (on disk)</li>
+</ul>
+<h2 id="reuse-mode">Reuse Mode</h2>
+<h3 id="what-is-reuse-mode">What is Reuse Mode?</h3>
+<p><strong>Reuse mode</strong> (default) keeps the same agent server running throughout workflow execution.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-workflow</span>
+<span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reuse</span><span class="w">  </span><span class="c1"># Default, can omit</span>
+
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">plan.txt.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+
+<span class="w">  </span><span class="nt">task2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Read</span><span class="nv"> </span><span class="s">plan.txt</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">implement.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+
+<span class="w">  </span><span class="nt">task3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Review</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">implementation.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+</code></pre></div>
+<h3 id="execution-flow">Execution Flow</h3>
+<div class="highlight"><pre><span></span><code>Workflow starts
+    │
+    ├─► Start agent server (if not running)
+    │
+    ├─► task1
+    │   └─► Agent: &quot;I&#39;ve created plan.txt&quot;
+    │
+    ├─► task2
+    │   └─► Agent: &quot;I read plan.txt and implemented X&quot;
+    │          ↑ Remembers creating plan.txt
+    │
+    ├─► task3
+    │   └─► Agent: &quot;My implementation looks good&quot;
+    │          ↑ Remembers both task1 and task2
+    │
+    └─► Workflow ends (server keeps running)
+</code></pre></div>
+<h3 id="benefits">Benefits</h3>
+<ol>
+<li><strong>Context preservation</strong> - Agent remembers previous tasks</li>
+<li><strong>Faster execution</strong> - No server restart overhead</li>
+<li><strong>Natural conversation</strong> - Can reference earlier work</li>
+<li><strong>Continuous state</strong> - Build on previous results</li>
+</ol>
+<h3 id="example-iterative-development">Example: Iterative Development</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iterative-dev</span>
+<span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reuse</span>
+
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">design</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Design a Python class for user management.</span>
+<span class="w">      </span><span class="no">Write design to design.md</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">  </span><span class="nt">implement</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read design.md and implement the class.</span>
+<span class="w">      </span><span class="no">Save to user_manager.py</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Write tests for your user_manager.py implementation.</span>
+<span class="w">      </span><span class="no">Save to test_user_manager.py</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">  </span><span class="nt">refactor</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Review the code you wrote.</span>
+<span class="w">      </span><span class="no">Refactor for better readability.</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+</code></pre></div>
+<p>The agent maintains context through all steps, knowing what it designed, implemented, and tested.</p>
+<h2 id="refresh-mode">Refresh Mode</h2>
+<h3 id="what-is-refresh-mode">What is Refresh Mode?</h3>
+<p><strong>Refresh mode</strong> restarts the agent server between each task, providing clean state.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-workflow</span>
+<span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refresh</span><span class="w">  </span><span class="c1"># Restart between tasks</span>
+
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Do</span><span class="nv"> </span><span class="s">task</span><span class="nv"> </span><span class="s">1.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+
+<span class="w">  </span><span class="nt">task2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Do</span><span class="nv"> </span><span class="s">task</span><span class="nv"> </span><span class="s">2.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+</code></pre></div>
+<h3 id="execution-flow_1">Execution Flow</h3>
+<div class="highlight"><pre><span></span><code>Workflow starts
+    │
+    ├─► task1
+    │   ├─► Start agent server
+    │   ├─► Agent: Executes task1 (clean state)
+    │   └─► Stop agent server
+    │
+    ├─► task2
+    │   ├─► Start fresh agent server
+    │   ├─► Agent: Executes task2 (no memory of task1)
+    │   └─► Stop agent server
+    │
+    └─► Workflow ends
+</code></pre></div>
+<h3 id="benefits_1">Benefits</h3>
+<ol>
+<li><strong>Clean state</strong> - No context pollution</li>
+<li><strong>Predictable behavior</strong> - Each task isolated</li>
+<li><strong>Fresh context</strong> - Agent starts from scratch</li>
+<li><strong>Independent tasks</strong> - Can run in any order</li>
+</ol>
+<h3 id="example-independent-analysis">Example: Independent Analysis</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">independent-analysis</span>
+<span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refresh</span>
+
+<span class="nt">params</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">data_file</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">statistical_analysis</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read {{data_file}}</span>
+<span class="w">      </span><span class="no">Perform statistical analysis</span>
+<span class="w">      </span><span class="no">Write results to stats.md</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">  </span><span class="nt">visualization_analysis</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read {{data_file}}</span>
+<span class="w">      </span><span class="no">Create visualizations</span>
+<span class="w">      </span><span class="no">Write code to visualize.py</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">  </span><span class="nt">summary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read {{data_file}}</span>
+<span class="w">      </span><span class="no">Write executive summary to summary.md</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+</code></pre></div>
+<p>Each task gets fresh agent with no bias from previous tasks.</p>
+<h2 id="choosing-a-mode">Choosing a Mode</h2>
+<h3 id="use-reuse-mode-when">Use Reuse Mode When:</h3>
+<ul>
+<li><strong>Tasks build on each other</strong> - Later tasks reference earlier work</li>
+<li><strong>Iterative workflows</strong> - Progressive refinement</li>
+<li><strong>Speed matters</strong> - Avoid restart overhead</li>
+<li><strong>Continuous context helpful</strong> - Agent knowledge accumulates</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>Software development (design → implement → test → refactor)</li>
+<li>Research (gather → analyze → synthesize → report)</li>
+<li>Content creation (outline → draft → edit → finalize)</li>
+</ul>
+<h3 id="use-refresh-mode-when">Use Refresh Mode When:</h3>
+<ul>
+<li><strong>Tasks are independent</strong> - No relationship between tasks</li>
+<li><strong>Clean state required</strong> - Avoid context pollution</li>
+<li><strong>Testing needed</strong> - Each task should work standalone</li>
+<li><strong>Long workflows</strong> - Context window might overflow</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>Parallel analysis of multiple datasets</li>
+<li>Independent code reviews</li>
+<li>A/B testing different approaches</li>
+<li>Batch processing unrelated items</li>
+</ul>
+<h3 id="performance-trade-offs">Performance Trade-offs</h3>
+<p><strong>Reuse mode:</strong></p>
+<div class="highlight"><pre><span></span><code>task1: 30s
+task2: 30s (no restart overhead)
+task3: 30s (no restart overhead)
+Total: 90s
+</code></pre></div>
+<p><strong>Refresh mode:</strong></p>
+<div class="highlight"><pre><span></span><code>task1: 30s + 5s restart
+task2: 30s + 5s restart
+task3: 30s + 5s restart
+Total: 105s (15s overhead)
+</code></pre></div>
+<p>Restart overhead is typically <strong>2-10 seconds</strong> depending on agent type.</p>
+<h2 id="command-line-override">Command-Line Override</h2>
+<h3 id="override-in-workflow-file">Override in Workflow File</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-workflow</span>
+<span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reuse</span><span class="w">  </span><span class="c1"># Default for this workflow</span>
+</code></pre></div>
+<h3 id="override-from-command-line">Override from Command Line</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Override to refresh</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>my-workflow.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
+
+<span class="c1"># Override to reuse</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>my-workflow.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>reuse
+</code></pre></div>
+<p>Command-line flag <strong>takes precedence</strong> over workflow file.</p>
+<h2 id="context-window-considerations">Context Window Considerations</h2>
+<h3 id="context-window-overflow">Context Window Overflow</h3>
+<p>Agents have limited context windows:</p>
+<ul>
+<li>Claude 3.5 Sonnet: 200k tokens (~600 pages)</li>
+<li>Context fills with conversation history</li>
+<li>Eventually, earliest messages dropped</li>
+</ul>
+<h3 id="symptoms-of-overflow">Symptoms of Overflow</h3>
+<div class="highlight"><pre><span></span><code>Agent: &quot;I don&#39;t recall creating plan.txt&quot;
+       ↑ Too much history, early messages dropped
+</code></pre></div>
+<h3 id="mitigation-strategies">Mitigation Strategies</h3>
+<ol>
+<li><strong>Use refresh mode</strong> for long workflows</li>
+<li><strong>Break into smaller workflows</strong></li>
+<li><strong>Save intermediate results to files</strong></li>
+<li><strong>Restart agent manually</strong> between major phases</li>
+</ol>
+<h2 id="state-isolation-patterns">State Isolation Patterns</h2>
+<h3 id="file-based-communication">File-Based Communication</h3>
+<p>Even in refresh mode, tasks communicate via files:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refresh</span>
+
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">producer</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Generate data.</span>
+<span class="w">      </span><span class="no">Write to data.json</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">  </span><span class="nt">consumer</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read data.json  # File persists even with refresh</span>
+<span class="w">      </span><span class="no">Process data.</span>
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
+</code></pre></div>
+<h3 id="stateless-task-design">Stateless Task Design</h3>
+<p>Design tasks to be <strong>self-contained</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Bad - relies on agent memory</span>
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Remember</span><span class="nv"> </span><span class="s">this:</span><span class="nv"> </span><span class="s">X=42&quot;</span>
+<span class="w">  </span><span class="nt">task2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;What</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">X?&quot;</span><span class="w">  </span><span class="c1"># Fails in refresh mode</span>
+
+<span class="c1"># Good - uses files</span>
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">task1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Write</span><span class="nv"> </span><span class="s">X=42</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">state.txt.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+<span class="w">  </span><span class="nt">task2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Read</span><span class="nv"> </span><span class="s">state.txt</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">use</span><span class="nv"> </span><span class="s">X.</span><span class="nv"> </span><span class="s">COMPLETION_STATUS:</span><span class="nv"> </span><span class="s">COMPLETE&quot;</span>
+</code></pre></div>
+<h2 id="manual-server-management">Manual Server Management</h2>
+<h3 id="starting-server-manually">Starting Server Manually</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Start server before workflow</span>
+cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>--port<span class="w"> </span><span class="m">3284</span><span class="w"> </span>--skip-permissions
+
+<span class="c1"># Run workflow (uses existing server)</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml
+</code></pre></div>
+<p>Workflow will:</p>
+<ul>
+<li>Detect server is running</li>
+<li>Reuse it (regardless of agent_lifecycle setting)</li>
+<li>Not stop it when done</li>
+</ul>
+<h3 id="restarting-for-fresh-state">Restarting for Fresh State</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Stop existing server</span>
+cyberian<span class="w"> </span>stop<span class="w"> </span>--port<span class="w"> </span><span class="m">3284</span>
+
+<span class="c1"># Start fresh</span>
+cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>--port<span class="w"> </span><span class="m">3284</span><span class="w"> </span>--skip-permissions
+
+<span class="c1"># Run workflow with clean slate</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml
+</code></pre></div>
+<h2 id="multi-workflow-sessions">Multi-Workflow Sessions</h2>
+<h3 id="sequential-workflows-shared-state">Sequential Workflows (Shared State)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Start server</span>
+cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>claude<span class="w"> </span>--skip-permissions
+
+<span class="c1"># Run workflows sequentially, sharing agent state</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>phase1.yaml
+cyberian<span class="w"> </span>run<span class="w"> </span>phase2.yaml<span class="w">  </span><span class="c1"># Remembers phase1</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>phase3.yaml<span class="w">  </span><span class="c1"># Remembers phase1 and phase2</span>
+
+<span class="c1"># Cleanup</span>
+cyberian<span class="w"> </span>stop<span class="w"> </span>--port<span class="w"> </span><span class="m">3284</span>
+</code></pre></div>
+<h3 id="independent-workflows-isolated-state">Independent Workflows (Isolated State)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Each workflow gets fresh state</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow1.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow2.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow3.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
+</code></pre></div>
+<p>Or use different ports:</p>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow1.yaml<span class="w"> </span>--port<span class="w"> </span><span class="m">3000</span><span class="w"> </span><span class="p">&amp;</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow2.yaml<span class="w"> </span>--port<span class="w"> </span><span class="m">3001</span><span class="w"> </span><span class="p">&amp;</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow3.yaml<span class="w"> </span>--port<span class="w"> </span><span class="m">3002</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="nb">wait</span>
+</code></pre></div>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="default-to-reuse">Default to Reuse</h3>
+<p>Start with <code>reuse</code> mode (default):</p>
+<ul>
+<li>Simpler</li>
+<li>Faster</li>
+<li>More natural agent behavior</li>
+</ul>
+<h3 id="switch-to-refresh-when-needed">Switch to Refresh When Needed</h3>
+<p>Use <code>refresh</code> when you observe:</p>
+<ul>
+<li>Context pollution</li>
+<li>Agent confusion</li>
+<li>Need for independence</li>
+<li>Very long workflows</li>
+</ul>
+<h3 id="document-your-choice">Document Your Choice</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-workflow</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Uses refresh mode for independent analysis</span>
+<span class="nt">agent_lifecycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refresh</span><span class="w">  </span><span class="c1"># Clear intent</span>
+</code></pre></div>
+<h3 id="test-both-modes">Test Both Modes</h3>
+<p>For critical workflows, test with both modes:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Test with reuse</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>reuse
+
+<span class="c1"># Test with refresh</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
+</code></pre></div>
+<p>Ensure workflow works correctly in both modes.</p>
+<h2 id="related">Related</h2>
+<ul>
+<li><a href="../architecture/">Architecture</a> - Server management details</li>
+<li><a href="../workflow-model/">Workflow Model</a> - Task execution flow</li>
+<li><a href="../how-to/write-workflows.md">How-To: Write Workflows</a> - Practical examples</li>
+<li><a href="../../tutorials/multi-agent-farm/">Tutorial: Multi-Agent Farm</a> - Multiple servers</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.tabs.link", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
