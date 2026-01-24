@@ -124,16 +124,26 @@ class TaskRunner:
             self._server_stdout_file = open(stdout_path, "a", encoding="utf-8")
             self._server_stderr_file = open(stderr_path, "a", encoding="utf-8")
 
-            self._server_process = subprocess.Popen(
-                cmd,
-                stdout=self._server_stdout_file,
-                stderr=self._server_stderr_file
-            )
-            logger.info(f"Server started with PID: {self._server_process.pid}")
-            logger.info(f"Server logs: stdout={stdout_path} stderr={stderr_path}")
+            try:
+                self._server_process = subprocess.Popen(
+                    cmd,
+                    stdout=self._server_stdout_file,
+                    stderr=self._server_stderr_file
+                )
+                logger.info(f"Server started with PID: {self._server_process.pid}")
+                logger.info(f"Server logs: stdout={stdout_path} stderr={stderr_path}")
 
-            # Wait for server to be ready to accept messages
-            self._wait_for_server_ready()
+                # Wait for server to be ready to accept messages
+                self._wait_for_server_ready()
+            except Exception:
+                # Clean up file handles if server startup fails
+                if self._server_stdout_file:
+                    self._server_stdout_file.close()
+                    self._server_stdout_file = None
+                if self._server_stderr_file:
+                    self._server_stderr_file.close()
+                    self._server_stderr_file = None
+                raise
 
         finally:
             # Restore original directory
@@ -210,7 +220,13 @@ class TaskRunner:
             TimeoutError: If server doesn't become ready within max_wait seconds
         """
         if (self.agent_type or "").lower() == "codex" and max_wait < 120:
+            original_max_wait = max_wait
             max_wait = 120
+            logger.info(
+                "Increasing max_wait for Codex agent from %ss to %ss to allow extra startup time",
+                original_max_wait,
+                120,
+            )
 
         logger.debug(f"Waiting for server to be ready (max {max_wait}s)")
         start_time = time.time()
@@ -621,8 +637,10 @@ class TaskRunner:
     def _send_and_wait(self, content: str) -> str:
         """Send message to agent and wait for stable status, return last agent message.
 
-        For Codex agents, if the first response is a startup banner, the message
-        is resent to ensure the actual task gets processed.
+        For Codex agents, this method may retry once if the first response is detected
+        to be a startup banner rather than the actual task response. The banner
+        detection looks for specific markers ("OpenAI Codex", "/init", "/approvals")
+        that appear in Codex's welcome message.
 
         Args:
             content: Message content to send
@@ -632,7 +650,7 @@ class TaskRunner:
 
         Raises:
             TimeoutError: If agent doesn't respond within timeout
-            RuntimeError: If no agent response found
+            RuntimeError: If no agent response found after all attempts
         """
         max_attempts = 2 if (self.agent_type or "").lower() == "codex" else 1
 
@@ -685,6 +703,7 @@ class TaskRunner:
             logger.debug(f"Retrieved {len(messages_list)} total messages")
 
             # Find last agent message
+            found_welcome_banner = False
             for msg in reversed(messages_list):
                 role = msg.get("role", "").lower()
                 if role in ["agent", "assistant", "system"]:
@@ -698,17 +717,22 @@ class TaskRunner:
                             "Codex startup banner detected; resending initial message "
                             "to ensure the task is processed."
                         )
+                        found_welcome_banner = True
                         break  # Break from message loop to retry sending
 
                     return agent_response
 
-            # If we found a welcome banner and broke out, continue to next attempt
-            # Otherwise, no agent message was found
-            if attempt == max_attempts:
-                logger.error("No agent response found in messages")
-                raise RuntimeError("No agent response found")
+            # Handle cases where no valid agent response was found
+            if found_welcome_banner:
+                # Continue to next attempt if we detected a banner and have retries left
+                continue
 
-        # Should not reach here, but just in case
+            # No agent message found and either no retries left or not a banner issue
+            logger.error("No agent response found in messages")
+            raise RuntimeError("No agent response found")
+
+        # This should be unreachable as the loop always returns or raises,
+        # but is needed to satisfy mypy's flow analysis
         raise RuntimeError("No agent response found")
 
     def _check_preconditions(self, preconditions: Preconditions) -> None:
@@ -899,11 +923,30 @@ class TaskRunner:
 
     @staticmethod
     def _is_codex_welcome(agent_response: str) -> bool:
-        """Detect Codex startup banner that can swallow the first task."""
-        if not agent_response:
+        """Detect Codex startup banner that can swallow the first task.
+
+        This is intentionally conservative: we require the distinctive
+        "OpenAI Codex" marker, and we also require that the /init and
+        /approvals commands appear near each other in the text. This helps
+        avoid false positives where these strings are mentioned separately
+        in normal agent output or user prompts.
+        """
+        # Empty or whitespace-only responses cannot be the Codex banner
+        if not agent_response or not agent_response.strip():
             return False
-        return (
-            "OpenAI Codex" in agent_response
-            and "/init" in agent_response
-            and "/approvals" in agent_response
+
+        # The banner should explicitly reference OpenAI Codex
+        if "OpenAI Codex" not in agent_response:
+            return False
+
+        # Normalize whitespace to make detection robust to formatting changes
+        normalized = " ".join(agent_response.split())
+
+        # Require /init and /approvals to appear close together (in either order)
+        # to distinguish the banner from arbitrary mentions of these commands.
+        proximity_pattern = re.compile(
+            r"/init.{0,80}/approvals|/approvals.{0,80}/init",
+            re.IGNORECASE,
         )
+
+        return bool(proximity_pattern.search(normalized))
