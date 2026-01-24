@@ -1293,3 +1293,242 @@ def test_wait_for_server_ready_timeout():
             runner._wait_for_server_ready(max_wait=1)
 
     assert "did not become ready" in str(exc_info.value)
+
+
+def test_is_codex_welcome_detects_banner():
+    """Test that _is_codex_welcome correctly identifies Codex startup banner."""
+    # Typical Codex welcome banner
+    banner = """
+Welcome to OpenAI Codex!
+
+Available commands:
+- /init - Initialize the session
+- /approvals - Manage approvals and sandbox
+
+Let's get started!
+    """
+    assert TaskRunner._is_codex_welcome(banner) is True
+
+
+def test_is_codex_welcome_rejects_normal_response():
+    """Test that _is_codex_welcome rejects normal agent responses."""
+    # Normal response mentioning these terms but not as a banner
+    response = "I'll help you with that. You can use /init later if needed."
+    assert TaskRunner._is_codex_welcome(response) is False
+
+    # Response mentioning OpenAI Codex but not the banner
+    response2 = "I'm using OpenAI Codex to help you."
+    assert TaskRunner._is_codex_welcome(response2) is False
+
+
+def test_is_codex_welcome_empty_response():
+    """Test that _is_codex_welcome handles empty responses."""
+    assert TaskRunner._is_codex_welcome("") is False
+    assert TaskRunner._is_codex_welcome("   ") is False
+    assert TaskRunner._is_codex_welcome(None) is False
+
+
+def test_is_codex_welcome_proximity_check():
+    """Test that _is_codex_welcome requires /init and /approvals to be close."""
+    # Commands far apart - should fail
+    far_apart = "OpenAI Codex\n" + ("x" * 100) + "/init" + ("y" * 100) + "/approvals"
+    assert TaskRunner._is_codex_welcome(far_apart) is False
+
+    # Commands close together - should pass
+    close = "OpenAI Codex\n/init and /approvals are available"
+    assert TaskRunner._is_codex_welcome(close) is True
+
+
+def test_send_and_wait_codex_banner_retry():
+    """Test that Codex welcome banner triggers a retry."""
+    runner = TaskRunner(timeout=10, agent_type="codex")
+
+    with patch("cyberian.runner.httpx.post") as mock_post, \
+         patch("cyberian.runner.httpx.get") as mock_get, \
+         patch("cyberian.runner.time.sleep"):
+
+        # Mock message post
+        mock_post_response = Mock()
+        mock_post_response.status_code = 200
+        mock_post.return_value = mock_post_response
+
+        # First attempt: status becomes idle
+        mock_status_response1 = Mock()
+        mock_status_response1.status_code = 200
+        mock_status_response1.json.return_value = {"status": "idle"}
+
+        # First attempt: messages with welcome banner
+        mock_messages_response1 = Mock()
+        mock_messages_response1.status_code = 200
+        mock_messages_response1.json.return_value = {
+            "messages": [
+                {"content": "Test", "role": "user"},
+                {"content": "Welcome to OpenAI Codex! Use /init and /approvals", "role": "agent"}
+            ]
+        }
+
+        # Second attempt: status becomes idle
+        mock_status_response2 = Mock()
+        mock_status_response2.status_code = 200
+        mock_status_response2.json.return_value = {"status": "idle"}
+
+        # Second attempt: real response
+        mock_messages_response2 = Mock()
+        mock_messages_response2.status_code = 200
+        mock_messages_response2.json.return_value = {
+            "messages": [
+                {"content": "Test", "role": "user"},
+                {"content": "Here is your answer", "role": "agent"}
+            ]
+        }
+
+        # Set up the side effects for get calls
+        mock_get.side_effect = [
+            mock_status_response1,
+            mock_messages_response1,
+            mock_status_response2,
+            mock_messages_response2
+        ]
+
+        result = runner._send_and_wait("Test instructions")
+
+        assert result == "Here is your answer"
+        # Should have been called twice due to retry
+        assert mock_post.call_count == 2
+
+
+def test_send_and_wait_non_codex_no_retry():
+    """Test that non-Codex agents don't retry even with banner-like text."""
+    runner = TaskRunner(timeout=10, agent_type="claude")
+
+    with patch("cyberian.runner.httpx.post") as mock_post, \
+         patch("cyberian.runner.httpx.get") as mock_get, \
+         patch("cyberian.runner.time.sleep"):
+
+        mock_post_response = Mock()
+        mock_post_response.status_code = 200
+        mock_post.return_value = mock_post_response
+
+        mock_status_response = Mock()
+        mock_status_response.status_code = 200
+        mock_status_response.json.return_value = {"status": "idle"}
+
+        # Even with banner-like text, non-Codex shouldn't retry
+        mock_messages_response = Mock()
+        mock_messages_response.status_code = 200
+        mock_messages_response.json.return_value = {
+            "messages": [
+                {"content": "Test", "role": "user"},
+                {"content": "Welcome to OpenAI Codex! Use /init and /approvals", "role": "agent"}
+            ]
+        }
+
+        mock_get.side_effect = [mock_status_response, mock_messages_response]
+
+        result = runner._send_and_wait("Test instructions")
+
+        # Returns the banner text without retrying
+        assert "OpenAI Codex" in result
+        assert mock_post.call_count == 1
+
+
+def test_wait_for_server_ready_codex_timeout_extension():
+    """Test that Codex agent extends timeout to 120 seconds."""
+    runner = TaskRunner(host="localhost", port=3284, agent_type="codex")
+
+    # Track the actual max_wait used
+    actual_max_wait = None
+
+    def mock_get_with_timeout_tracking(*args, **kwargs):
+        # Track when we would have timed out
+        nonlocal actual_max_wait
+        import time
+        if not hasattr(mock_get_with_timeout_tracking, 'start_time'):
+            mock_get_with_timeout_tracking.start_time = time.time()
+        # Succeed immediately
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        return mock_response
+
+    with patch("httpx.get", side_effect=mock_get_with_timeout_tracking), \
+         patch("cyberian.runner.logger") as mock_logger:
+        runner._wait_for_server_ready(max_wait=30)
+
+        # Check that info log was called about increasing timeout
+        info_calls = [call for call in mock_logger.info.call_args_list]
+        timeout_increase_logged = any(
+            "Increasing max_wait" in str(call) and "120" in str(call)
+            for call in info_calls
+        )
+        assert timeout_increase_logged, "Should log timeout increase for Codex"
+
+
+def test_start_server_file_handle_cleanup_on_error():
+    """Test that file handles are closed if server startup fails."""
+    runner = TaskRunner(agent_type="claude", port=3284)
+
+    with patch("builtins.open") as mock_open, \
+         patch("subprocess.Popen", side_effect=RuntimeError("Server start failed")), \
+         patch.object(runner, "_kill_server_on_port"):
+
+        # Create mock file objects
+        mock_stdout_file = MagicMock()
+        mock_stderr_file = MagicMock()
+        mock_open.side_effect = [mock_stdout_file, mock_stderr_file]
+
+        # Attempt to start server should fail
+        with pytest.raises(RuntimeError, match="Server start failed"):
+            runner._start_server()
+
+        # File handles should have been closed
+        mock_stdout_file.close.assert_called_once()
+        mock_stderr_file.close.assert_called_once()
+        
+        # Instance variables should be set to None
+        assert runner._server_stdout_file is None
+        assert runner._server_stderr_file is None
+
+
+def test_stop_server_closes_file_handles():
+    """Test that _stop_server properly closes file handles."""
+    runner = TaskRunner(agent_type="claude", port=3284)
+
+    # Set up mock process and file handles
+    mock_process = MagicMock()
+    mock_process.pid = 12345
+    runner._server_process = mock_process
+
+    mock_stdout = MagicMock()
+    mock_stderr = MagicMock()
+    runner._server_stdout_file = mock_stdout
+    runner._server_stderr_file = mock_stderr
+
+    # Stop server
+    runner._stop_server()
+
+    # Verify file handles were closed
+    mock_stdout.close.assert_called_once()
+    mock_stderr.close.assert_called_once()
+
+    # Verify they were set to None
+    assert runner._server_stdout_file is None
+    assert runner._server_stderr_file is None
+    assert runner._server_process is None
+
+
+def test_stop_server_handles_none_file_handles():
+    """Test that _stop_server handles None file handles gracefully."""
+    runner = TaskRunner(agent_type="claude", port=3284)
+
+    # Set up process but no file handles
+    mock_process = MagicMock()
+    runner._server_process = mock_process
+    runner._server_stdout_file = None
+    runner._server_stderr_file = None
+
+    # Should not raise
+    runner._stop_server()
+
+    # Process should still be terminated
+    mock_process.terminate.assert_called_once()
+    assert runner._server_process is None
