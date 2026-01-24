@@ -7,7 +7,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, TextIO
 
 import httpx
 from jinja2 import Template
@@ -75,6 +75,8 @@ class TaskRunner:
         self.directory = directory
         self.workflow_file = workflow_file
         self._server_process: subprocess.Popen[bytes] | None = None  # Track the subprocess.Popen instance
+        self._server_stdout_file: TextIO | None = None
+        self._server_stderr_file: TextIO | None = None
 
     def _start_server(self) -> None:
         """Start an agentapi server process.
@@ -105,18 +107,30 @@ class TaskRunner:
 
         # Add agent-specific flags if skip_permissions
         if self.skip_permissions:
-            if self.agent_type.lower() == "claude":
+            agent_type_lower = self.agent_type.lower()
+            if agent_type_lower == "claude":
                 cmd.extend(["--", "--dangerously-skip-permissions"])
                 logger.debug("Added --dangerously-skip-permissions flag for Claude agent")
+            elif agent_type_lower == "codex":
+                cmd.extend(["--", "--dangerously-bypass-approvals-and-sandbox"])
+                logger.debug("Added --dangerously-bypass-approvals-and-sandbox for Codex agent")
 
         # Start the process
         try:
+            log_dir = Path(self.directory or os.getcwd())
+            log_dir.mkdir(parents=True, exist_ok=True)
+            stdout_path = log_dir / "agentapi_stdout.log"
+            stderr_path = log_dir / "agentapi_stderr.log"
+            self._server_stdout_file = open(stdout_path, "a", encoding="utf-8")
+            self._server_stderr_file = open(stderr_path, "a", encoding="utf-8")
+
             self._server_process = subprocess.Popen(
                 cmd,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
+                stdout=self._server_stdout_file,
+                stderr=self._server_stderr_file
             )
             logger.info(f"Server started with PID: {self._server_process.pid}")
+            logger.info(f"Server logs: stdout={stdout_path} stderr={stderr_path}")
 
             # Wait for server to be ready to accept messages
             self._wait_for_server_ready()
@@ -147,6 +161,12 @@ class TaskRunner:
             logger.info("Server killed")
         finally:
             self._server_process = None
+            if self._server_stdout_file:
+                self._server_stdout_file.close()
+                self._server_stdout_file = None
+            if self._server_stderr_file:
+                self._server_stderr_file.close()
+                self._server_stderr_file = None
 
     def _kill_server_on_port(self) -> None:
         """Kill any existing agentapi server running on the configured port."""
@@ -189,6 +209,9 @@ class TaskRunner:
         Raises:
             TimeoutError: If server doesn't become ready within max_wait seconds
         """
+        if (self.agent_type or "").lower() == "codex" and max_wait < 120:
+            max_wait = 120
+
         logger.debug(f"Waiting for server to be ready (max {max_wait}s)")
         start_time = time.time()
 
@@ -196,8 +219,12 @@ class TaskRunner:
         while True:
             elapsed = time.time() - start_time
             if elapsed > max_wait:
+                stderr_hint = None
+                if self._server_stderr_file and hasattr(self._server_stderr_file, "name"):
+                    stderr_hint = self._server_stderr_file.name
+                hint = f" (see {stderr_hint})" if stderr_hint else ""
                 raise TimeoutError(
-                    f"Server did not become ready within {max_wait}s"
+                    f"Server did not become ready within {max_wait}s{hint}"
                 )
 
             try:
@@ -594,6 +621,9 @@ class TaskRunner:
     def _send_and_wait(self, content: str) -> str:
         """Send message to agent and wait for stable status, return last agent message.
 
+        For Codex agents, if the first response is a startup banner, the message
+        is resent to ensure the actual task gets processed.
+
         Args:
             content: Message content to send
 
@@ -604,64 +634,81 @@ class TaskRunner:
             TimeoutError: If agent doesn't respond within timeout
             RuntimeError: If no agent response found
         """
-        # Send message
-        logger.debug(f"Sending message to {self.base_url}/message")
-        response = httpx.post(
-            f"{self.base_url}/message",
-            json={"content": content, "type": "user"},
-            headers={"Content-Type": "application/json"}
-        )
-        response.raise_for_status()
-        logger.info("Message sent successfully, waiting for agent to complete")
+        max_attempts = 2 if (self.agent_type or "").lower() == "codex" else 1
 
-        # Wait for stable status
-        start_time = time.time()
-        last_status = None
-        status_change_count = 0
-        while True:
-            elapsed = time.time() - start_time
-            if elapsed > self.timeout:
-                logger.error(f"Timeout exceeded: {elapsed:.1f}s > {self.timeout}s")
-                raise TimeoutError(
-                    f"Agent did not complete within {self.timeout}s"
-                )
+        for attempt in range(1, max_attempts + 1):
+            # Send message
+            logger.debug(f"Sending message to {self.base_url}/message (attempt {attempt}/{max_attempts})")
+            response = httpx.post(
+                f"{self.base_url}/message",
+                json={"content": content, "type": "user"},
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            logger.info("Message sent successfully, waiting for agent to complete")
 
-            status_response = httpx.get(f"{self.base_url}/status")
-            status_response.raise_for_status()
-            status_data = status_response.json()
+            # Wait for stable status
+            start_time = time.time()
+            last_status = None
+            while True:
+                elapsed = time.time() - start_time
+                if elapsed > self.timeout:
+                    logger.error(f"Timeout exceeded: {elapsed:.1f}s > {self.timeout}s")
+                    raise TimeoutError(
+                        f"Agent did not complete within {self.timeout}s"
+                    )
 
-            agent_status = status_data.get("status", "").lower()
+                status_response = httpx.get(f"{self.base_url}/status")
+                status_response.raise_for_status()
+                status_data = status_response.json()
 
-            # Log status changes
-            if agent_status != last_status:
-                status_change_count += 1
-                logger.info(f"Agent status changed to: {agent_status} (elapsed: {elapsed:.1f}s)")
-                last_status = agent_status
+                agent_status = status_data.get("status", "").lower()
 
-            if agent_status in ["idle", "ready", "stable", "waiting"]:
-                logger.info(f"Agent reached stable status: {agent_status} after {elapsed:.1f}s")
-                break
+                # Log status changes
+                if agent_status != last_status:
+                    logger.info(f"Agent status changed to: {agent_status} (elapsed: {elapsed:.1f}s)")
+                    last_status = agent_status
 
-            time.sleep(self.poll_interval)
+                if agent_status in ["idle", "ready", "stable", "waiting"]:
+                    logger.info(f"Agent reached stable status: {agent_status} after {elapsed:.1f}s")
+                    break
 
-        # Get last agent message
-        logger.debug("Fetching agent messages")
-        messages_response = httpx.get(f"{self.base_url}/messages")
-        messages_response.raise_for_status()
-        messages_data = messages_response.json()
+                time.sleep(self.poll_interval)
 
-        messages_list = messages_data.get("messages", [])
-        logger.debug(f"Retrieved {len(messages_list)} total messages")
+            # Get last agent message (after stable status reached)
+            logger.debug("Fetching agent messages")
+            messages_response = httpx.get(f"{self.base_url}/messages")
+            messages_response.raise_for_status()
+            messages_data = messages_response.json()
 
-        # Find last agent message
-        for msg in reversed(messages_list):
-            role = msg.get("role", "").lower()
-            if role in ["agent", "assistant", "system"]:
-                response_preview = msg.get("content", "")[:200]
-                logger.info(f"Received agent response (preview): {response_preview}...")
-                return msg.get("content", "")
+            messages_list = messages_data.get("messages", [])
+            logger.debug(f"Retrieved {len(messages_list)} total messages")
 
-        logger.error("No agent response found in messages")
+            # Find last agent message
+            for msg in reversed(messages_list):
+                role = msg.get("role", "").lower()
+                if role in ["agent", "assistant", "system"]:
+                    agent_response = msg.get("content", "")
+                    response_preview = agent_response[:200]
+                    logger.info(f"Received agent response (preview): {response_preview}...")
+
+                    # Check for Codex welcome banner - if found and retries left, resend
+                    if self._is_codex_welcome(agent_response) and attempt < max_attempts:
+                        logger.warning(
+                            "Codex startup banner detected; resending initial message "
+                            "to ensure the task is processed."
+                        )
+                        break  # Break from message loop to retry sending
+
+                    return agent_response
+
+            # If we found a welcome banner and broke out, continue to next attempt
+            # Otherwise, no agent message was found
+            if attempt == max_attempts:
+                logger.error("No agent response found in messages")
+                raise RuntimeError("No agent response found")
+
+        # Should not reach here, but just in case
         raise RuntimeError("No agent response found")
 
     def _check_preconditions(self, preconditions: Preconditions) -> None:
@@ -849,3 +896,14 @@ class TaskRunner:
         # We look for it as a standalone word to avoid partial matches
         pattern = r'\b' + re.escape(expected_status) + r'\b'
         return bool(re.search(pattern, agent_response, re.IGNORECASE))
+
+    @staticmethod
+    def _is_codex_welcome(agent_response: str) -> bool:
+        """Detect Codex startup banner that can swallow the first task."""
+        if not agent_response:
+            return False
+        return (
+            "OpenAI Codex" in agent_response
+            and "/init" in agent_response
+            and "/approvals" in agent_response
+        )
