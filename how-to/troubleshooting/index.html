@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/how-to/troubleshooting/">
       
       
-        <link rel="prev" href="../use-templates/">
+        <link rel="prev" href="../faq/">
       
       
         <link rel="next" href="../../explanation/">
@@ -27,6 +27,9 @@
     
     
       <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -61,7 +64,12 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -82,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="cyberian" class="md-header__button md-logo" aria-label="cyberian" data-md-component="logo">
       
@@ -111,8 +121,8 @@
       </div>
     </div>
     
+      
     
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
@@ -180,156 +190,6 @@
       
         
           
-            
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
-        
-  
-  
-    
-  
-  Home
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../tutorials/" class="md-tabs__link">
-          
-  
-  
-  Tutorials
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-    
-  
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
-          
-  
-  
-  How-To Guides
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../explanation/" class="md-tabs__link">
-          
-  
-  
-  Explanation
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../reference/" class="md-tabs__link">
-          
-  
-  
-  Reference
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../integrations/" class="md-tabs__link">
-          
-  
-  
-  Integrations
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../development/" class="md-tabs__link">
-          
-  
-  
-  Development
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ul>
-  </div>
-</nav>
-          
         
       
       <main class="md-main" data-md-component="main">
@@ -343,10 +203,10 @@
                     
 
 
+
   
 
-
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="cyberian" class="md-nav__button md-logo" aria-label="cyberian" data-md-component="logo">
       
@@ -401,15 +261,27 @@
   
     
     
-    
-    
       
+        
+          
+        
+      
+        
+      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -418,8 +290,9 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tutorials/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -428,8 +301,14 @@
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
@@ -438,27 +317,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../tutorials/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Tutorials
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -547,13 +405,28 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
       
         
-        
-      
-      
         
       
     
@@ -565,8 +438,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -575,8 +449,14 @@
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
@@ -585,27 +465,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    How-To Guides
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -690,6 +549,29 @@
   
   <span class="md-ellipsis">
     Use Templates
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
     
   </span>
   
@@ -997,6 +879,84 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#codex-specific-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Codex-Specific Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Codex-Specific Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-message-ignored-welcome-banner" class="md-nav__link">
+    <span class="md-ellipsis">
+      First Message Ignored (Welcome Banner)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-startup-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server Startup Timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codex-environment-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Codex Environment Mismatch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approval-prompts-block-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approval Prompts Block Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sandbox-blocks-file-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sandbox Blocks File Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#different-behavior-in-fresh-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Different Behavior in Fresh Directories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codex-model-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Codex Model Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#debug-techniques" class="md-nav__link">
     <span class="md-ellipsis">
       Debug Techniques
@@ -1089,15 +1049,31 @@
   
     
     
-    
-    
       
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -1106,8 +1082,9 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../explanation/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -1116,8 +1093,14 @@
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
@@ -1126,27 +1109,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../explanation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Explanation
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1185,6 +1147,29 @@
   
   <span class="md-ellipsis">
     Workflow Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/ralph-wiggum-pattern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ralph Wiggum Pattern
     
   </span>
   
@@ -1256,15 +1241,27 @@
   
     
     
-    
-    
       
+        
+          
+        
+      
+        
+      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -1273,8 +1270,9 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../reference/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -1283,8 +1281,14 @@
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
@@ -1293,27 +1297,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Reference Documentation
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1400,15 +1383,25 @@
   
     
     
-    
-    
       
+        
+          
+        
+      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -1417,8 +1410,9 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../integrations/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -1427,8 +1421,14 @@
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
@@ -1437,27 +1437,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../integrations/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Integrations
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1483,6 +1462,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/codex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenAI Codex
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1498,15 +1500,27 @@
   
     
     
-    
-    
       
+        
+          
+        
+      
+        
+      
+        
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -1515,8 +1529,9 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../development/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -1525,8 +1540,14 @@
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
@@ -1535,27 +1556,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../development/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Development
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -1640,341 +1640,6 @@
                 </div>
               </div>
             
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#connection-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Connection Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Connection Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#server-not-responding" class="md-nav__link">
-    <span class="md-ellipsis">
-      Server Not Responding
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wrong-port" class="md-nav__link">
-    <span class="md-ellipsis">
-      Wrong Port
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cannot-connect-to-remote-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      Cannot Connect to Remote Server
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#timeout-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Timeout Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Timeout Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#message-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Message Timeouts
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#workflow-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Workflow Timeouts
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workflow-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Workflow Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Workflow Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#task-never-completes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Never Completes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#template-variables-not-rendering" class="md-nav__link">
-    <span class="md-ellipsis">
-      Template Variables Not Rendering
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#success-criteria-always-fails" class="md-nav__link">
-    <span class="md-ellipsis">
-      Success Criteria Always Fails
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#server-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Server Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Server Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#port-already-in-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      Port Already in Use
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-servers-running" class="md-nav__link">
-    <span class="md-ellipsis">
-      Multiple Servers Running
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#server-crashes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Server Crashes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#permission-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Permission Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Permission Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#permission-denied-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      Permission Denied Errors
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#farm-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Farm Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Farm Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#farm-wont-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Farm Won't Start
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#template-directory-not-copying" class="md-nav__link">
-    <span class="md-ellipsis">
-      Template Directory Not Copying
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#template-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Template Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Template Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#jinja2-syntax-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      Jinja2 Syntax Errors
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debug-techniques" class="md-nav__link">
-    <span class="md-ellipsis">
-      Debug Techniques
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Debug Techniques">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enable-verbose-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enable Verbose Output
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#check-conversation-history" class="md-nav__link">
-    <span class="md-ellipsis">
-      Check Conversation History
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitor-server-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      Monitor Server Status
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-help" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Help
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#related-guides" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related Guides
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      See Also
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
             
           
           
@@ -2406,6 +2071,202 @@ mkdir<span class="w"> </span>-p<span class="w"> </span>/tmp/worker1<span class="
 <span class="s">print(t.render(x=True))</span>
 <span class="s">EOF</span>
 </code></pre></div>
+<h2 id="codex-specific-issues">Codex-Specific Issues</h2>
+<h3 id="first-message-ignored-welcome-banner">First Message Ignored (Welcome Banner)</h3>
+<p><strong>Problem:</strong> Codex shows startup banner instead of processing the first task.</p>
+<p><strong>Symptoms:</strong></p>
+<div class="highlight"><pre><span></span><code>Welcome to OpenAI Codex!
+Available commands:
+/init - Initialize project
+/approvals - Configure approval settings
+</code></pre></div>
+<p>Instead of actual task output.</p>
+<p><strong>Cause:</strong> Fresh/untrusted directories trigger Codex's welcome flow.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Use --skip-permissions:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>codex<span class="w"> </span>--skip-permissions
+</code></pre></div>
+<ol>
+<li><strong>Configure config.toml:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;never&quot;</span>
+<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;danger-full-access&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>Mark directory as trusted:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="k">[projects.</span><span class="s2">&quot;/your/workspace&quot;</span><span class="k">]</span>
+<span class="n">trust_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;trusted&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>cyberian auto-retry:</strong></li>
+</ol>
+<p>cyberian automatically detects the welcome banner and resends the first message.</p>
+<h3 id="server-startup-timeout">Server Startup Timeout</h3>
+<p><strong>Problem:</strong> "Server did not become ready within 30s" with Codex.</p>
+<p><strong>Cause:</strong> Codex takes longer to initialize than Claude.</p>
+<p><strong>Note:</strong> cyberian automatically extends timeout to 120s for Codex.</p>
+<p><strong>If still failing:</strong></p>
+<ol>
+<li><strong>Check Codex installation:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>which<span class="w"> </span>codex
+codex<span class="w"> </span>--version
+</code></pre></div>
+<ol>
+<li><strong>Check agentapi logs:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/path/to/workspace/agentapi_stderr.log
+</code></pre></div>
+<ol>
+<li><strong>Start manually to debug:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>agentapi<span class="w"> </span>server<span class="w"> </span>codex<span class="w"> </span>--port<span class="w"> </span><span class="m">3284</span><span class="w"> </span>--<span class="w"> </span>--dangerously-bypass-approvals-and-sandbox
+</code></pre></div>
+<h3 id="codex-environment-mismatch">Codex Environment Mismatch</h3>
+<p><strong>Problem:</strong> Codex works in terminal but not when spawned by cyberian.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>Server starts but Codex process fails</li>
+<li>"codex: command not found" in logs</li>
+<li>Different behavior than manual execution</li>
+</ul>
+<p><strong>Cause:</strong> PATH or environment differs when spawned as subprocess.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Check PATH:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># Where is codex?</span>
+which<span class="w"> </span>codex
+
+<span class="c1"># Is it in a standard location?</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$PATH</span>
+</code></pre></div>
+<ol>
+<li><strong>Use absolute path (if needed):</strong></li>
+</ol>
+<p>Ensure codex binary is in a standard PATH location, or configure shell environment:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="k">[shell_environment_policy]</span>
+<span class="n">inherit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;all&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>Check agentapi can find codex:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># Test agentapi directly</span>
+agentapi<span class="w"> </span>server<span class="w"> </span>codex<span class="w"> </span>--port<span class="w"> </span><span class="m">9999</span>
+</code></pre></div>
+<h3 id="approval-prompts-block-workflow">Approval Prompts Block Workflow</h3>
+<p><strong>Problem:</strong> Workflow hangs, waiting for interactive approval.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>Status shows <code>waiting</code> indefinitely</li>
+<li>No output from agent</li>
+<li>Works fine when running codex manually</li>
+</ul>
+<p><strong>Cause:</strong> Codex approval policy requires user input.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Use --skip-permissions flag:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>server<span class="w"> </span>start<span class="w"> </span>codex<span class="w"> </span>--skip-permissions
+</code></pre></div>
+<ol>
+<li><strong>Set approval_policy in config.toml:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;never&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>Use automation profile:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="n">profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;automation&quot;</span>
+
+<span class="k">[profiles.automation]</span>
+<span class="n">approval_policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;never&quot;</span>
+<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;danger-full-access&quot;</span>
+</code></pre></div>
+<h3 id="sandbox-blocks-file-operations">Sandbox Blocks File Operations</h3>
+<p><strong>Problem:</strong> Codex can't read/write files despite correct instructions.</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>"Permission denied" errors</li>
+<li>File operations silently fail</li>
+<li>Works in terminal but not via cyberian</li>
+</ul>
+<p><strong>Cause:</strong> Sandbox mode restricting filesystem access.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Use full access mode:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;danger-full-access&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>Or allow specific paths:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="n">sandbox_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspace-write&quot;</span>
+
+<span class="k">[sandbox_workspace_write]</span>
+<span class="n">writable_roots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;/tmp/cyberian&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;~/projects&quot;</span><span class="p">]</span>
+</code></pre></div>
+<ol>
+<li><strong>Verify directory permissions:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-la<span class="w"> </span>/path/to/workspace
+<span class="c1"># Ensure user has write access</span>
+</code></pre></div>
+<h3 id="different-behavior-in-fresh-directories">Different Behavior in Fresh Directories</h3>
+<p><strong>Problem:</strong> Workflow works in existing project but fails in new directory.</p>
+<p><strong>Cause:</strong> Codex trusts established projects but not fresh directories.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Pre-create and trust the directory:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/path/to/workspace
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="k">[projects.</span><span class="s2">&quot;/path/to/workspace&quot;</span><span class="k">]</span>
+<span class="n">trust_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;trusted&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>Use existing trusted directory:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>--dir<span class="w"> </span>~/existing-project
+</code></pre></div>
+<ol>
+<li><strong>Initialize project first:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create basic project structure</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>workspace<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>workspace
+git<span class="w"> </span>init
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# Project&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>README.md
+</code></pre></div>
+<h3 id="codex-model-issues">Codex Model Issues</h3>
+<p><strong>Problem:</strong> Wrong model being used or model errors.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Specify model in config.toml:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># ~/.codex/config.toml</span>
+<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gpt-4-turbo&quot;</span>
+</code></pre></div>
+<ol>
+<li><strong>Check API key:</strong></li>
+</ol>
+<p>Ensure <code>OPENAI_API_KEY</code> is set:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="nv">$OPENAI_API_KEY</span>
+</code></pre></div>
+<ol>
+<li><strong>Check model availability:</strong></li>
+</ol>
+<p>Some models require specific access levels.</p>
 <h2 id="debug-techniques">Debug Techniques</h2>
 <h3 id="enable-verbose-output">Enable Verbose Output</h3>
 <p>Add debug instructions:</p>
@@ -2521,7 +2382,7 @@ watch<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["content.tabs.link", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.tabs.link", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>

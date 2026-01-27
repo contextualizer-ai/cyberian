@@ -8,11 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/development/contributing/">
+        <link rel="canonical" href="https://monarch-initiative.github.io/cyberian/explanation/ralph-wiggum-pattern/">
       
       
-        <link rel="prev" href="../testing/">
+        <link rel="prev" href="../workflow-model/">
       
+      
+        <link rel="next" href="../agent-lifecycle/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +22,7 @@
     
     
       
-        <title>Contributing - cyberian</title>
+        <title>Ralph Wiggum Pattern - cyberian</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#contributing-guide" class="md-skip">
+        <a href="#the-ralph-wiggum-pattern" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Contributing
+              Ralph Wiggum Pattern
             
           </span>
         </div>
@@ -614,6 +616,8 @@
       
   
   
+    
+  
   
   
     
@@ -642,17 +646,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../explanation/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -671,7 +673,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Explanation
@@ -687,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../explanation/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -710,7 +712,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../explanation/workflow-model/" class="md-nav__link">
+      <a href="../workflow-model/" class="md-nav__link">
         
   
   
@@ -730,10 +732,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../explanation/ralph-wiggum-pattern/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Ralph Wiggum Pattern
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -744,6 +768,239 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#origins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Origins
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concept
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-fresh-context-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Fresh Context Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ralph-for-code-vs-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ralph for Code vs Research
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ralph for Code vs Research">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-pattern-original" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Pattern (Original)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#research-pattern-cyberian" class="md-nav__link">
+    <span class="md-ellipsis">
+      Research Pattern (cyberian)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-cyberian-implements-ralph" class="md-nav__link">
+    <span class="md-ellipsis">
+      How cyberian Implements Ralph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How cyberian Implements Ralph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-loop_until-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      The loop_until Mechanism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-in-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      State in Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#success-criteria-as-backpressure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Criteria as Backpressure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-lifecycle-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Lifecycle Modes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#within-loop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Within-Loop Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposed-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Recommendations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-long-research-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Long Research Workflows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-ralph-style-research-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Ralph-Style Research Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Further Reading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See Also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -756,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../explanation/agent-lifecycle/" class="md-nav__link">
+      <a href="../agent-lifecycle/" class="md-nav__link">
         
   
   
@@ -779,7 +1036,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../explanation/design-decisions/" class="md-nav__link">
+      <a href="../design-decisions/" class="md-nav__link">
         
   
   
@@ -1065,8 +1322,6 @@
       
   
   
-    
-  
   
   
     
@@ -1091,15 +1346,17 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../development/" class="md-nav__link ">
               
   
   
@@ -1118,7 +1375,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -1134,7 +1391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../../development/setup/" class="md-nav__link">
         
   
   
@@ -1157,7 +1414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../testing/" class="md-nav__link">
+      <a href="../../development/testing/" class="md-nav__link">
         
   
   
@@ -1177,32 +1434,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Contributing
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
         
   
   
@@ -1213,296 +1448,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Start
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#detailed-guide" class="md-nav__link">
-    <span class="md-ellipsis">
-      Detailed Guide
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Detailed Guide">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-fork-and-clone" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Fork and Clone
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-setup-development-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Setup Development Environment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-create-a-branch" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Create a Branch
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-make-changes" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Make Changes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-write-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Write Tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-run-tests-and-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. Run Tests and Checks
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-commit-changes" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Commit Changes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-push-and-create-pr" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. Push and Create PR
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contribution-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contribution Guidelines
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contribution Guidelines">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#code-quality" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Quality
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#commit-messages" class="md-nav__link">
-    <span class="md-ellipsis">
-      Commit Messages
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pull-request-process" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pull Request Process
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#review-process" class="md-nav__link">
-    <span class="md-ellipsis">
-      Review Process
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-to-contribute" class="md-nav__link">
-    <span class="md-ellipsis">
-      What to Contribute
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What to Contribute">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#good-first-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Good First Issues
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#feature-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Feature Requests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bug-fixes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Bug Fixes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#documentation_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-review-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Review Checklist
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-help" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Help
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-of-conduct" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code of Conduct
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      License
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#thank-you" class="md-nav__link">
-    <span class="md-ellipsis">
-      Thank You!
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      See Also
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1534,309 +1479,272 @@
   
 
 
-<h1 id="contributing-guide">Contributing Guide</h1>
-<p>Thank you for contributing to cyberian! This guide will help you get started.</p>
-<h2 id="quick-start">Quick Start</h2>
+<h1 id="the-ralph-wiggum-pattern">The Ralph Wiggum Pattern</h1>
+<p>This document explains the Ralph Wiggum autonomous iteration pattern and how cyberian implements it for research workflows.</p>
+<h2 id="origins">Origins</h2>
+<p>The Ralph Wiggum technique was created by <a href="https://ghuntley.com/ralph/">Geoffrey Huntley</a> in late 2025. Named after the lovably persistent Simpsons character, it's an approach to autonomous AI agent execution that went viral in the AI development community.</p>
+<blockquote>
+<p>"Better to fail predictably than succeed unpredictably."</p>
+</blockquote>
+<p>The pattern has been <a href="https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now/">covered extensively</a> and adapted for various use cases.</p>
+<h2 id="core-concept">Core Concept</h2>
+<p>In its purest form, Ralph is a Bash loop:</p>
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>claude<span class="w"> </span>--prompt<span class="w"> </span><span class="s2">&quot;Complete the PRD. Output DONE when finished.&quot;</span>
+<span class="w">  </span>sleep<span class="w"> </span><span class="m">1</span>
+<span class="k">done</span>
+</code></pre></div>
+<p>The key insights:</p>
 <ol>
-<li>Fork the repository</li>
-<li>Clone your fork</li>
-<li>Create a branch</li>
-<li>Make changes</li>
-<li>Run tests</li>
-<li>Submit pull request</li>
+<li><strong>Iterate until done</strong> - Keep running until completion</li>
+<li><strong>State in files, not context</strong> - Progress persists in filesystem, not LLM memory</li>
+<li><strong>Backpressure over prescription</strong> - Create conditions where bad work gets rejected automatically</li>
+<li><strong>Fresh context per iteration</strong> - Each loop gets a clean agent with full context window</li>
 </ol>
-<h2 id="detailed-guide">Detailed Guide</h2>
-<h3 id="1-fork-and-clone">1. Fork and Clone</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Fork on GitHub, then clone</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/YOUR-USERNAME/cyberian.git
-<span class="nb">cd</span><span class="w"> </span>cyberian
-
-<span class="c1"># Add upstream remote</span>
-git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>upstream<span class="w"> </span>https://github.com/monarch-initiative/cyberian.git
+<h2 id="why-fresh-context-matters">Why Fresh Context Matters</h2>
+<p>Traditional agent loops maintain conversation history:</p>
+<div class="highlight"><pre><span></span><code>Iteration 1: Agent processes task, context grows
+Iteration 2: Agent sees iteration 1 + new task, context grows more
+Iteration 3: Context now large, earlier instructions get less attention
+...
+Iteration N: &quot;Context rot&quot; - agent forgets original goals
 </code></pre></div>
-<h3 id="2-setup-development-environment">2. Setup Development Environment</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install dependencies</span>
-uv<span class="w"> </span>sync
-
-<span class="c1"># Verify installation</span>
-just<span class="w"> </span><span class="nb">test</span>
+<p>Ralph's fresh context approach:</p>
+<div class="highlight"><pre><span></span><code>Iteration 1: Fresh agent reads PLAN.md, does work, updates files
+Iteration 2: Fresh agent reads PLAN.md + updated files, continues
+Iteration 3: Fresh agent reads current state, no context rot
+...
+Iteration N: Agent always has full attention on current state
 </code></pre></div>
-<p>See <a href="../setup/">Setup Guide</a> for details.</p>
-<h3 id="3-create-a-branch">3. Create a Branch</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Update main</span>
-git<span class="w"> </span>checkout<span class="w"> </span>main
-git<span class="w"> </span>pull<span class="w"> </span>upstream<span class="w"> </span>main
-
-<span class="c1"># Create feature branch</span>
-git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/my-feature
-
-<span class="c1"># Or bugfix branch</span>
-git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>bugfix/fix-issue-123
+<p>State management shifts from LLM memory (token sequence) to disk (file system).</p>
+<h2 id="ralph-for-code-vs-research">Ralph for Code vs Research</h2>
+<h3 id="code-pattern-original">Code Pattern (Original)</h3>
+<div class="highlight"><pre><span></span><code>while not tests_pass:
+    agent.run(&quot;Fix failing tests&quot;)
+    run_tests()
 </code></pre></div>
-<p><strong>Branch naming:</strong></p>
-<ul>
-<li><code>feature/description</code> - New features</li>
-<li><code>bugfix/description</code> - Bug fixes</li>
-<li><code>docs/description</code> - Documentation</li>
-<li><code>refactor/description</code> - Refactoring</li>
-</ul>
-<h3 id="4-make-changes">4. Make Changes</h3>
-<p><strong>Code Style:</strong></p>
-<ul>
-<li>Use type hints</li>
-<li>Write docstrings</li>
-<li>Follow ruff formatting</li>
-<li>Keep functions focused</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">send_message</span><span class="p">(</span>
-    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3284</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Send message to agent.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        content: Message content</span>
-<span class="sd">        host: Agent API host</span>
-<span class="sd">        port: Agent API port</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Response from agent API</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ConnectionError: If cannot connect to agent</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Implementation</span>
+<p>Backpressure: Tests, linters, type checkers automatically reject bad work.</p>
+<h3 id="research-pattern-cyberian">Research Pattern (cyberian)</h3>
+<div class="highlight"><pre><span></span><code>while not literature_exhausted:
+    agent.run(&quot;Continue researching, update REPORT.md&quot;)
+    check_completion_status()
 </code></pre></div>
-<h3 id="5-write-tests">5. Write Tests</h3>
-<p><strong>Test-driven development:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. Write failing test</span>
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;def test_new_feature(): assert new_feature() == expected&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>tests/test_new.py
-
-<span class="c1"># 2. Run test (should fail)</span>
-uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_new.py::test_new_feature
-
-<span class="c1"># 3. Implement feature</span>
-<span class="c1"># Edit src/cyberian/...</span>
-
-<span class="c1"># 4. Run test (should pass)</span>
-uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_new.py::test_new_feature
+<p>Backpressure: Agent determines when research avenues are exhausted.</p>
+<h2 id="how-cyberian-implements-ralph">How cyberian Implements Ralph</h2>
+<h3 id="the-loop_until-mechanism">The <code>loop_until</code> Mechanism</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># deep-research.yaml</span>
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">iterate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Keep on researching {{query}}, following the plan in PLAN.md.</span>
+<span class="w">    </span><span class="nt">loop_until</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NO_MORE_RESEARCH</span>
+<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;If</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">research</span><span class="nv"> </span><span class="s">avenues</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">exhausted,</span><span class="nv"> </span><span class="s">yield</span><span class="nv"> </span><span class="s">NO_MORE_RESEARCH&quot;</span>
 </code></pre></div>
-<p>See <a href="../testing/">Testing Guide</a> for details.</p>
-<h3 id="6-run-tests-and-checks">6. Run Tests and Checks</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Run all tests and checks</span>
-just<span class="w"> </span><span class="nb">test</span>
-
-<span class="c1"># If any fail, fix and re-run</span>
+<p>This implements the core loop: iterate until the agent signals completion.</p>
+<h3 id="state-in-files">State in Files</h3>
+<p>cyberian research workflows accumulate state in files:</p>
+<div class="highlight"><pre><span></span><code>workspace/
+├── PLAN.md              # Research plan (like a PRD)
+├── REPORT.md            # Narrative synthesis of findings
+├── CITATION_GRAPH.md    # Paper relationships
+└── citations/           # Downloaded papers and summaries
+    ├── smith-2023-paper.pdf
+    ├── smith-2023-summary.md
+    └── jones-2024-abstract.md
 </code></pre></div>
-<p>This runs:</p>
-<ul>
-<li>pytest</li>
-<li>mypy (type checking)</li>
-<li>ruff (linting and formatting)</li>
-</ul>
-<h3 id="7-commit-changes">7. Commit Changes</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Stage changes</span>
-git<span class="w"> </span>add<span class="w"> </span>.
-
-<span class="c1"># Commit with descriptive message</span>
-git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add feature to support X</span>
-
-<span class="s2">- Implement Y</span>
-<span class="s2">- Add tests for Z</span>
-<span class="s2">- Update documentation&quot;</span>
+<p>The agent reads these files to understand current state, not conversation history.</p>
+<h3 id="success-criteria-as-backpressure">Success Criteria as Backpressure</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">success_criteria</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">import os</span>
+<span class="w">    </span><span class="no"># Verify required outputs exist</span>
+<span class="w">    </span><span class="no">result = (</span>
+<span class="w">        </span><span class="no">os.path.exists(&quot;PLAN.md&quot;) and</span>
+<span class="w">        </span><span class="no">os.path.exists(&quot;REPORT.md&quot;)</span>
+<span class="w">    </span><span class="no">)</span>
+<span class="w">  </span><span class="nt">max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">retry_message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Required</span><span class="nv"> </span><span class="s">files</span><span class="nv"> </span><span class="s">missing.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">create</span><span class="nv"> </span><span class="s">PLAN.md</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">REPORT.md&quot;</span>
 </code></pre></div>
-<p><strong>Commit message format:</strong></p>
-<div class="highlight"><pre><span></span><code>Short summary (50 chars or less)
+<p>This creates backpressure: incomplete work triggers automatic retry.</p>
+<h3 id="agent-lifecycle-modes">Agent Lifecycle Modes</h3>
+<p>cyberian supports two modes:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+<th>Ralph-like?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reuse</code> (default)</td>
+<td>Same conversation across tasks</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td><code>refresh</code></td>
+<td>Restart agent between top-level tasks</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1"># Reuse mode (default) - maintains conversation</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml
 
-Longer explanation if needed:
-- Bullet points for changes
-- Why the change was made
-- Any breaking changes
-
-Fixes #123
+<span class="c1"># Refresh mode - fresh context per task</span>
+cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
 </code></pre></div>
-<h3 id="8-push-and-create-pr">8. Push and Create PR</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Push to your fork</span>
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature/my-feature
+<h2 id="current-limitations">Current Limitations</h2>
+<h3 id="within-loop-context">Within-Loop Context</h3>
+<p>Currently, <code>loop_until</code> iterations maintain the same conversation:</p>
+<div class="highlight"><pre><span></span><code>Loop iteration 1: Context = [task + response1]
+Loop iteration 2: Context = [task + response1 + task + response2]
+Loop iteration 3: Context growing...
 </code></pre></div>
-<p>Then on GitHub:</p>
+<p>For true Ralph behavior, each loop iteration would get fresh context.</p>
+<h3 id="proposed-enhancement">Proposed Enhancement</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Hypothetical future enhancement</span>
+<span class="nt">iterate</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">Read PLAN.md for research state.</span>
+<span class="w">    </span><span class="no">Continue working on next item.</span>
+<span class="w">    </span><span class="no">Update PROGRESS.md when done.</span>
+<span class="w">  </span><span class="nt">loop_until</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL_COMPLETE</span>
+<span class="w">  </span><span class="nt">context_refresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># Fresh context each iteration</span>
+</code></pre></div>
+<p>This would:</p>
 <ol>
-<li>Go to your fork</li>
-<li>Click "Pull Request"</li>
-<li>Fill in description</li>
-<li>Submit</li>
+<li>Complete one loop iteration</li>
+<li>Stop the agent</li>
+<li>Start a fresh agent</li>
+<li>Re-execute the loop instructions</li>
+<li>Fresh agent reads state from files</li>
 </ol>
-<p><strong>PR Description Template:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="gu">## Summary</span>
+<h2 id="practical-recommendations">Practical Recommendations</h2>
+<h3 id="for-long-research-workflows">For Long Research Workflows</h3>
+<ol>
+<li><strong>Use file-based state</strong>: Write PLAN.md, PROGRESS.md, REPORT.md</li>
+<li><strong>Make instructions self-contained</strong>: Don't rely on conversation history</li>
+<li><strong>Use success criteria</strong>: Create backpressure for incomplete work</li>
+<li><strong>Consider refresh mode</strong>: <code>--agent-lifecycle refresh</code> for task-level fresh context</li>
+</ol>
+<h3 id="example-ralph-style-research-workflow">Example: Ralph-Style Research Workflow</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ralph-research</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Research workflow with Ralph-style state management</span>
 
-Brief description of changes.
+<span class="nt">subtasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">plan</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Create a research plan for: {{query}}</span>
 
-<span class="gu">## Changes</span>
+<span class="w">      </span><span class="no">Write the plan to PLAN.md with:</span>
+<span class="w">      </span><span class="no">- Research questions</span>
+<span class="w">      </span><span class="no">- Search strategies</span>
+<span class="w">      </span><span class="no">- Expected sources</span>
 
-<span class="k">-</span><span class="w"> </span>Change 1
-<span class="k">-</span><span class="w"> </span>Change 2
-<span class="k">-</span><span class="w"> </span>Change 3
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
 
-<span class="gu">## Testing</span>
+<span class="w">    </span><span class="nt">success_criteria</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">import os</span>
+<span class="w">        </span><span class="no">result = os.path.exists(&quot;PLAN.md&quot;)</span>
 
-How was this tested?
+<span class="w">  </span><span class="nt">iterate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read PLAN.md for the research plan.</span>
+<span class="w">      </span><span class="no">Read REPORT.md for current findings (if exists).</span>
+<span class="w">      </span><span class="no">Read PROGRESS.md for completed items (if exists).</span>
 
-<span class="gu">## Checklist</span>
+<span class="w">      </span><span class="no">Continue researching. For each finding:</span>
+<span class="w">      </span><span class="no">1. Update REPORT.md with new content</span>
+<span class="w">      </span><span class="no">2. Mark item complete in PROGRESS.md</span>
+<span class="w">      </span><span class="no">3. Add citations to citations/ folder</span>
 
-<span class="k">- [ ]</span> Tests added/updated
-<span class="k">- [ ]</span> Documentation updated
-<span class="k">- [ ]</span> All tests passing
-<span class="k">- [ ]</span> Type checking passing
+<span class="w">      </span><span class="no">When all plan items are complete, output: NO_MORE_RESEARCH</span>
+<span class="w">      </span><span class="no">Otherwise, output: COMPLETION_STATUS: COMPLETE</span>
+
+<span class="w">    </span><span class="nt">loop_until</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NO_MORE_RESEARCH</span>
+<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;When</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">research</span><span class="nv"> </span><span class="s">avenues</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">exhausted,</span><span class="nv"> </span><span class="s">yield</span><span class="nv"> </span><span class="s">NO_MORE_RESEARCH&quot;</span>
+
+<span class="w">    </span><span class="nt">success_criteria</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">import os</span>
+<span class="w">        </span><span class="no">result = os.path.exists(&quot;REPORT.md&quot;)</span>
+<span class="w">      </span><span class="nt">max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="w">  </span><span class="nt">synthesize</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">instructions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Read all files in the workspace.</span>
+<span class="w">      </span><span class="no">Create a final SUMMARY.md synthesizing all findings.</span>
+
+<span class="w">      </span><span class="no">COMPLETION_STATUS: COMPLETE</span>
 </code></pre></div>
-<h2 id="contribution-guidelines">Contribution Guidelines</h2>
-<h3 id="code-quality">Code Quality</h3>
-<ul>
-<li><strong>Type hints</strong> - All functions should have type hints</li>
-<li><strong>Docstrings</strong> - All public functions should have docstrings</li>
-<li><strong>Tests</strong> - All features should have tests</li>
-<li><strong>No mocks</strong> - Test real functionality when possible</li>
-</ul>
-<h3 id="documentation">Documentation</h3>
-<p>Update documentation for:</p>
-<ul>
-<li>New commands</li>
-<li>New workflow features</li>
-<li>Changed behavior</li>
-<li>New configuration options</li>
-</ul>
-<p><strong>Update these files:</strong></p>
-<ul>
-<li><code>docs/reference/</code> - Reference docs</li>
-<li><code>docs/how-to/</code> - How-to guides (if applicable)</li>
-<li><code>README.md</code> - If major feature</li>
-<li><code>docs/tutorials/</code> - If user-facing change</li>
-</ul>
-<h3 id="testing">Testing</h3>
-<ul>
-<li><strong>Write tests first</strong> - TDD approach</li>
-<li><strong>Test real behavior</strong> - Avoid mocks</li>
-<li><strong>Test edge cases</strong> - Empty, large, invalid input</li>
-<li><strong>Clean up</strong> - Stop servers, delete temp files</li>
-</ul>
-<h3 id="commit-messages">Commit Messages</h3>
-<ul>
-<li><strong>First line</strong> - Short summary (50 chars)</li>
-<li><strong>Body</strong> - Detailed explanation (wrap at 72 chars)</li>
-<li><strong>Reference issues</strong> - "Fixes #123"</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code>Add workflow loop feature
-
-Implements looping tasks that repeat until a condition is met.
-
-- Add loop_until field to Task model
-- Implement loop detection in runner
-- Add tests for various loop scenarios
-- Update workflow schema documentation
-
-Fixes #45
-</code></pre></div>
-<h3 id="pull-request-process">Pull Request Process</h3>
+<h3 id="key-patterns">Key Patterns</h3>
 <ol>
-<li><strong>Create PR</strong> - With clear description</li>
-<li><strong>CI checks</strong> - Wait for tests to pass</li>
-<li><strong>Code review</strong> - Address feedback</li>
-<li><strong>Approval</strong> - Maintainer approves</li>
-<li><strong>Merge</strong> - Maintainer merges</li>
+<li><strong>Self-contained instructions</strong>: Each task reads state from files</li>
+<li><strong>Explicit file I/O</strong>: Agent writes to specific files</li>
+<li><strong>Progress tracking</strong>: PROGRESS.md tracks completed items</li>
+<li><strong>Backpressure</strong>: Success criteria verify outputs exist</li>
 </ol>
-<h3 id="review-process">Review Process</h3>
-<p><strong>Expect:</strong></p>
+<h2 id="comparison-table">Comparison Table</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Pure Ralph</th>
+<th>cyberian (current)</th>
+<th>cyberian (with refresh)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loop until condition</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>State in files</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Fresh context per iteration</td>
+<td>Yes</td>
+<td>No</td>
+<td>Per-task only</td>
+</tr>
+<tr>
+<td>Backpressure via tests</td>
+<td>Yes</td>
+<td>Via success_criteria</td>
+<td>Via success_criteria</td>
+</tr>
+<tr>
+<td>Automatic retry</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="further-reading">Further Reading</h2>
 <ul>
-<li>Constructive feedback</li>
-<li>Requests for changes</li>
-<li>Questions about approach</li>
-<li>Suggestions for improvements</li>
+<li><a href="https://ghuntley.com/ralph/">Geoffrey Huntley - Ralph Wiggum</a> - Original technique</li>
+<li><a href="https://github.com/ghuntley/how-to-ralph-wiggum">How to Ralph Wiggum</a> - Implementation guide</li>
+<li><a href="https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now/">VentureBeat coverage</a> - Industry analysis</li>
+<li><a href="https://dev.to/cmungall/ralph-wiggum-tries-his-hand-at-deep-research-2mdf">Ralph Wiggum Tries His Hand at Deep Research</a> - Research application</li>
 </ul>
-<p><strong>Respond:</strong></p>
-<ul>
-<li>Address all feedback</li>
-<li>Ask questions if unclear</li>
-<li>Make requested changes</li>
-<li>Update PR description if scope changes</li>
-</ul>
-<h2 id="what-to-contribute">What to Contribute</h2>
-<h3 id="good-first-issues">Good First Issues</h3>
-<p>Look for issues labeled <code>good-first-issue</code>:</p>
-<ul>
-<li>Documentation improvements</li>
-<li>Small bug fixes</li>
-<li>Test coverage improvements</li>
-<li>Example workflows</li>
-</ul>
-<h3 id="feature-requests">Feature Requests</h3>
-<p>Before implementing a feature:</p>
-<ol>
-<li>Check if issue exists</li>
-<li>If not, create issue to discuss</li>
-<li>Wait for maintainer feedback</li>
-<li>Implement after approval</li>
-</ol>
-<h3 id="bug-fixes">Bug Fixes</h3>
-<ol>
-<li>Create issue (if doesn't exist)</li>
-<li>Reference issue in PR</li>
-<li>Include test that reproduces bug</li>
-<li>Verify fix resolves issue</li>
-</ol>
-<h3 id="documentation_1">Documentation</h3>
-<p>Always welcome:</p>
-<ul>
-<li>Typo fixes</li>
-<li>Clarifications</li>
-<li>Additional examples</li>
-<li>New tutorials/guides</li>
-</ul>
-<h2 id="code-review-checklist">Code Review Checklist</h2>
-<p>Before submitting, verify:</p>
-<ul>
-<li>[ ] Tests added for new features</li>
-<li>[ ] All tests passing (<code>just test</code>)</li>
-<li>[ ] Type checking passing (<code>just mypy</code>)</li>
-<li>[ ] Formatting correct (<code>just format</code>)</li>
-<li>[ ] Documentation updated</li>
-<li>[ ] Commit messages clear</li>
-<li>[ ] PR description complete</li>
-<li>[ ] No merge conflicts</li>
-</ul>
-<h2 id="getting-help">Getting Help</h2>
-<p><strong>Questions?</strong></p>
-<ul>
-<li>Open a <a href="https://github.com/monarch-initiative/cyberian/discussions">discussion</a></li>
-<li>Ask in PR comments</li>
-<li>Check <a href="https://monarch-initiative.github.io/cyberian">documentation</a></li>
-</ul>
-<p><strong>Issues?</strong></p>
-<ul>
-<li>Open an <a href="https://github.com/monarch-initiative/cyberian/issues">issue</a></li>
-<li>Provide reproduction steps</li>
-<li>Include error messages</li>
-<li>Include environment details</li>
-</ul>
-<h2 id="code-of-conduct">Code of Conduct</h2>
-<p>Be respectful:</p>
-<ul>
-<li>Welcome newcomers</li>
-<li>Provide constructive feedback</li>
-<li>Assume good intentions</li>
-<li>Be patient with questions</li>
-</ul>
-<h2 id="license">License</h2>
-<p>By contributing, you agree that your contributions will be licensed under the same license as the project (see LICENSE file).</p>
-<h2 id="thank-you">Thank You!</h2>
-<p>Every contribution helps make cyberian better. Thank you for taking the time to contribute!</p>
 <h2 id="see-also">See Also</h2>
 <ul>
-<li><a href="../setup/">Setup Guide</a></li>
-<li><a href="../testing/">Testing Guide</a></li>
-<li><a href="https://github.com/monarch-initiative/cyberian/issues">GitHub Issues</a></li>
-<li><a href="https://github.com/monarch-initiative/cyberian/discussions">GitHub Discussions</a></li>
+<li><a href="../workflow-model/">Workflow Model</a> - How workflows execute</li>
+<li><a href="../agent-lifecycle/">Agent Lifecycle</a> - Reuse vs refresh modes</li>
+<li><a href="../../how-to/write-deep-research-workflow/">Write a Deep Research Workflow</a> - Practical guide</li>
 </ul>
 
 
