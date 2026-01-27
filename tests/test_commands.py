@@ -451,6 +451,29 @@ def test_server_with_skip_permissions_other_agent():
         assert call_args == ["agentapi", "server", "aider", "--port", "3284"]
 
 
+def test_server_with_skip_permissions_codex():
+    """Test server command with --skip-permissions flag for Codex agent."""
+    with patch("cyberian.cli.subprocess.Popen") as mock_popen:
+        mock_process = Mock()
+        mock_process.pid = 12345
+        mock_popen.return_value = mock_process
+
+        result = runner.invoke(app, ["server", "start", "codex", "--skip-permissions"])
+
+        assert result.exit_code == 0
+        call_args = mock_popen.call_args[0][0]
+        # Should translate to --dangerously-bypass-approvals-and-sandbox for codex after --
+        assert call_args == [
+            "agentapi",
+            "server",
+            "codex",
+            "--port",
+            "3284",
+            "--",
+            "--dangerously-bypass-approvals-and-sandbox",
+        ]
+
+
 def test_server_with_name_option():
     """Test server command with --name option sets process name."""
     with patch("cyberian.cli.subprocess.Popen") as mock_popen:

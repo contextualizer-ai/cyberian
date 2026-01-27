@@ -2,19 +2,21 @@
 site_name: "cyberian"
 theme:
   name: material
-  # palette:
-  #  scheme: slate
-  #  primary: cyan
+  palette:
+    scheme: default
+    primary: teal
+    accent: amber
   features:
     - content.tabs.link
-    - navigation.tabs
     - navigation.sections
     - navigation.expand
     - navigation.path
     - navigation.top
+    - navigation.indexes
     - search.suggest
     - search.highlight
     - content.code.copy
+    - toc.integrate
 
 # for adding extra css/js see https://www.mkdocs.org/user-guide/customizing-your-theme/
 
@@ -43,12 +45,14 @@ nav:
     - Manage Servers: how-to/manage-servers.md
     - Write a Deep Research Workflow: how-to/write-deep-research-workflow.md
     - Use Templates: how-to/use-templates.md
+    - FAQ: how-to/faq.md
     - Troubleshooting: how-to/troubleshooting.md
 
   - Explanation:
     - explanation/index.md
     - Architecture: explanation/architecture.md
     - Workflow Model: explanation/workflow-model.md
+    - Ralph Wiggum Pattern: explanation/ralph-wiggum-pattern.md
     - Agent Lifecycle: explanation/agent-lifecycle.md
     - Design Decisions: explanation/design-decisions.md
 
@@ -61,6 +65,7 @@ nav:
   - Integrations:
     - integrations/index.md
     - Claude Code Skill: integrations/claude-skill.md
+    - OpenAI Codex: integrations/codex.md
 
   - Development:
     - development/index.md

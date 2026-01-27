@@ -36,6 +36,17 @@ Deep dive into workflow execution:
 - Template rendering pipeline
 - Success criteria validation
 
+### [Ralph Wiggum Pattern](ralph-wiggum-pattern.md)
+
+Understand the autonomous iteration pattern that inspired cyberian's loops:
+
+- Origins and core concept
+- State in files vs context window
+- Fresh context and "context rot"
+- How cyberian implements the pattern
+- Comparison: code loops vs research loops
+- Best practices for long-running workflows
+
 ### [Agent Lifecycle](agent-lifecycle.md)
 
 Understand agent state management:

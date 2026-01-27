@@ -14,6 +14,20 @@ A Claude Code skill for multi-agent orchestration. Install with:
 
 Use the skill to manage cyberian workflows directly from Claude Code.
 
+### [OpenAI Codex](codex.md)
+
+Integration guide for using cyberian with OpenAI Codex. Covers:
+
+- Configuration via `~/.codex/config.toml`
+- Approval policies and sandbox modes
+- Troubleshooting startup and permission issues
+- Best practices for automated workflows
+
+```bash
+# Quick start with Codex
+cyberian server start codex --skip-permissions
+```
+
 ## Integration Patterns
 
 ### Claude Code + cyberian

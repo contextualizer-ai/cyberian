@@ -11,7 +11,7 @@ class ServerConfig(BaseModel):
     """Configuration for a single server in a farm."""
 
     name: str = Field(..., description="Logical name for this server")
-    agent_type: str = Field(default="custom", description="Agent type (e.g., aider, claude, cursor, goose)")
+    agent_type: str = Field(default="custom", description="Agent type (e.g., aider, claude, codex, cursor, goose)")
     port: Optional[int] = Field(default=None, description="Port to run the server on (auto-assigned if not specified)")
     directory: str = Field(..., description="Working directory for the server")
     skip_permissions: bool = Field(default=False, description="Skip permission checks")

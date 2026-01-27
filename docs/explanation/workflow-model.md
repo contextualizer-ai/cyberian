@@ -212,6 +212,8 @@ subtasks:
 
 ## Loop Execution
 
+cyberian's loop mechanism is inspired by the [Ralph Wiggum Pattern](ralph-wiggum-pattern.md) - an autonomous iteration technique where agents loop until completion, with state persisted in files rather than conversation history.
+
 ### Loop Until Pattern
 
 Tasks can loop until a condition is met:
