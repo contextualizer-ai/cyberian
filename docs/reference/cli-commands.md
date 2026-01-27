@@ -23,6 +23,7 @@ All commands support:
 | `--agent-type` | `-a` | Agent type for workflows |
 | `--skip-permissions` | `-s` | Skip permission checks |
 | `--param` | `-p` | Workflow parameter |
+| `--max-iterations` | `-m` | Max iterations for looping tasks |
 
 ## message
 
@@ -545,11 +546,22 @@ Executes a multi-step workflow defined in a YAML file. Automatically starts an a
 | `--skip-permissions` | `-s` | flag | `false` | Skip permissions (added to template context) |
 | `--param` | `-p` | string | | Parameter in format key=value (repeatable) |
 | `--agent-lifecycle` | | string | `reuse` | Agent lifecycle mode: `reuse` or `refresh` |
+| `--max-iterations` | `-m` | integer | | Maximum iterations for looping tasks (e.g., `iterate` subtask) |
 
 ### Lifecycle Modes
 
 - `reuse` - Keep agent running, maintains context (default)
 - `refresh` - Restart agent between tasks, clean state
+
+### Max Iterations
+
+The `--max-iterations` option limits how many times looping tasks (like `iterate` subtasks with `loop_until` conditions) can execute. This is useful for:
+
+- **Testing**: Prevent workflows from running indefinitely during development
+- **Cost control**: Limit agent invocations for expensive workflows
+- **Debugging**: Run a fixed number of iterations to inspect intermediate results
+
+When the limit is reached, the loop exits with a warning message but the workflow continues.
 
 ### Examples
 
@@ -586,6 +598,12 @@ cyberian run workflow.yaml --dir /tmp/workspace
 cyberian run workflow.yaml --agent-lifecycle refresh
 ```
 
+**Limit iterations (for testing):**
+
+```bash
+cyberian run workflow.yaml --max-iterations 2
+```
+
 **All options:**
 
 ```bash
@@ -597,13 +615,14 @@ cyberian run workflow.yaml \
   --agent-type claude \
   --skip-permissions \
   --param query="topic" \
-  --agent-lifecycle reuse
+  --agent-lifecycle reuse \
+  --max-iterations 5
 ```
 
 **Using shorthands:**
 
 ```bash
-cyberian run workflow.yaml -H localhost -P 3284 -T 600 -d ./workspace -a claude -s -p query="topic"
+cyberian run workflow.yaml -H localhost -P 3284 -T 600 -d ./workspace -a claude -s -p query="topic" -m 3
 ```
 
 ### Exit Codes

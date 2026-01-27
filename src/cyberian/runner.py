@@ -16,6 +16,11 @@ from cyberian.models import LoopCondition, Preconditions, SuccessCriteria, Task
 
 logger = logging.getLogger(__name__)
 
+# HTTP timeout constants (seconds)
+HTTP_STATUS_TIMEOUT = 30  # Timeout for status check requests
+HTTP_MESSAGES_TIMEOUT = 30  # Timeout for message retrieval requests
+HTTP_SEND_TIMEOUT_DEFAULT = 300  # Default timeout for sending messages
+
 
 class TaskRunner:
     """Executes a recursive task tree by communicating with agentapi.
@@ -44,7 +49,8 @@ class TaskRunner:
         agent_type: str | None = None,
         skip_permissions: bool = False,
         directory: str | None = None,
-        workflow_file: str | None = None
+        workflow_file: str | None = None,
+        max_iterations: int | None = None
     ):
         """Initialize the task runner.
 
@@ -59,6 +65,7 @@ class TaskRunner:
             skip_permissions: Whether to skip permissions when starting server
             directory: Working directory for server (if applicable)
             workflow_file: Path to workflow file (for resolving relative script paths)
+            max_iterations: Maximum iterations for looping tasks (None = unlimited)
         """
         self.host = host
         self.port = port
@@ -74,6 +81,7 @@ class TaskRunner:
         self.skip_permissions = skip_permissions
         self.directory = directory
         self.workflow_file = workflow_file
+        self.max_iterations = max_iterations
         self._server_process: subprocess.Popen[bytes] | None = None  # Track the subprocess.Popen instance
         self._server_stdout_file: TextIO | None = None
         self._server_stderr_file: TextIO | None = None
@@ -124,10 +132,13 @@ class TaskRunner:
             self._server_stdout_file = open(stdout_path, "a", encoding="utf-8")
             self._server_stderr_file = open(stderr_path, "a", encoding="utf-8")
 
+            # Ensure PATH is properly inherited for finding binaries like agentapi, codex
+            env = os.environ.copy()
             self._server_process = subprocess.Popen(
                 cmd,
                 stdout=self._server_stdout_file,
-                stderr=self._server_stderr_file
+                stderr=self._server_stderr_file,
+                env=env
             )
             logger.info(f"Server started with PID: {self._server_process.pid}")
             logger.info(f"Server logs: stdout={stdout_path} stderr={stderr_path}")
@@ -444,6 +455,15 @@ class TaskRunner:
             iteration = 0
             while True:
                 iteration += 1
+
+                # Check max_iterations limit
+                if self.max_iterations is not None and iteration > self.max_iterations:
+                    logger.warning(
+                        f"Reached max_iterations limit ({self.max_iterations}) for task "
+                        f"'{task.name or 'unnamed'}', stopping loop"
+                    )
+                    break
+
                 logger.info(f"Loop iteration {iteration} for task '{task.name or 'unnamed'}'")
 
                 # Render template
@@ -634,7 +654,13 @@ class TaskRunner:
             TimeoutError: If agent doesn't respond within timeout
             RuntimeError: If no agent response found
         """
-        max_attempts = 2 if (self.agent_type or "").lower() == "codex" else 1
+        # Agents may show startup banners that swallow the first message
+        # Allow retries for agents known to have this behavior
+        agent_lower = (self.agent_type or "").lower()
+        max_attempts = 2 if agent_lower in ["codex", "claude"] else 1
+
+        # HTTP timeout for sending messages (use workflow timeout or default)
+        http_send_timeout = self.timeout or HTTP_SEND_TIMEOUT_DEFAULT
 
         for attempt in range(1, max_attempts + 1):
             # Send message
@@ -642,7 +668,8 @@ class TaskRunner:
             response = httpx.post(
                 f"{self.base_url}/message",
                 json={"content": content, "type": "user"},
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
+                timeout=http_send_timeout
             )
             response.raise_for_status()
             logger.info("Message sent successfully, waiting for agent to complete")
@@ -658,7 +685,7 @@ class TaskRunner:
                         f"Agent did not complete within {self.timeout}s"
                     )
 
-                status_response = httpx.get(f"{self.base_url}/status")
+                status_response = httpx.get(f"{self.base_url}/status", timeout=HTTP_STATUS_TIMEOUT)
                 status_response.raise_for_status()
                 status_data = status_response.json()
 
@@ -677,7 +704,7 @@ class TaskRunner:
 
             # Get last agent message (after stable status reached)
             logger.debug("Fetching agent messages")
-            messages_response = httpx.get(f"{self.base_url}/messages")
+            messages_response = httpx.get(f"{self.base_url}/messages", timeout=HTTP_MESSAGES_TIMEOUT)
             messages_response.raise_for_status()
             messages_data = messages_response.json()
 
@@ -692,10 +719,10 @@ class TaskRunner:
                     response_preview = agent_response[:200]
                     logger.info(f"Received agent response (preview): {response_preview}...")
 
-                    # Check for Codex welcome banner - if found and retries left, resend
-                    if self._is_codex_welcome(agent_response) and attempt < max_attempts:
+                    # Check for agent welcome banner - if found and retries left, resend
+                    if self._is_agent_welcome_banner(agent_response) and attempt < max_attempts:
                         logger.warning(
-                            "Codex startup banner detected; resending initial message "
+                            "Agent startup banner detected; resending initial message "
                             "to ensure the task is processed."
                         )
                         break  # Break from message loop to retry sending
@@ -907,3 +934,18 @@ class TaskRunner:
             and "/init" in agent_response
             and "/approvals" in agent_response
         )
+
+    @staticmethod
+    def _is_claude_welcome(agent_response: str) -> bool:
+        """Detect Claude Code startup banner that appears before task processing."""
+        if not agent_response:
+            return False
+        # Claude Code banner has ASCII art logo and version info
+        return (
+            "Claude Code" in agent_response
+            and ("▐▛" in agent_response or "█" in agent_response)
+        )
+
+    def _is_agent_welcome_banner(self, agent_response: str) -> bool:
+        """Detect agent startup banner that may appear before task processing."""
+        return self._is_codex_welcome(agent_response) or self._is_claude_welcome(agent_response)
