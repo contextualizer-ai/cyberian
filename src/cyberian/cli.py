@@ -8,6 +8,7 @@ import os
 import re
 import shlex
 import shutil
+import socket
 import subprocess
 import time
 from pathlib import Path
@@ -22,6 +23,38 @@ logger = logging.getLogger(__name__)
 
 app = typer.Typer(help="cyberian: Wrapper for agentapi for pipelines")
 
+
+def find_available_port(base_port: int = 3284, max_attempts: int = 100) -> int:
+    """Find an available port starting from base_port.
+
+    Args:
+        base_port: The port number to start searching from.
+        max_attempts: Maximum number of ports to try.
+
+    Returns:
+        An available port number.
+
+    Raises:
+        RuntimeError: If no available port is found within max_attempts.
+
+    Example:
+        >>> port = find_available_port(base_port=10000)
+        >>> port >= 10000
+        True
+    """
+    for offset in range(max_attempts):
+        port = base_port + offset
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            sock.bind(('localhost', port))
+            sock.close()
+            return port
+        except OSError:
+            continue
+        finally:
+            sock.close()
+    raise RuntimeError(f"No available port found in range {base_port}-{base_port + max_attempts}")
+
 # Server sub-app for grouping server-related commands
 server_app = typer.Typer(help="Manage agentapi servers")
 app.add_typer(server_app, name="server")
@@ -29,6 +62,10 @@ app.add_typer(server_app, name="server")
 # Farm sub-app for managing multiple servers
 farm_app = typer.Typer(help="Manage farms of agentapi servers")
 app.add_typer(farm_app, name="farm")
+
+# Workflow sub-app for workflow-related commands
+workflow_app = typer.Typer(help="Manage and run workflows")
+app.add_typer(workflow_app, name="workflow")
 
 
 def resolve_server_name_to_port(name: str) -> int:
@@ -178,6 +215,162 @@ def message(
 
 
 @app.command()
+def command(
+    content: Annotated[str, typer.Argument(help="Message content to send to the agent")],
+    agent: Annotated[str, typer.Option("--agent", "-a", help="Agent type to use")] = "claude",
+    host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
+    port: Annotated[Optional[int], typer.Option("--port", "-P", help="Agent API port (if specified, uses existing server)")] = None,
+    timeout: Annotated[int, typer.Option("--timeout", "-T", help="Timeout in seconds")] = 300,
+    poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds")] = 2.0,
+    startup_timeout: Annotated[int, typer.Option("--startup-timeout", help="Timeout waiting for server to start")] = 30,
+    no_kill: Annotated[bool, typer.Option("--no-kill", help="Don't kill the server after command completes")] = False,
+    skip_permissions: Annotated[bool, typer.Option("--skip-permissions", "-s", help="Skip permission checks (default: True for claude)")] = True,
+):
+    """Run a one-shot command: start server, send message, get response, stop server.
+
+    This is a convenience command that wraps the workflow of starting an agentapi
+    server, sending a message synchronously, and cleaning up. By default it:
+    - Starts a new server on the next available port
+    - Uses 'claude' agent with --dangerously-skip-permissions
+    - Runs in the current directory
+    - Waits for the response (sync mode)
+    - Kills the server when done
+
+    If --port is specified, connects to an existing server instead of starting a new one.
+
+    Example:
+        >>> # cyberian command "Write hello world in Python"
+        >>> # cyberian command "Fix the bug" --agent aider
+        >>> # cyberian command "Test" --port 3284  # use existing server
+        >>> # cyberian command "Long task" --timeout 600
+        >>> # cyberian command "Setup project" --no-kill  # keep server running
+    """
+    server_started = False
+    server_port = port
+
+    try:
+        # If no port specified, start a new server
+        if port is None:
+            server_port = find_available_port()
+            typer.echo(f"Starting {agent} server on port {server_port}...")
+
+            # Build server command
+            base_cmd = ["agentapi", "server", agent, "--port", str(server_port)]
+
+            # Add agent-specific flags
+            agent_flags = []
+            if skip_permissions:
+                agent_lower = agent.lower()
+                if agent_lower == "claude":
+                    agent_flags.append("--dangerously-skip-permissions")
+                elif agent_lower == "codex":
+                    agent_flags.append("--dangerously-bypass-approvals-and-sandbox")
+
+            if agent_flags:
+                base_cmd.append("--")
+                base_cmd.extend(agent_flags)
+
+            # Start server in background
+            shell_cmd = " ".join(shlex.quote(arg) for arg in base_cmd)
+            cmd = ["sh", "-c", shell_cmd]
+
+            subprocess.Popen(
+                cmd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            server_started = True
+
+            # Wait for server to be ready
+            status_url = f"http://{host}:{server_port}/status"
+            start_time = time.time()
+
+            while True:
+                elapsed = time.time() - start_time
+                if elapsed > startup_timeout:
+                    typer.echo(f"Error: Server failed to start within {startup_timeout}s", err=True)
+                    raise typer.Exit(1)
+
+                try:
+                    response = httpx.get(status_url, timeout=2.0)
+                    if response.status_code == 200:
+                        typer.echo(f"Server ready on port {server_port}")
+                        break
+                except httpx.RequestError:
+                    pass
+
+                time.sleep(0.5)
+
+        # Send message (sync mode)
+        url = f"http://{host}:{server_port}/message"
+        payload = {"content": content, "type": "user"}
+
+        response = httpx.post(url, content=json.dumps(payload), headers={"Content-Type": "application/json"})
+        response.raise_for_status()
+
+        # Wait for stable status
+        status_url = f"http://{host}:{server_port}/status"
+        messages_url = f"http://{host}:{server_port}/messages"
+
+        start_time = time.time()
+
+        while True:
+            elapsed = time.time() - start_time
+            if elapsed > timeout:
+                typer.echo(f"Error: Timeout exceeded ({timeout}s) waiting for agent to finish", err=True)
+                raise typer.Exit(1)
+
+            status_response = httpx.get(status_url)
+            status_response.raise_for_status()
+            status_data = status_response.json()
+
+            agent_status = status_data.get("status", "").lower()
+            if agent_status in ["idle", "ready", "stable", "waiting"]:
+                break
+
+            time.sleep(poll_interval)
+
+        # Fetch messages and find last agent message
+        messages_response = httpx.get(messages_url)
+        messages_response.raise_for_status()
+        messages_data = messages_response.json()
+
+        messages_list = messages_data.get("messages", [])
+
+        # Find last message from agent
+        last_agent_message = None
+        for msg in reversed(messages_list):
+            role = msg.get("role", "").lower()
+            if role in ["agent", "assistant", "system"]:
+                last_agent_message = msg
+                break
+
+        if last_agent_message:
+            typer.echo(last_agent_message.get("content", ""))
+        else:
+            typer.echo("No agent response found", err=True)
+            raise typer.Exit(1)
+
+    finally:
+        # Kill server if we started it and --no-kill wasn't specified
+        if server_started and not no_kill and server_port is not None:
+            typer.echo(f"Stopping server on port {server_port}...")
+            # Use lsof to find the process
+            result = subprocess.run(
+                ["lsof", "-ti", f"tcp:{server_port}"],
+                capture_output=True,
+                text=True
+            )
+
+            if result.returncode == 0 and result.stdout.strip():
+                pids = result.stdout.strip().split("\n")
+                for pid in pids:
+                    pid = pid.strip()
+                    if pid:
+                        subprocess.run(["kill", pid], capture_output=True)
+
+
+@app.command()
 def messages(
     host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
     port: Annotated[Optional[int], typer.Option("--port", "-P", help="Agent API port")] = None,
@@ -311,6 +504,10 @@ def start_server(
         Optional[str],
         typer.Option("--dir", "-d", help="Directory to change to before starting the server")
     ] = None,
+    home: Annotated[
+        Optional[str],
+        typer.Option("--home", help="Set HOME environment variable for the server process (e.g., for Claude config)")
+    ] = None,
 ):
     """Start an agentapi server.
 
@@ -325,6 +522,7 @@ def start_server(
         >>> # cyberian server start --dir /path/to/project
         >>> # cyberian server start claude --dir /my/project --port 8080
         >>> # cyberian server start claude --skip-permissions
+        >>> # cyberian server start claude --home /Users/cjm
     """
     # Change to specified directory if provided
     if dir:
@@ -346,10 +544,13 @@ def start_server(
     # Add agent-specific flags (these go after --)
     agent_flags = []
     if skip_permissions:
-        if agent.lower() == "claude":
+        agent_lower = agent.lower()
+        if agent_lower == "claude":
             agent_flags.append("--dangerously-skip-permissions")
+        elif agent_lower == "codex":
+            agent_flags.append("--dangerously-bypass-approvals-and-sandbox")
         # Add other agent-specific flags here as needed
-        # elif agent.lower() == "aider":
+        # elif agent_lower == "aider":
         #     agent_flags.append("--yes")
 
     if agent_flags:
@@ -366,7 +567,14 @@ def start_server(
         cmd = base_cmd
         typer.echo(f"Starting agentapi server ({agent}) on port {port}...")
 
-    process = subprocess.Popen(cmd)
+    # Build environment with HOME override if specified
+    env = None
+    if home:
+        env = os.environ.copy()
+        env["HOME"] = home
+        typer.echo(f"Setting HOME={home}")
+
+    process = subprocess.Popen(cmd, env=env)
 
     typer.echo(f"Server started with PID: {process.pid}")
 
@@ -688,8 +896,11 @@ def start_farm(
         # Add agent-specific flags
         agent_flags = []
         if server_config.skip_permissions:
-            if server_config.agent_type.lower() == "claude":
+            agent_type_lower = server_config.agent_type.lower()
+            if agent_type_lower == "claude":
                 agent_flags.append("--dangerously-skip-permissions")
+            elif agent_type_lower == "codex":
+                agent_flags.append("-s")
 
         if agent_flags:
             base_cmd.append("--")
@@ -815,61 +1026,25 @@ def stop_farm(
         typer.echo(f"Failed to stop {len(failed_servers)} server(s): {', '.join(failed_servers)}", err=True)
 
 
-@app.command()
-def run(
-    workflow_file: Annotated[str, typer.Argument(help="Path to workflow YAML file")],
-    host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
-    port: Annotated[int, typer.Option("--port", "-P", help="Agent API port")] = 3284,
-    timeout: Annotated[int, typer.Option("--timeout", "-T", help="Timeout in seconds per task")] = 1800,
-    poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds")] = 2.0,
-    directory: Annotated[
-        Optional[str],
-        typer.Option("--dir", "-d", help="Change to this directory before running workflow (deprecated: use --workdir)")
-    ] = None,
-    workdir: Annotated[
-        Optional[str],
-        typer.Option("--workdir", "-w", help="Working directory for agent execution. Agent output files will be created here. If not specified, uses workflow file's directory.")
-    ] = None,
-    agent_type: Annotated[
-        Optional[str],
-        typer.Option("--agent-type", "-a", help="Agent type to use (added to template context)")
-    ] = None,
-    skip_permissions: Annotated[
-        bool,
-        typer.Option("--skip-permissions", "-s", help="Skip permission checks (added to template context)")
-    ] = False,
-    resume_from: Annotated[
-        Optional[str],
-        typer.Option("--resume-from", "-r", help="Resume workflow from specified task name")
-    ] = None,
-    agent_lifecycle: Annotated[
-        Optional[str],
-        typer.Option("--agent-lifecycle", help="Agent server lifecycle mode: 'reuse' (default, keep server) or 'refresh' (restart between tasks)")
-    ] = None,
-    verbose: Annotated[
-        int,
-        typer.Option("--verbose", "-v", count=True, help="Increase verbosity (-v for INFO, -vv for DEBUG)")
-    ] = 0,
-    param: Annotated[
-        Optional[list[str]],
-        typer.Option("--param", "-p", help="Parameter in format key=value")
-    ] = None,
-):
-    """Run a workflow from a YAML file.
+def _run_workflow_impl(
+    workflow_file: str,
+    host: str = "localhost",
+    port: int = 3284,
+    timeout: int = 1800,
+    poll_interval: float = 2.0,
+    directory: Optional[str] = None,
+    workdir: Optional[str] = None,
+    agent_type: Optional[str] = None,
+    skip_permissions: bool = False,
+    resume_from: Optional[str] = None,
+    agent_lifecycle: Optional[str] = None,
+    verbose: int = 0,
+    param: Optional[list[str]] = None,
+) -> None:
+    """Shared implementation for running workflows.
 
-    Parameters can be provided via --param flags in the format key=value.
-    The --agent-type option adds 'agent_type' to the template context.
-    The --skip-permissions option adds 'skip_permissions' to the template context.
-    The --resume-from option skips tasks until reaching the specified task name.
-
-    Example:
-        >>> # cyberian run workflow.yaml --param query="climate change"
-        >>> # cyberian run workflow.yaml --dir /my/project --agent-type claude
-        >>> # cyberian run workflow.yaml --skip-permissions
-        >>> # cyberian run workflow.yaml -v  # verbose output
-        >>> # cyberian run workflow.yaml -vv  # debug output
-        >>> # cyberian run workflow.yaml --resume-from iterate  # skip to 'iterate' task
-        >>> # cyberian run tests/examples/deep-research.yaml -p query="AI" -d ./workspace
+    This function contains the core logic used by both `cyberian run` and
+    `cyberian workflow run` commands.
     """
     from cyberian.runner import TaskRunner
     from cyberian.models import Task
@@ -1039,6 +1214,152 @@ def run(
         if lifecycle_mode == "refresh" and runner._server_process:
             logger.info("Cleaning up: stopping agent server")
             runner._stop_server()
+
+
+@workflow_app.command(name="run")
+def workflow_run(
+    workflow_file: Annotated[str, typer.Argument(help="Path to workflow YAML file")],
+    host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
+    port: Annotated[int, typer.Option("--port", "-P", help="Agent API port")] = 3284,
+    timeout: Annotated[int, typer.Option("--timeout", "-T", help="Timeout in seconds per task")] = 1800,
+    poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds")] = 2.0,
+    directory: Annotated[
+        Optional[str],
+        typer.Option("--dir", "-d", help="Change to this directory before running workflow (deprecated: use --workdir)")
+    ] = None,
+    workdir: Annotated[
+        Optional[str],
+        typer.Option("--workdir", "-w", help="Working directory for agent execution. Agent output files will be created here. If not specified, uses workflow file's directory.")
+    ] = None,
+    agent_type: Annotated[
+        Optional[str],
+        typer.Option("--agent-type", "-a", help="Agent type to use (added to template context)")
+    ] = None,
+    skip_permissions: Annotated[
+        bool,
+        typer.Option("--skip-permissions", "-s", help="Skip permission checks (added to template context)")
+    ] = False,
+    resume_from: Annotated[
+        Optional[str],
+        typer.Option("--resume-from", "-r", help="Resume workflow from specified task name")
+    ] = None,
+    agent_lifecycle: Annotated[
+        Optional[str],
+        typer.Option("--agent-lifecycle", help="Agent server lifecycle mode: 'reuse' (default, keep server) or 'refresh' (restart between tasks)")
+    ] = None,
+    verbose: Annotated[
+        int,
+        typer.Option("--verbose", "-v", count=True, help="Increase verbosity (-v for INFO, -vv for DEBUG)")
+    ] = 0,
+    param: Annotated[
+        Optional[list[str]],
+        typer.Option("--param", "-p", help="Parameter in format key=value")
+    ] = None,
+):
+    """Run a workflow from a YAML file.
+
+    Parameters can be provided via --param flags in the format key=value.
+    The --agent-type option adds 'agent_type' to the template context.
+    The --skip-permissions option adds 'skip_permissions' to the template context.
+    The --resume-from option skips tasks until reaching the specified task name.
+
+    Example:
+        >>> # cyberian workflow run workflow.yaml --param query="climate change"
+        >>> # cyberian workflow run workflow.yaml --workdir /my/project --agent-type claude
+        >>> # cyberian workflow run workflow.yaml --skip-permissions
+        >>> # cyberian workflow run workflow.yaml -v  # verbose output
+        >>> # cyberian workflow run workflow.yaml -vv  # debug output
+        >>> # cyberian workflow run workflow.yaml --resume-from iterate
+    """
+    _run_workflow_impl(
+        workflow_file=workflow_file,
+        host=host,
+        port=port,
+        timeout=timeout,
+        poll_interval=poll_interval,
+        directory=directory,
+        workdir=workdir,
+        agent_type=agent_type,
+        skip_permissions=skip_permissions,
+        resume_from=resume_from,
+        agent_lifecycle=agent_lifecycle,
+        verbose=verbose,
+        param=param,
+    )
+
+
+@app.command()
+def run(
+    workflow_file: Annotated[str, typer.Argument(help="Path to workflow YAML file")],
+    host: Annotated[str, typer.Option("--host", "-H", help="Agent API host")] = "localhost",
+    port: Annotated[int, typer.Option("--port", "-P", help="Agent API port")] = 3284,
+    timeout: Annotated[int, typer.Option("--timeout", "-T", help="Timeout in seconds per task")] = 1800,
+    poll_interval: Annotated[float, typer.Option("--poll-interval", help="Status polling interval in seconds")] = 2.0,
+    directory: Annotated[
+        Optional[str],
+        typer.Option("--dir", "-d", help="Change to this directory before running workflow (deprecated: use --workdir)")
+    ] = None,
+    workdir: Annotated[
+        Optional[str],
+        typer.Option("--workdir", "-w", help="Working directory for agent execution. Agent output files will be created here. If not specified, uses workflow file's directory.")
+    ] = None,
+    agent_type: Annotated[
+        Optional[str],
+        typer.Option("--agent-type", "-a", help="Agent type to use (added to template context)")
+    ] = None,
+    skip_permissions: Annotated[
+        bool,
+        typer.Option("--skip-permissions", "-s", help="Skip permission checks (added to template context)")
+    ] = False,
+    resume_from: Annotated[
+        Optional[str],
+        typer.Option("--resume-from", "-r", help="Resume workflow from specified task name")
+    ] = None,
+    agent_lifecycle: Annotated[
+        Optional[str],
+        typer.Option("--agent-lifecycle", help="Agent server lifecycle mode: 'reuse' (default, keep server) or 'refresh' (restart between tasks)")
+    ] = None,
+    verbose: Annotated[
+        int,
+        typer.Option("--verbose", "-v", count=True, help="Increase verbosity (-v for INFO, -vv for DEBUG)")
+    ] = 0,
+    param: Annotated[
+        Optional[list[str]],
+        typer.Option("--param", "-p", help="Parameter in format key=value")
+    ] = None,
+):
+    """Run a workflow from a YAML file (deprecated: use 'cyberian workflow run').
+
+    Parameters can be provided via --param flags in the format key=value.
+    The --agent-type option adds 'agent_type' to the template context.
+    The --skip-permissions option adds 'skip_permissions' to the template context.
+    The --resume-from option skips tasks until reaching the specified task name.
+
+    Example:
+        >>> # cyberian run workflow.yaml --param query="climate change"
+        >>> # cyberian run workflow.yaml --dir /my/project --agent-type claude
+        >>> # cyberian run workflow.yaml --skip-permissions
+        >>> # cyberian run workflow.yaml -v  # verbose output
+        >>> # cyberian run workflow.yaml -vv  # debug output
+        >>> # cyberian run workflow.yaml --resume-from iterate  # skip to 'iterate' task
+        >>> # cyberian run tests/examples/deep-research.yaml -p query="AI" -d ./workspace
+    """
+    typer.echo("Note: 'cyberian run' is deprecated, use 'cyberian workflow run' instead", err=True)
+    _run_workflow_impl(
+        workflow_file=workflow_file,
+        host=host,
+        port=port,
+        timeout=timeout,
+        poll_interval=poll_interval,
+        directory=directory,
+        workdir=workdir,
+        agent_type=agent_type,
+        skip_permissions=skip_permissions,
+        resume_from=resume_from,
+        agent_lifecycle=agent_lifecycle,
+        verbose=verbose,
+        param=param,
+    )
 
 
 def main():

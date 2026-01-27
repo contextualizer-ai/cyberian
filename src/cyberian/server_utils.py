@@ -224,8 +224,11 @@ def start_agentapi_server(
     # Add agent-specific flags after --
     agent_flags = []
     if skip_permissions:
-        if agent_type.lower() == "claude":
+        agent_type_lower = agent_type.lower()
+        if agent_type_lower == "claude":
             agent_flags.append("--dangerously-skip-permissions")
+        elif agent_type_lower == "codex":
+            agent_flags.append("--dangerously-bypass-approvals-and-sandbox")
         # Add other agent-specific flags as needed
 
     if agent_flags:
