@@ -192,7 +192,7 @@ def test_start_agentapi_server_uses_current_env(codex_home):
         with tempfile.TemporaryDirectory() as temp_dir:
             # Patch os.environ to include our custom HOME
             with patch.dict(os.environ, {"HOME": home}):
-                process = start_agentapi_server(
+                start_agentapi_server(
                     agent_type="codex",
                     port=3284,
                     directory=temp_dir,
@@ -216,7 +216,7 @@ def test_start_agentapi_server_codex_flags():
         mock_popen.return_value = mock_process
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            process = start_agentapi_server(
+            start_agentapi_server(
                 agent_type="codex",
                 port=4800,
                 directory=temp_dir,
@@ -238,7 +238,7 @@ def test_start_agentapi_server_codex_no_skip_permissions():
         mock_popen.return_value = mock_process
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            process = start_agentapi_server(
+            start_agentapi_server(
                 agent_type="codex",
                 port=4800,
                 directory=temp_dir,
@@ -648,10 +648,6 @@ def test_deep_research_agent_retry_behavior(
 
     Codex gets 2 attempts (to handle welcome banner), others get 1.
     """
-    runner = TaskRunner(agent_type=agent_type, timeout=10)
-    task = deep_research_task
-    context = {"query": "test query", "workdir": "/tmp/test"}
-
     # Track how many times _send_and_wait would attempt
     # We verify by checking the max_attempts logic
     is_codex = (agent_type or "").lower() == "codex"
@@ -669,8 +665,6 @@ def test_deep_research_agent_retry_behavior(
 )
 def test_deep_research_server_readiness_timeout(agent_type, expected_timeout):
     """Test that server readiness timeout is extended for Codex."""
-    runner = TaskRunner(agent_type=agent_type)
-
     # Verify _wait_for_server_ready uses correct timeout
     # The method checks if agent_type is codex and extends to 120s
     with patch("cyberian.runner.httpx.get") as mock_get:
@@ -753,7 +747,7 @@ def test_deep_research_server_start_flags(agent_type, skip_permissions, expected
         mock_popen.return_value = mock_process
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            process = start_agentapi_server(
+            start_agentapi_server(
                 agent_type=agent_type,
                 port=3284,
                 directory=temp_dir,
@@ -777,10 +771,6 @@ def test_deep_research_codex_welcome_banner_handling(deep_research_task, agent_t
 
     For Codex, if first response is a welcome banner, message should be resent.
     """
-    runner = TaskRunner(agent_type=agent_type, timeout=10)
-    task = deep_research_task
-    context = {"query": "test", "workdir": "/tmp/test"}
-
     codex_welcome = """
     Welcome to OpenAI Codex!
 
@@ -790,22 +780,6 @@ def test_deep_research_codex_welcome_banner_handling(deep_research_task, agent_t
     """
 
     normal_response = "Task completed. COMPLETION_STATUS: COMPLETE"
-
-    if agent_type == "codex":
-        # Codex should retry after welcome banner
-        responses = [
-            codex_welcome,  # First attempt - welcome banner
-            normal_response,  # Second attempt - actual work
-            "More work. COMPLETION_STATUS: COMPLETE",
-            "Done. NO_MORE_RESEARCH. COMPLETION_STATUS: COMPLETE",
-        ]
-    else:
-        # Claude doesn't have welcome banner issue
-        responses = [
-            normal_response,
-            "More work. COMPLETION_STATUS: COMPLETE",
-            "Done. NO_MORE_RESEARCH. COMPLETION_STATUS: COMPLETE",
-        ]
 
     # For this test, we verify the banner detection logic
     assert TaskRunner._is_codex_welcome(codex_welcome) is True
@@ -829,11 +803,6 @@ def test_deep_research_with_codex_approval_policies(
     """
     config = f'approval_policy = "{approval_policy}"'
     home = codex_home_with_config(config)
-
-    # Create runner with codex agent
-    runner = TaskRunner(agent_type="codex", timeout=10)
-    task = deep_research_task
-    context = {"query": "test", "workdir": "/tmp/test"}
 
     # Verify config was created
     config_path = Path(home) / ".codex" / "config.toml"
