@@ -2,6 +2,8 @@
 
 This guide shows you how to build a multi-step deep research workflow using cyberian, based on modern deep research agent patterns.
 
+cyberian's research workflows implement the [Ralph Wiggum Pattern](../explanation/ralph-wiggum-pattern.md) - an autonomous iteration technique where the agent loops until completion, with state persisted in files (PLAN.md, REPORT.md, citations/) rather than relying on conversation history.
+
 ## What is Deep Research?
 
 According to recent research, true deep research agents are autonomous AI systems with sophisticated capabilities:

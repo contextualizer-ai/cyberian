@@ -555,6 +555,259 @@ print(t.render(x=True))
 EOF
 ```
 
+## Codex-Specific Issues
+
+### First Message Ignored (Welcome Banner)
+
+**Problem:** Codex shows startup banner instead of processing the first task.
+
+**Symptoms:**
+
+```
+Welcome to OpenAI Codex!
+Available commands:
+/init - Initialize project
+/approvals - Configure approval settings
+```
+
+Instead of actual task output.
+
+**Cause:** Fresh/untrusted directories trigger Codex's welcome flow.
+
+**Solutions:**
+
+1. **Use --skip-permissions:**
+
+```bash
+cyberian server start codex --skip-permissions
+```
+
+2. **Configure config.toml:**
+
+```toml
+# ~/.codex/config.toml
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+```
+
+3. **Mark directory as trusted:**
+
+```toml
+# ~/.codex/config.toml
+[projects."/your/workspace"]
+trust_level = "trusted"
+```
+
+4. **cyberian auto-retry:**
+
+cyberian automatically detects the welcome banner and resends the first message.
+
+### Server Startup Timeout
+
+**Problem:** "Server did not become ready within 30s" with Codex.
+
+**Cause:** Codex takes longer to initialize than Claude.
+
+**Note:** cyberian automatically extends timeout to 120s for Codex.
+
+**If still failing:**
+
+1. **Check Codex installation:**
+
+```bash
+which codex
+codex --version
+```
+
+2. **Check agentapi logs:**
+
+```bash
+cat /path/to/workspace/agentapi_stderr.log
+```
+
+3. **Start manually to debug:**
+
+```bash
+agentapi server codex --port 3284 -- --dangerously-bypass-approvals-and-sandbox
+```
+
+### Codex Environment Mismatch
+
+**Problem:** Codex works in terminal but not when spawned by cyberian.
+
+**Symptoms:**
+
+- Server starts but Codex process fails
+- "codex: command not found" in logs
+- Different behavior than manual execution
+
+**Cause:** PATH or environment differs when spawned as subprocess.
+
+**Solutions:**
+
+1. **Check PATH:**
+
+```bash
+# Where is codex?
+which codex
+
+# Is it in a standard location?
+echo $PATH
+```
+
+2. **Use absolute path (if needed):**
+
+Ensure codex binary is in a standard PATH location, or configure shell environment:
+
+```toml
+# ~/.codex/config.toml
+[shell_environment_policy]
+inherit = "all"
+```
+
+3. **Check agentapi can find codex:**
+
+```bash
+# Test agentapi directly
+agentapi server codex --port 9999
+```
+
+### Approval Prompts Block Workflow
+
+**Problem:** Workflow hangs, waiting for interactive approval.
+
+**Symptoms:**
+
+- Status shows `waiting` indefinitely
+- No output from agent
+- Works fine when running codex manually
+
+**Cause:** Codex approval policy requires user input.
+
+**Solutions:**
+
+1. **Use --skip-permissions flag:**
+
+```bash
+cyberian server start codex --skip-permissions
+```
+
+2. **Set approval_policy in config.toml:**
+
+```toml
+# ~/.codex/config.toml
+approval_policy = "never"
+```
+
+3. **Use automation profile:**
+
+```toml
+# ~/.codex/config.toml
+profile = "automation"
+
+[profiles.automation]
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+```
+
+### Sandbox Blocks File Operations
+
+**Problem:** Codex can't read/write files despite correct instructions.
+
+**Symptoms:**
+
+- "Permission denied" errors
+- File operations silently fail
+- Works in terminal but not via cyberian
+
+**Cause:** Sandbox mode restricting filesystem access.
+
+**Solutions:**
+
+1. **Use full access mode:**
+
+```toml
+# ~/.codex/config.toml
+sandbox_mode = "danger-full-access"
+```
+
+2. **Or allow specific paths:**
+
+```toml
+# ~/.codex/config.toml
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+writable_roots = ["/tmp/cyberian", "~/projects"]
+```
+
+3. **Verify directory permissions:**
+
+```bash
+ls -la /path/to/workspace
+# Ensure user has write access
+```
+
+### Different Behavior in Fresh Directories
+
+**Problem:** Workflow works in existing project but fails in new directory.
+
+**Cause:** Codex trusts established projects but not fresh directories.
+
+**Solutions:**
+
+1. **Pre-create and trust the directory:**
+
+```bash
+mkdir -p /path/to/workspace
+```
+
+```toml
+# ~/.codex/config.toml
+[projects."/path/to/workspace"]
+trust_level = "trusted"
+```
+
+2. **Use existing trusted directory:**
+
+```bash
+cyberian run workflow.yaml --dir ~/existing-project
+```
+
+3. **Initialize project first:**
+
+```bash
+# Create basic project structure
+mkdir -p workspace && cd workspace
+git init
+echo "# Project" > README.md
+```
+
+### Codex Model Issues
+
+**Problem:** Wrong model being used or model errors.
+
+**Solutions:**
+
+1. **Specify model in config.toml:**
+
+```toml
+# ~/.codex/config.toml
+model = "gpt-4-turbo"
+```
+
+2. **Check API key:**
+
+Ensure `OPENAI_API_KEY` is set:
+
+```bash
+echo $OPENAI_API_KEY
+```
+
+3. **Check model availability:**
+
+Some models require specific access levels.
+
 ## Debug Techniques
 
 ### Enable Verbose Output
