@@ -1573,6 +1573,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#max-iterations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Max Iterations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#examples_7" class="md-nav__link">
     <span class="md-ellipsis">
       Examples
@@ -2033,6 +2042,11 @@
 <td><code>--param</code></td>
 <td><code>-p</code></td>
 <td>Workflow parameter</td>
+</tr>
+<tr>
+<td><code>--max-iterations</code></td>
+<td><code>-m</code></td>
+<td>Max iterations for looping tasks</td>
 </tr>
 </tbody>
 </table>
@@ -2603,6 +2617,13 @@
 <td><code>reuse</code></td>
 <td>Agent lifecycle mode: <code>reuse</code> or <code>refresh</code></td>
 </tr>
+<tr>
+<td><code>--max-iterations</code></td>
+<td><code>-m</code></td>
+<td>integer</td>
+<td></td>
+<td>Maximum iterations for looping tasks (e.g., <code>iterate</code> subtask)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="lifecycle-modes">Lifecycle Modes</h3>
@@ -2610,6 +2631,14 @@
 <li><code>reuse</code> - Keep agent running, maintains context (default)</li>
 <li><code>refresh</code> - Restart agent between tasks, clean state</li>
 </ul>
+<h3 id="max-iterations">Max Iterations</h3>
+<p>The <code>--max-iterations</code> option limits how many times looping tasks (like <code>iterate</code> subtasks with <code>loop_until</code> conditions) can execute. This is useful for:</p>
+<ul>
+<li><strong>Testing</strong>: Prevent workflows from running indefinitely during development</li>
+<li><strong>Cost control</strong>: Limit agent invocations for expensive workflows</li>
+<li><strong>Debugging</strong>: Run a fixed number of iterations to inspect intermediate results</li>
+</ul>
+<p>When the limit is reached, the loop exits with a warning message but the workflow continues.</p>
 <h3 id="examples_7">Examples</h3>
 <p><strong>Basic workflow:</strong></p>
 <div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml
@@ -2629,6 +2658,9 @@
 <p><strong>Agent lifecycle control:</strong></p>
 <div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>--agent-lifecycle<span class="w"> </span>refresh
 </code></pre></div>
+<p><strong>Limit iterations (for testing):</strong></p>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>--max-iterations<span class="w"> </span><span class="m">2</span>
+</code></pre></div>
 <p><strong>All options:</strong></p>
 <div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--host<span class="w"> </span>example.com<span class="w"> </span><span class="se">\</span>
@@ -2638,10 +2670,11 @@
 <span class="w">  </span>--agent-type<span class="w"> </span>claude<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--skip-permissions<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--param<span class="w"> </span><span class="nv">query</span><span class="o">=</span><span class="s2">&quot;topic&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--agent-lifecycle<span class="w"> </span>reuse
+<span class="w">  </span>--agent-lifecycle<span class="w"> </span>reuse<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-iterations<span class="w"> </span><span class="m">5</span>
 </code></pre></div>
 <p><strong>Using shorthands:</strong></p>
-<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>-H<span class="w"> </span>localhost<span class="w"> </span>-P<span class="w"> </span><span class="m">3284</span><span class="w"> </span>-T<span class="w"> </span><span class="m">600</span><span class="w"> </span>-d<span class="w"> </span>./workspace<span class="w"> </span>-a<span class="w"> </span>claude<span class="w"> </span>-s<span class="w"> </span>-p<span class="w"> </span><span class="nv">query</span><span class="o">=</span><span class="s2">&quot;topic&quot;</span>
+<div class="highlight"><pre><span></span><code>cyberian<span class="w"> </span>run<span class="w"> </span>workflow.yaml<span class="w"> </span>-H<span class="w"> </span>localhost<span class="w"> </span>-P<span class="w"> </span><span class="m">3284</span><span class="w"> </span>-T<span class="w"> </span><span class="m">600</span><span class="w"> </span>-d<span class="w"> </span>./workspace<span class="w"> </span>-a<span class="w"> </span>claude<span class="w"> </span>-s<span class="w"> </span>-p<span class="w"> </span><span class="nv">query</span><span class="o">=</span><span class="s2">&quot;topic&quot;</span><span class="w"> </span>-m<span class="w"> </span><span class="m">3</span>
 </code></pre></div>
 <h3 id="exit-codes_7">Exit Codes</h3>
 <ul>
