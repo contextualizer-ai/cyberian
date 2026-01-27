@@ -16,6 +16,11 @@ from cyberian.models import LoopCondition, Preconditions, SuccessCriteria, Task
 
 logger = logging.getLogger(__name__)
 
+# HTTP timeout constants (seconds)
+HTTP_STATUS_TIMEOUT = 30  # Timeout for status check requests
+HTTP_MESSAGES_TIMEOUT = 30  # Timeout for message retrieval requests
+HTTP_SEND_TIMEOUT_DEFAULT = 300  # Default timeout for sending messages
+
 
 class TaskRunner:
     """Executes a recursive task tree by communicating with agentapi.
@@ -654,8 +659,8 @@ class TaskRunner:
         agent_lower = (self.agent_type or "").lower()
         max_attempts = 2 if agent_lower in ["codex", "claude"] else 1
 
-        # HTTP timeout for individual requests (use workflow timeout, capped at 5 min for sanity)
-        http_timeout = min(self.timeout, 300)
+        # HTTP timeout for sending messages (use workflow timeout or default)
+        http_send_timeout = self.timeout or HTTP_SEND_TIMEOUT_DEFAULT
 
         for attempt in range(1, max_attempts + 1):
             # Send message
@@ -664,7 +669,7 @@ class TaskRunner:
                 f"{self.base_url}/message",
                 json={"content": content, "type": "user"},
                 headers={"Content-Type": "application/json"},
-                timeout=http_timeout
+                timeout=http_send_timeout
             )
             response.raise_for_status()
             logger.info("Message sent successfully, waiting for agent to complete")
@@ -680,7 +685,7 @@ class TaskRunner:
                         f"Agent did not complete within {self.timeout}s"
                     )
 
-                status_response = httpx.get(f"{self.base_url}/status", timeout=30)
+                status_response = httpx.get(f"{self.base_url}/status", timeout=HTTP_STATUS_TIMEOUT)
                 status_response.raise_for_status()
                 status_data = status_response.json()
 
@@ -699,7 +704,7 @@ class TaskRunner:
 
             # Get last agent message (after stable status reached)
             logger.debug("Fetching agent messages")
-            messages_response = httpx.get(f"{self.base_url}/messages", timeout=30)
+            messages_response = httpx.get(f"{self.base_url}/messages", timeout=HTTP_MESSAGES_TIMEOUT)
             messages_response.raise_for_status()
             messages_data = messages_response.json()
 
